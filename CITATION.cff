@@ -5,6 +5,10 @@ type: software
 authors:
   - family-names: Guelfi
     given-names: Nicolas
+    affiliation: right-on-skill
+contact:
+  - name: right-on-skill
+    website: "https://rightonskill.odoo.com/"
 repository-code: "https://github.com/nicolasguelfi/gse-light"
 url: "https://github.com/nicolasguelfi/gse-light"
 license-url: "https://github.com/nicolasguelfi/gse-light/blob/main/LICENSE.md"

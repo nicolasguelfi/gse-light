@@ -1,5 +1,5 @@
 # TEST-DAY0 in one paste — v0.3 · 2026-10-07 · same steps as TEST-DAY0.md §0–§2 and §4
-# Copyright (c) 2026 Nicolas Guelfi - gse-light (https://github.com/nicolasguelfi/gse-light) · CC BY-NC 4.0 (LICENSE.md)
+# Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light) · CC BY-NC 4.0 (LICENSE.md)
 # Needs nicolasguelfi/gse-light on GitHub (while private: a gh account with access).
 # Copy ONE block at a time into a bash or zsh terminal, in order. Run outside Dropbox.
 # The repositories: gse-light (cloned from GitHub); remote-pm.git and remote-product.git (local:

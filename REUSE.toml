@@ -4,11 +4,11 @@ version = 1
 [[annotations]]
 path = "**"
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2026 Nicolas Guelfi <https://github.com/nicolasguelfi/gse-light>"
+SPDX-FileCopyrightText = "2026 right-on-skill <https://rightonskill.odoo.com/> - gse-light by Nicolas Guelfi"
 SPDX-License-Identifier = "CC-BY-NC-4.0"
 
 [[annotations]]
 path = ["scripts/**", "claude-kit/*.sh", "pm-kit/*.sh", "pm-kit/templates/settings.json", "pm-kit/templates/docs.yml", "claude-kit/templates/ci-gates.yml", "claude-kit/templates/settings.json", ".github/workflows/**", ".claude/settings.json"]
 precedence = "override"
-SPDX-FileCopyrightText = "2026 Nicolas Guelfi <https://github.com/nicolasguelfi/gse-light>"
+SPDX-FileCopyrightText = "2026 right-on-skill <https://rightonskill.odoo.com/> - gse-light by Nicolas Guelfi"
 SPDX-License-Identifier = "LicenseRef-PolyForm-Noncommercial-1.0.0"

@@ -1,13 +1,14 @@
 # Licence
 
-Copyright © 2026 Nicolas Guelfi — `gse-light`, <https://github.com/nicolasguelfi/gse-light>
+Copyright © 2026 **right-on-skill** (<https://rightonskill.odoo.com/>) — `gse-light`, <https://github.com/nicolasguelfi/gse-light>
+Author: Nicolas Guelfi, for right-on-skill.
 
-Required Notice: Copyright (c) 2026 Nicolas Guelfi - gse-light (https://github.com/nicolasguelfi/gse-light)
+Required Notice: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 
 > **Essentials** — You may read, copy, adapt and share this work **for non-commercial
 > purposes only**, and you must **cite the author and this repository**. It is
 > *source-available*, not "open source" in the OSI sense (the Open Source Definition forbids
-> restricting commercial use). For any commercial use, ask the author for a separate licence.
+> restricting commercial use). For any commercial use, ask right-on-skill for a separate licence.
 
 ## Which licence applies to what
 
@@ -36,14 +37,14 @@ Indicate whether you changed it. A machine-readable form is in [`CITATION.cff`](
 Both licences allow personal use, teaching, research, and use by non-commercial
 organisations (for example a university, a public research body or a charity), whatever
 their funding. Selling the work, a service built on it, or using it inside a company's
-commercial activity is **commercial use**: it needs a separate written licence from the
-author.
+commercial activity is **commercial use**: it needs a separate written licence from
+right-on-skill (<https://rightonskill.odoo.com/>).
 
 ## The Claude kit in product repositories
 
 `claude-kit/install.sh` (product repositories) and `pm-kit/install.sh` (project-management
 repositories) copy their kit together with `.claude/KIT_LICENSE.md`, which carries the Required Notice and this licence's references.
-Keep that file with the kit. Using a kit in a commercial organisation's repository needs a licence from the author, as above.
+Keep that file with the kit. Using a kit in a commercial organisation's repository needs a licence from right-on-skill, as above.
 
 ## Third parties
 

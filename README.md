@@ -2,7 +2,7 @@
 
 A light method for running software projects built with generative AI (Claude Code) as a
 working partner, with a **Project Advisor** who gives feedback and advice in two hours of
-meeting and two hours of preparation a week. Author: Nicolas Guelfi.
+meeting and two hours of preparation a week. Author: Nicolas Guelfi, for [right-on-skill](https://rightonskill.odoo.com/).
 
 It holds the method and its tools, **no project**: each project keeps its own management in a
 private repository, cloned next to this one.
@@ -45,9 +45,9 @@ Status: v0.4 · 2026-10-07 · the method, separated from its projects
 
 ## Licence
 
-© 2026 Nicolas Guelfi. Source-available for **non-commercial use**, with **attribution**:
+© 2026 [right-on-skill](https://rightonskill.odoo.com/); author Nicolas Guelfi. Source-available for **non-commercial use**, with **attribution**:
 documents under [CC BY-NC 4.0](LICENSES/CC-BY-NC-4.0.txt), code under the
 [PolyForm Noncommercial License 1.0.0](LICENSES/LicenseRef-PolyForm-Noncommercial-1.0.0.md).
 Cite *Nicolas Guelfi, gse-light, 2026, https://github.com/nicolasguelfi/gse-light*
-([`CITATION.cff`](CITATION.cff)); commercial use needs a separate licence from the author.
+([`CITATION.cff`](CITATION.cff)); commercial use needs a separate licence from right-on-skill.
 Details: [`LICENSE.md`](LICENSE.md).

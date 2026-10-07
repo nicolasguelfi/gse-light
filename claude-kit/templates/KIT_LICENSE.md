@@ -1,9 +1,9 @@
 # Licence of the Claude kit in this folder
 
-Required Notice: Copyright (c) 2026 Nicolas Guelfi - gse-light (https://github.com/nicolasguelfi/gse-light)
+Required Notice: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 
 The skills, agents, `CLAUDE.md` template and settings of the Claude kit in this repository's
-`.claude/` come from the `gse-light` repository by Nicolas Guelfi
+`.claude/` come from the `gse-light` repository by Nicolas Guelfi for right-on-skill
 (<https://github.com/nicolasguelfi/gse-light>), copied by its `claude-kit/install.sh` or
 `pm-kit/install.sh`.
 
@@ -13,5 +13,5 @@ The skills, agents, `CLAUDE.md` template and settings of the Claude kit in this 
   <https://polyformproject.org/licenses/noncommercial/1.0.0>
 
 Non-commercial use only; keep this file and the Required Notice line with any copy. Commercial
-use needs a separate licence from the author. Details: `LICENSE.md` of the `gse-light`
+use needs a separate licence from right-on-skill (<https://rightonskill.odoo.com/>). Details: `LICENSE.md` of the `gse-light`
 repository.

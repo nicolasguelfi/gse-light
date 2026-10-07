@@ -99,7 +99,7 @@ And three habits:
 **Never**: a secret, token or key in a file under git (`.env` is yours alone); a push to
 `staging` or `main` without the go-ahead; a personal-data field outside the regime of
 your instance's data-regime record; a claim
-about a running system without its command; editing `instances/<instance>/BRIEFING.md` (the Project Advisor's cockpit).
+about a running system without its command; editing `<pm-repo>/instances/<instance>/BRIEFING.md` (the Project Advisor's cockpit).
 
 ## 3. Your first session, step by step (30 minutes)
 

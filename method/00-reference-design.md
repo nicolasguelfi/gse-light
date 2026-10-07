@@ -7,6 +7,8 @@ Status: draft for approval · v0.4 · 2026-10-07 (generic: each project's choice
 > here: **rules** that hold whatever the tools, and the **best tools today**. The third
 > layer, each project's **choice**, lives in its instance:
 > `instances/<instance>/design/00-design-choices.md`.
+> `instances/<instance>/` designates the project's folder in its private project-management
+> repository, cloned next to `gse-light` ([pm-kit](https://github.com/nicolasguelfi/gse-light/blob/main/pm-kit/README.md)).
 > Two lived projects illustrate the rules: **Sumvadis** (managed platforms: Vercel +
 > Supabase) and **StreamTeX** (machines we operate: Hetzner + Coolify); an organisation's
 > shared container platform (one cloud VM + containers) is a third reference.
@@ -411,7 +413,7 @@ checks (gates and measurements).
   as OpenRouter" differ only by configuration, never by code.
 - **Coding agent**: the kit targets Claude Code; independence from the agent is a goal of
   the method's follow-up.
-- **The Project Advisor's own kit** (this repository's `.claude/`) is separate from the
+- **The Project Advisor's own kit** (`pm-kit/`, installed in each project-management repository's `.claude/`) is separate from the
   engineers' kit: `advisor` (the entry point), `meeting` (brief, record, transcribe,
   minutes with the tasks per participant), `slides`, and the read-only agents
   `delivery-auditor` and `minutes-verifier`. It serves the weekly meeting; it manages

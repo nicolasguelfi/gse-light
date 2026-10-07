@@ -29,7 +29,10 @@ cp .env.example .env                                        # fill it (never com
 printf 'ClientName\nProjectName\n' > instances/<name>/private-terms.txt   # terms the leak guard refuses in gse-light (regular expressions, one per line)
 ```
 
-Then create the instance's files from `../gse-light/templates/` (cockpit, registers, roles),
+Then create the instance's files — there is no scaffold yet: `BRIEFING.md` (§1, §1b, §2, §3 with the
+pending counts), the three registers in the format of `../gse-light/templates/decision-record.md`
+(`governance/05-project-decisions.md`, `requirements/05-decisions.md`, `design/05-design-decisions.md`),
+`governance/10-roles-and-go-aheads.md`, `meetings/`, `journal/` —
 fill the `<…>` fields of `CLAUDE.md`, run `python3 ../gse-light/scripts/check_docs.py`, commit,
 and open Claude Code in `<pm-repo>`: the hook prints the situation; say « go ».
 

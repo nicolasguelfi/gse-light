@@ -8,8 +8,10 @@ Status: draft · v0.3 · 2026-10-07 · generic · author: Nicolas Guelfi, with C
 > The team runs the project; the Advisor gives conceptual feedback and advice, owns the AI
 > working method and its kit, and now and then brings a technical proposal prepared with
 > Claude or drawn from his experience. Each instance records its own version of these
-> roles in its register
-> and its presentations in `instances/<instance>/meetings/README.md`.
+> roles in its project register and its presentations in
+> `instances/<instance>/meetings/README.md`.
+> `instances/<instance>/` designates the project's folder in its private project-management
+> repository, cloned next to `gse-light` ([pm-kit](https://github.com/nicolasguelfi/gse-light/blob/main/pm-kit/README.md)).
 
 ## 0. Who does an action — three marks
 

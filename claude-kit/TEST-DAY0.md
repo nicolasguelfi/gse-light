@@ -32,7 +32,9 @@ INST=demo                      # the instance (folder name in instances/ of the 
 TEST=~/gse-test                # throwaway folder, outside Dropbox
 ```
 
-If `gh repo clone` asks you to sign in: `gh auth login` once.
+If `gh repo clone` asks you to sign in: `gh auth login` once. The test clones `gse-light` from GitHub:
+it runs once `nicolasguelfi/gse-light` exists there (while it is private, only with an account
+that has access).
 
 ## 1. Project lead — install the kit in the product repository and commit it
 

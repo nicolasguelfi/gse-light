@@ -29,7 +29,8 @@ Advisor notes the aggregated picture, never individual scores in public.
 | The project's technical skills (instance list) | per responsibility | per responsibility | — |
 
 Levels are the grid's scale (0–3). The instance lists its technical skills and each
-person's responsibilities in `instances/<instance>/governance/30-skills-and-responsibilities.md`.
+person's responsibilities in `instances/<instance>/governance/30-skills-and-responsibilities.md`, in the project's
+project-management repository.
 
 ## 3. The method, introduced in two steps
 

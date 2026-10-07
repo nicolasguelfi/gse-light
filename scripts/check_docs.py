@@ -15,7 +15,7 @@ Checks:
      - every register record has a status badge and a dashboard row, and every dashboard row a record;
      - in each instances/<name>/, the pending counts in BRIEFING.md §3 match its registers' dashboards;
      - .claude/skills and .claude/agents are identical to gse-light's pm-kit (else: refresh with pm-kit/install.sh);
-     - leak guard: no file tracked in gse-light matches a line of instances/<name>/private-terms.txt
+     - leak guard: no file tracked in gse-light, and no commit message, matches a line of instances/<name>/private-terms.txt
        (the terms stay in the private repository; gse-light is public).
 """
 from __future__ import annotations
@@ -205,6 +205,12 @@ def check_leaks() -> None:
             for t in terms:
                 if t.search(line):
                     errors.append(f"LEAK gse-light/{rel}:{n}: private term /{t.pattern}/")
+    # commit messages are published too (2026-10-07: a first commit message named the client)
+    r = subprocess.run(["git", "-C", str(METHOD), "log", "HEAD", "--format=%h %B"], capture_output=True, text=True)
+    for line in r.stdout.splitlines():
+        for t in terms:
+            if t.search(line):
+                errors.append(f"LEAK gse-light commit message: /{t.pattern}/ in {line[:60]!r}")
 
 
 def main() -> int:

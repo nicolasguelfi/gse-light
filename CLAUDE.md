@@ -13,7 +13,8 @@ project-management repository (`instances/<name>/`), cloned next to this one.
   budget, infrastructure detail or register number of an instance; examples are fictitious
   or generic. Each project-management repository lists its private terms in
   `instances/<name>/private-terms.txt`, and its `check_docs` run fails on any of them found
-  here (leak guard). Run it from such a repository before every push of gse-light.
+  here, in files and in commit messages (leak guard). Run it from such a repository before
+  every push of gse-light, and write commit messages without project names.
 - **Plain words first, technical words second**; define each technical term at first use.
 - **Measure before asserting**: a claim about the state of a system comes with the command
   that measured it.

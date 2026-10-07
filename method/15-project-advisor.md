@@ -1,6 +1,6 @@
 # 15 — The Project Advisor: the method and where the Advisor steps in
 
-Status: draft · v0.3 · 2026-10-07 · generic (first used at a project kick-off on 2026-10-09) · author: Nicolas Guelfi, with Claude
+Status: draft · v0.3 · 2026-10-07 · generic · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a project is run in a few weekly sprints with generative AI under
 > this method, who does each action (a person, a person asking Claude, or Claude and the CI

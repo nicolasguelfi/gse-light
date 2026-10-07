@@ -90,6 +90,9 @@ roles per instance in `instances/<instance>/governance/10-roles-and-go-aheads.md
 Dated rules learned from the sessions in this repository (newest first): rule — date —
 why. Keep each to two lines; move a rule up into "Standing rules" when it holds everywhere.
 
+- `bash -n a.sh b.sh` checks only `a.sh` (the others are its arguments): syntax-check each
+  script on its own, and replay the Day-0 rehearsal after any kit change — 2026-10-07 — a
+  missing quote in `claude-kit/install.sh` passed such a check.
 - Never write "the repository" (or « le dépôt ») alone: always name it — `gse-light`, this
   project-management repository, the product repository… — in documents, commands' comments
   and messages to NG — 2026-10-07 — NG: « nous avons trop de dépôts ».
@@ -108,10 +111,9 @@ why. Keep each to two lines; move a rule up into "Standing rules" when it holds 
 
 - Interact by QCM for simple questions and by review board (an artifact) for complex
   ones; always restate the problem and each option's advantages, drawbacks and
-  consequences — 2026-10-07 — NG's directive, applied on the two boards of s02.
-- Do not raise GDPR or "keep it out of Dropbox" for meeting recordings: NG handles
-  consent himself and the files stay in his Dropbox folder — 2026-10-07 — his line on
-  the round-1 board.
+  consequences — 2026-10-07 — NG's directive.
+- Do not raise consent or storage-location concerns for meeting recordings: NG handles
+  them himself — 2026-10-07 — NG's directive.
 - Keep permission deny rules narrow: `Read(./.env.*)` also blocked `.env.example` —
   2026-10-07 — found while building the kit.
 - The scaffold's `settings.json` denied `git push origin main` to Claude sessions; NG

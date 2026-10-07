@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && if [ -f ../gse-light/scripts/session_start.py ]; then python3 ../gse-light/scripts/session_start.py; else echo 'gse-light (the method) is not cloned next to this repository: git clone https://github.com/nicolasguelfi/gse-light.git ..'; fi",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && if [ -f ../gse-light/scripts/session_start.py ]; then python3 ../gse-light/scripts/session_start.py; else echo 'gse-light (the method) is not cloned next to this repository: git clone https://github.com/nicolasguelfi/gse-light.git ../gse-light'; fi",
             "timeout": 15
           }
         ]

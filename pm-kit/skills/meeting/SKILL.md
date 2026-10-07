@@ -45,7 +45,7 @@ never read `.env` yourself — the scripts do).
 
 ## 1b. `brief` for a milestone meeting — kick-off, W6 hand-over
 
-Not every meeting is a sprint meeting (2026-10-07, kick-off of 2026-10-09 done by hand).
+Not every meeting is a sprint meeting (2026-10-07, a kick-off once done by hand).
 For a milestone meeting there is nothing to audit: skip `delivery-auditor`.
 
 1. One QCM with three questions: audience (the client, the team, both), support (document +

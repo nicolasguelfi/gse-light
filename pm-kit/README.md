@@ -10,7 +10,7 @@ the work from there.
 
 | Path | What it is | Installed as |
 |---|---|---|
-| [`install.sh`](install.sh) | Installs or refreshes the kit in a project-management repository | run from `gse-light` |
+| [`install.sh`](install.sh) | Installs or refreshes the kit in a project-management repository | run from the project-management repository: `../gse-light/pm-kit/install.sh .` |
 | [`skills/`](skills/) | `advisor` (single entry point), `meeting`, `slides`, `method-lesson`, `decision-record`, `cockpit-update`, `session-close`, `genai-onboarding` | `.claude/skills/` (refreshed) |
 | [`agents/`](agents/) | `delivery-auditor`, `minutes-verifier`, `design-reviewer` | `.claude/agents/` (refreshed) |
 | [`templates/settings.json`](templates/settings.json) | Permissions (read-only commands, `.env` denied, `../gse-light` reachable) and the session-start hook | `.claude/settings.json` (created once) |

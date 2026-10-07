@@ -1,0 +1,54 @@
+# TEST-DAY0 in one paste — v0.3 · 2026-10-07 · same steps as TEST-DAY0.md §0–§2 and §4
+# Copyright (c) 2026 Nicolas Guelfi - gse-light (https://github.com/nicolasguelfi/gse-light) · CC BY-NC 4.0 (LICENSE.md)
+# Copy ONE block at a time into a bash or zsh terminal, in order. Run outside Dropbox.
+# The repositories: gse-light (cloned from GitHub); remote-pm.git and remote-product.git (local:
+# stand for the project-management repository and the product repository); lead/… and dev/… (their clones).
+# check.sh exits 1 when a line is MISSING: it is followed by ";" (not "&&") so the
+# block goes on — a "&&" there stopped the PM block before the commit (NG's run, 2026-10-07).
+
+
+# 0. RESET — deletes ~/gse-test only (the throwaway folder of this test), then the settings
+INST=demo
+TEST=~/gse-test
+rm -rf "$TEST"
+
+
+# 1. PROJECT LEAD — instance folder in lead/pm; kit installed in lead/product, committed, pushed
+# expected: two "cloned an empty repository" warnings; MISSING kit committed + WARN .env, exit 1
+mkdir -p "$TEST/lead" && \
+cd "$TEST" && \
+git init -q --bare remote-pm.git && \
+git init -q --bare remote-product.git && \
+cd lead && \
+gh repo clone nicolasguelfi/gse-light && \
+git clone -q ../remote-pm.git pm && \
+(cd pm && mkdir -p "instances/$INST" && echo "# $INST" > "instances/$INST/README.md" && git add . && git commit -q -m "Instance $INST" && git push -q origin HEAD) && \
+git clone -q ../remote-product.git product && \
+cd product && \
+git commit -q --allow-empty -m init && \
+git push -q origin HEAD && \
+../gse-light/claude-kit/install.sh . ../pm "$INST" && \
+{ ../gse-light/claude-kit/check.sh; echo "exit $? (1 expected before the commit)"; } && \
+git add CLAUDE.md .claude .env.example .gitignore .github && \
+git commit -q -m "Install the Claude kit ($INST)" && \
+git push -q origin HEAD && \
+echo "PROJECT LEAD done: kit committed and pushed to remote-product.git"
+
+
+# 2. DEV — clone gse-light, remote-pm.git and remote-product.git into dev/, .env, check
+# expected: only OK lines, exit 0; then git status shows nothing (.env ignored)
+mkdir -p "$TEST/dev" && \
+cd "$TEST/dev" && \
+gh repo clone nicolasguelfi/gse-light && \
+git clone -q ../remote-pm.git pm && \
+git clone -q ../remote-product.git product && \
+cd product && \
+cp .env.example .env && \
+{ ../gse-light/claude-kit/check.sh; echo "exit $? (0 expected)"; } && \
+echo "--- git status of dev/product (must be empty):" && \
+git status --short
+
+
+# 3. DEV — first session (interactive, not part of the paste): in dev/product run
+#    claude     then type /  and  /upskilling
+# 4. CLEAN UP afterwards:  rm -rf ~/gse-test   (and ~/.claude/upskilling/demo if /upskilling wrote one)

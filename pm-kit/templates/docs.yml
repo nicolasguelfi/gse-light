@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Nicolas Guelfi - gse-light (https://github.com/nicolasguelfi/gse-light)
+# SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
+# Documentation gates of a project-management repository: its registers and links, its copy of
+# the pm-kit, and the leak guard on gse-light (instances/<name>/private-terms.txt).
+name: docs
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: pm
+      - uses: actions/checkout@v5
+        with:
+          repository: nicolasguelfi/gse-light   # public; a private copy would need a token
+          path: gse-light
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Documentation gates (same as local)
+        working-directory: pm
+        run: python3 ../gse-light/scripts/check_docs.py

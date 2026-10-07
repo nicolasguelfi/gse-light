@@ -1,0 +1,20 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+.venv
+node_modules/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+# meeting recordings stay on Dropbox, never in git
+**/meetings/**/audio*.m4a
+**/meetings/**/audio*.mp3
+**/meetings/**/audio*.wav
+**/meetings/**/audio*.mp4
+**/meetings/**/audio*.mov
+**/meetings/**/audio*.webm
+**/meetings/**/*.wav
+**/meetings/**/.record.pid
+**/meetings/**/record.log

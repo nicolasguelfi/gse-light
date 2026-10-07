@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below (licence: CC BY-NC 4.0 for documents, PolyForm Noncommercial 1.0.0 for code; see LICENSE.md)."
+title: "gse-light — project management with generative AI: a light method, its Claude kits and templates"
+type: software
+authors:
+  - family-names: Guelfi
+    given-names: Nicolas
+repository-code: "https://github.com/nicolasguelfi/gse-light"
+url: "https://github.com/nicolasguelfi/gse-light"
+license-url: "https://github.com/nicolasguelfi/gse-light/blob/main/LICENSE.md"
+date-released: "2026-10-07"
+keywords:
+  - project management
+  - generative AI
+  - Claude Code
+  - software engineering method

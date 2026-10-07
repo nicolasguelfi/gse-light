@@ -16,7 +16,7 @@ usage="usage: install.sh <product-repository> <pm-repository> <instance>"
 target="${1:?$usage}"; pm="${2:?$usage}"; instance="${3:?$usage}"
 [ -d "$pm/instances/$instance" ] || { echo "no such instance: $pm/instances/$instance" >&2; exit 1; }
 pmname="$(basename "$(cd "$pm" && pwd)")"
-[ "$(cd "$pm/.." && pwd)" = "$(cd "$target/.." && pwd)" ] || echo "warning: $pmname is not next to the product repository; the kit expects ../$pmname
+[ "$(cd "$pm/.." && pwd)" = "$(cd "$target/.." && pwd)" ] || echo "warning: $pmname is not next to the product repository; the kit expects ../$pmname"
 [ -d "$target/.git" ] || { echo "not a git repository: $target" >&2; exit 1; }
 
 mkdir -p "$target/.claude/skills" "$target/.claude/agents"

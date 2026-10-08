@@ -1,9 +1,10 @@
 # 00 — Reference design: infrastructure, continuous integration and AI practice for a GenAI-directed project
 
-Status: draft for approval · v0.5 · 2026-10-08 (rules are invariants; every technology is chosen by each project in its design phase) · author: Nicolas Guelfi, with Claude
+Status: v0.6 · 2026-10-08 · approved by the Project Advisor on 2026-10-08; binding for an instance once its project lead adopts it (rules are invariants; every technology is chosen by each project in its design phase; sandbox repositories before the product repositories) · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a product run with this method is built, tested, delivered and
-> run, and how people and AI sessions work together on it. Each chapter has three layers:
+> run, and how people and AI sessions work together on it. Each technical chapter (3–12)
+> has up to three layers:
 > (1) **rules** that hold whatever the tools — they name no technology; (2) **how to
 > choose**: the decision drivers (the facts and constraints of the project) to collect
 > with the team and Claude; (3) the project's **choices**, recorded as design decisions
@@ -17,7 +18,9 @@ Status: draft for approval · v0.5 · 2026-10-08 (rules are invariants; every te
 > [StreamTeX](https://streamtex.org/). They show that a rule can be applied; they are not
 > a starting point: each project chooses its architecture and infrastructure in its design
 > phase from its own constraints. Tool names appear only in the dated, non-normative
-> [tool landscape — examples](40-tool-landscape-examples.md).
+> [tool landscape — examples](40-tool-landscape-examples.md), apart from GitHub
+> (prerequisite of the tooling) and Playwright, named as the one example of the firm
+> end-to-end rule.
 
 ---
 
@@ -72,16 +75,16 @@ who carries it: a **person**, a person **asking Claude**, or Claude and the CI
    integration (pieces together, on a real database), end-to-end (a user path through the
    real user interface). **End-to-end tests drive the real user interface and simulate
    the use cases; Claude runs them, for verification and validation** — this rule is
-   firm. The tool is the instance's test decision (`DD`); for a web interface, Playwright
-   is one such tool. Claude writes the tests with the code; a person reads them.
+   firm. The tool is the instance's decision `DD` test tools; for a web interface, Playwright
+   is one example. Claude writes the tests with the code; a person reads them.
    *Who: ask Claude; person reads.*
 3. **Green gates to move forward.** A change moves along the pipeline (working branch →
-   integration → rehearsal → production; names and branch model in the instance's `DD`,
-   ch. 10) only when every gate is green — then, for rehearsal and production, on its
-   go-ahead. *Who: automatic (CI); person for the go-ahead.*
-4. **Know what is verified.** Coverage is measured on every change (static: which code
-   the tests run), and a weekly map shows which requirements and qualities have passing
-   tests and which do not (dynamic, ch. 14).
+   integration → rehearsal → production; names and branch model in the instance's `DD`
+   environments and promotion path, ch. 10) only when every gate is green — then, for
+   rehearsal and production, on its go-ahead. *Who: automatic (CI); person for the go-ahead.*
+4. **Know what is verified.** Coverage is measured on every change (per change: which
+   code the tests run), and a weekly map shows which requirements and qualities have
+   passing tests and which do not (per week, ch. 14).
    *Who: automatic (CI); person reads the map.*
 5. **Measure before asserting.** A statement about a running system ("production is on
    version X", "the table is empty") is worth nothing without the command that measured
@@ -120,11 +123,11 @@ nothing — will find it.
   recommendation, a status badge (🟢 decided, 🔴 pending, 🟡 provisional). Each register
   opens with a dashboard of pending and decided records. Documents state outcomes and
   link to the record; **no document carries its own list of open questions**.
-- **Design phase.** The first week opens the design decisions the product needs
-  (architecture, hosting, repository layout, data, tests, delivery, identity, residency)
-  from the drivers collected with the team; the project lead decides them, the Project
-  Advisor advises (kit skill `design-phase`, ch. 15). Until they are decided, the gates
-  script of each product repository is a stub that passes and says so.
+- **Design phase.** The first week opens the design decisions the product needs (the
+  twelve decisions of `design-phase` §2, in order) from the drivers collected with the
+  team; the project lead decides them, the Project Advisor advises (kit skill
+  `design-phase`, ch. 15). Until they are decided, the gates script of each product
+  repository is a stub that passes and says so.
 - **Cockpit.** Each instance's `instances/<instance>/BRIEFING.md` is the Project Advisor's single entry point:
   §1 what awaits him (his decisions, the points where the team expects his advice), with
   links; §1b what awaits the team; §2 what changed since his last acknowledgement; §3
@@ -153,14 +156,15 @@ a week — is why refreshing it is now part of closing every session.
 systems and show indicators or proposals: *sources → import and checks (each version
 kept) → store (dated snapshots, migrations) → application (API + user interface) →
 exports*. It is an example of a boundary drawing, not a required architecture: each
-instance draws its own in its design phase and records it (`DD`, architecture).
+instance draws its own in its design phase and records it (`DD` stack and language,
+with the boundaries between its modules).
 
 ### Rules
 
 - **Thin, explicit boundaries.** Import, application and exports (or whatever the
   product's modules are) are separate modules with typed interfaces; the application
   never calls a source system directly.
-- **One deployable unit, built once, configured from outside.** Each deployable unit is
+- **Each deployable unit is built once and configured from outside.** A deployable unit is
   built into one artefact (a container image, a package or a bundle — the instance's
   choice) that is promoted unchanged from rehearsal to production and configured only
   by environment variables or an equivalent external configuration, so it can move
@@ -170,7 +174,7 @@ instance draws its own in its design phase and records it (`DD`, architecture).
 - **Computation is reproducible**: an indicator or a proposal records the snapshot date
   and the code version that produced it.
 - **Repository layout is a decision.** One repository or several (for example one per
-  deployable unit) is decided in the design phase (`DD`, repository layout); the kit is
+  deployable unit) is decided in the design phase (`DD` repository layout); the kit is
   installed in each product repository and the instance's `README.md` in the
   project-management repository lists them (ch. 13).
 
@@ -178,10 +182,10 @@ instance draws its own in its design phase and records it (`DD`, architecture).
 
 | Question (driver) | Criteria | Record |
 |---|---|---|
-| Where does the data come from, how often does it change, who owns it? | number of sources, their interfaces, refresh frequency, right to copy | `DD` architecture |
-| What must the product compute — reports, indicators, an optimisation, a workflow? | computation class (query, statistics, scheduling or allocation, simulation) and the skills to maintain it | `DD` architecture, `DD` language and frameworks |
-| Who uses it, through what — a web page, an office tool, an API, a mobile device? | the real user interface the end-to-end tests will drive (ch. 9) | `DD` user interface |
-| What skills does the team have today and what can it learn in the project's time? | skills grid ([upskilling](20-upskilling.md)), hiring, maintenance after the project | `DD` language and frameworks |
+| Where does the data come from, how often does it change, who owns it? | number of sources, their interfaces, refresh frequency, right to copy | `DD` stack and language (the modules and their boundaries) |
+| What must the product compute — reports, indicators, an optimisation, a workflow? | computation class (query, statistics, scheduling or allocation, simulation) and the skills to maintain it | `DD` stack and language |
+| Who uses it, through what — a web page, an office tool, an API, a mobile device? | the real user interface the end-to-end tests will drive (ch. 9) | `DD` stack and language (the front end), `DD` test tools |
+| What skills does the team have today and what can it learn in the project's time? | skills grid ([upskilling](20-upskilling.md)), hiring, maintenance after the project | `DD` stack and language |
 | How many deployable units, and who changes each of them? | team size, release rhythm per unit, shared code | `DD` repository layout |
 
 ### Illustration — Sumvadis · StreamTeX
@@ -201,7 +205,7 @@ examples, not the only options — an organisation's **shared platform** (one pl
 operating containers for several products), **serverless functions** or a **platform as
 a service** are hosting models too, and are scored on the same criteria. Neither is
 better in general; they trade money against effort and control. The choice is a design
-decision of the instance (`DD`, hosting).
+decision of the instance (`DD` hosting).
 
 | Criterion | Managed platforms | Machines you operate, services in containers |
 |---|---|---|
@@ -237,7 +241,7 @@ its load is steady and cost mattered.
 engineer, **one rehearsal environment** (identical in shape to production) and
 **production**. A mistake in one must not be able to reach another. How many
 environments, their names and who promotes to each are decided in the design phase
-(`DD`, environments).
+(`DD` environments and promotion path).
 
 ### Rules
 
@@ -297,8 +301,8 @@ rebuilt, reviewed and compared; nobody configures production by clicking.
 |---|---|---|
 | What does the hosting model (ch. 4) provide — a declarative language, a portal, manifests? | the infrastructure-as-code tool is usually dictated by the provider | `DD` infrastructure as code |
 | Where may secrets live according to the client organisation's policy? | an imposed vault, or the provider's own | `DD` secrets |
-| Who owns the domain names and the DNS of the client organisation? | who declares domains, how fast a change is made | `DD` domains |
-| Is there a gateway (reverse proxy) imposed by the platform? | TLS automation, routing | `DD` gateway |
+| Who owns the domain names and the DNS of the client organisation? | who declares domains, how fast a change is made | `DD` hosting (its domains line) |
+| Is there a gateway (reverse proxy) imposed by the platform? | TLS automation, routing | `DD` hosting (its gateway line) |
 
 ---
 
@@ -315,8 +319,10 @@ version currently running.
 - **Expand, then contract**: add the new column or table, deploy code that uses both,
   migrate data, deploy code that uses only the new one, then remove the old. Each step
   is deployable and reversible on its own.
-- **Rehearse on a throwaway copy** of the rehearsal database before applying to
-  production; a migration that fails in rehearsal never reaches production.
+- **Rehearse before applying to production**: first in the rehearsal environment (a
+  migration that fails there never reaches production), then on a disposable restore of
+  the latest production backup, in the production environment (production data is never
+  copied into rehearsal, ch. 5) — that restore doubles as the restore drill.
 - **Imported data is versioned**: each import is a dated snapshot, so an indicator can
   be recomputed exactly as it was.
 - **Backups you can restore**: a backup that was never restored is a hope. Restore
@@ -328,9 +334,9 @@ version currently running.
 
 | Question (driver) | What it weighs | Record |
 |---|---|---|
-| Which database engine, and is it managed by the provider or run by the team? | migration tool (usually the one of the application framework), backup ownership | `DD` database, `DD` migrations |
-| How much data, how often imported, how long kept? | snapshot storage, retention, cost | `DD` data retention |
-| What is the acceptable loss (minutes, a day) and the acceptable time to restore? | backup frequency, point-in-time recovery or daily dumps | `DD` backups |
+| Which database engine, and is it managed by the provider or run by the team? | migration tool (usually the one of the application framework), backup ownership | `DD` data store |
+| How much data, how often imported, how long kept? | snapshot storage, retention, cost | `DD` data store (its retention line) |
+| What is the acceptable loss (minutes, a day) and the acceptable time to restore? | backup frequency, point-in-time recovery or daily dumps | `DD` data store (its backups line) |
 
 ---
 
@@ -346,13 +352,13 @@ that fails a gate cannot be merged or promoted.
   checks (links, registers), and the domain audits the product needs (for example: no
   personal field outside the allowed list).
 - **Local gates identical to CI**: one command (`./gates.sh`, installed by the kit; a
-  stub that passes during the design phase) runs exactly what CI runs. An engineer — or
-  a Claude session — runs it before pushing.
+  stub that passes during the design phase) runs exactly what CI runs (`bash ./gates.sh`).
+  An engineer — or a Claude session — runs it before pushing.
 - **Generated artefacts are checked**: if a file is generated (API client, schema
   documentation), CI regenerates it and fails when the committed copy differs.
 - **Cross-validation oracle**: a computation that matters (an indicator, an optimisation
   result) is checked against an independent implementation or hand-computed fixtures.
-- When the build artefact is a container image (`DD`, ch. 3): image build, image
+- When the build artefact is a container image (`DD` stack and language, ch. 3): image build, image
   vulnerability scan, image signature, digest pinned in the deployment manifest.
 - **Dependency updates arrive automatically** and pass the same gates; the tool that
   opens them is the instance's choice ([landscape](40-tool-landscape-examples.md)).
@@ -385,7 +391,7 @@ Claude writes the unit, integration and end-to-end tests together with the code 
 asked for. **End-to-end tests drive the real user interface and simulate the use cases;
 Claude runs them, for verification (the product does what was specified) and validation
 (it does what the users need)** — a firm rule of the method. The tool is the instance's
-test decision (`DD`, tests); for a web interface, Playwright is one such tool. Each test
+decision `DD` test tools; for a web interface, Playwright is one example. Each test
 names the requirement or example it proves. Coverage is measured on every change and is
 a gate; the weekly map of what is verified and what is not is built from the test names
 (principle 4).
@@ -397,11 +403,11 @@ a gate; the weekly map of what is verified and what is not is built from the tes
 **In short.** Code flows from a working branch to the integration line, then to the
 rehearsal environment, then to production; each step up needs its own go-ahead, and
 going back is always possible. The branch model (names, how many lines, what deploys
-where) is decided in the design phase (`DD`, delivery).
+where) is decided in the design phase (`DD` environments and promotion path).
 
 ```text
- working branch ──PR + gates──▶ integration ──go-ahead (project lead)──▶ rehearsal ──go-ahead (product owner)──▶ production
-                                                 rehearsal: migrations, end-to-end, smoke tests   probe + rollback ready
+ working branch ──PR + gates──▶ integration ──go-ahead (role per the roles record, e.g. project lead)──▶ rehearsal ──go-ahead (role per the roles record, e.g. product owner)──▶ production
+                                                                       rehearsal: migrations, end-to-end, smoke tests                              probe + rollback ready
 ```
 
 ### Rules
@@ -414,7 +420,8 @@ where) is decided in the design phase (`DD`, delivery).
   model makes the rehearsal and production branches receive the same commit.
 - **Smoke check after every deployment**: health endpoint, version endpoint, one real
   read path. The deployed version is measured, not assumed (principle 5).
-- **Rollback** is a documented command, tested once per increment.
+- **Rollback** is a documented command, tested once per increment (an **increment** is
+  the set of changes promoted to production on one go-ahead — usually one week's work).
 - **Freeze** before a critical period of the client's business: no promotion except fixes.
 
 ### How to choose
@@ -439,20 +446,26 @@ prove what we claim.
 
 ### Rules
 
-- **GDPR by design**: the instance's data regime (aggregate, pseudonymised, identified)
+- **GDPR by design**: the instance's data regime (its data-regime record, a `DEC`)
   decides what may be stored, logged and exported. No log line, error report or
-  monitoring trace carries an identifier the regime forbids.
+  monitoring trace carries an identifier the regime forbids. The regime has three
+  levels, from the least to the most sensitive:
+  - **aggregate** — only counts and statistics; no row refers to one person;
+  - **pseudonymised** — rows refer to a person through a code; the key that links the
+    code to the person stays outside the product and outside git;
+  - **identified** — rows carry a name or another direct identifier; each such flow
+    needs the data protection contact's go-ahead, and the data never enters git.
 - **Data residency**: every store of personal data, backups included, lives where the
-  instance's residency decision says (`DD`, residency); the hosting choice (ch. 4) is
-  made under it, not the reverse.
-- **Sign-in** through the identity provider the instance decides (`DD`, identity — usually
+  instance's hosting decision says (`DD` hosting, its residency line); the hosting model
+  (ch. 4) is chosen under that constraint, not the reverse.
+- **Sign-in** through the identity provider the instance decides (`DD` identity — usually
   the client organisation's); authorisation by role inside the product; least privilege
   for people and for services.
 - **Secrets**: vault, rotation dates recorded, no secret in logs, CI or repositories.
 - **Patching** when you operate the machines: operating system and base images updated on a
   schedule; artefacts rebuilt when a vulnerability is fixed upstream.
-- **Provenance**: any AI-generated media or document published by the product is labelled;
-  a signing standard for media provenance was applied on Sumvadis and can be reused.
+- **Provenance**: any AI-generated media or document published by the product is labelled
+  as such, in a form a gate can check.
 - **Evidence**: a `security.txt` file, a short public page on data handling if the product has
   external users, and a record of processing for the data protection contact.
 
@@ -460,9 +473,15 @@ prove what we claim.
 
 | Question (driver) | What it weighs | Record |
 |---|---|---|
-| Which law and which client policy apply to the data (country, sector)? | residency, allowed providers, retention | `DD` residency |
+| Which law and which client policy apply to the data (country, sector)? | residency, allowed providers, retention | `DD` hosting (its residency line), `DD` data store (retention) |
 | Does the client organisation have an identity provider every user already has an account on? | sign-in through it, roles mapped from its groups; otherwise an identity service to run | `DD` identity |
 | Which data regime does each requirement need (aggregate, pseudonymised, identified)? | what may be stored and logged; the data protection contact's go-ahead | `DEC` data regime |
+
+### Illustration — Sumvadis
+
+A signing standard for media provenance was applied to every published media file, and
+a gate checks that every served file carries its signature; the standard is one option
+of the [tool landscape](40-tool-landscape-examples.md), not a rule.
 
 ---
 
@@ -485,7 +504,7 @@ it does not.
 **What you get vs what you run.** On managed platforms, the provider gives logs, metrics
 and backups; you configure alerts. On machines you operate — or as a module of a shared
 platform — the platform provides a monitoring workspace, or you run one; the product
-exposes health and metrics in the format the instance decides (`DD`, observability).
+exposes health and metrics in the format the instance decides (`DD` monitoring).
 
 ---
 
@@ -501,22 +520,40 @@ checks (gates and measurements).
   (the method, public, never edited), the project-management repository `<pm-repo>`
   (private: registers, sprints, journal) and the product repository (private: the code,
   with the kit committed in it), as siblings. The kit's `install.sh`, run from inside the
-  product clone, finds the two others and gives Claude read access to them, with write
-  access denied under `gse-light` and on the cockpit. Known limit: a Claude Code session
-  opened on claude.ai (web or cloud) sees one repository only — the one it was started
-  on — so the method's cross-repository steps run from a local session.
+  product clone, finds the two others and gives Claude read access to them. Its
+  `settings.json` denies the Edit tool under `../gse-light/**` and on the cockpit, denies
+  the literal command `git push origin main`, and makes Claude ask before any `git push`
+  in a product repository. These rules are conveniences, not a security boundary: the
+  real guard is GitHub branch protection on `main` and on every branch that deploys —
+  recommended, decided by each project in its roles record (`PD`). Known limit: a Claude
+  Code session opened on claude.ai (web or cloud) sees one repository only — the one it
+  was started on — so the method's cross-repository steps run from a local session.
+- **Sandbox repositories before the product repositories exist.** Until the design
+  phase has decided the repository layout (the first of the twelve decisions of
+  `design-phase` §2) and the product repositories are created, every team member works
+  in a personal, private, throwaway **sandbox repository** (`<project>-sandbox-<firstname>`,
+  created on GitHub by the project lead or the Project Advisor, cloned next to `gse-light`
+  and `<pm-repo>`) with the kit installed by the one command. Day 0, `/upskilling` and
+  experiments happen there; the project lead's sandbox is where the design phase runs.
+  Journal entries and new 🔴 records go to `<pm-repo>` through the skills. Team members
+  never open Claude Code in `<pm-repo>`: the sessions opened there are the Project
+  Advisor's (pm-kit).
 - **Multi-repository products.** When the design phase splits the product into several
-  repositories (`DD`, repository layout), the kit is installed in **each** product
+  repositories (`DD` repository layout), the kit is installed in **each** product
   repository; the instance's `README.md` in the project-management repository lists the
-  project's repositories, and is the place for an overall view: open Claude Code there,
-  with the product repositories added as additional directories, when a task spans them.
+  project's repositories, and is the place for an overall view: the Project Advisor opens
+  Claude Code there, with the product repositories added as additional directories, when
+  a task spans them.
 - **Instruction files.** Every repository has a `CLAUDE.md` built from the
   [kit template](../claude-kit/templates/CLAUDE.product-repo.md): purpose, phase,
   standing rules, commands to run the gates, what never to do. It is short and kept
   true; a rule learned from an incident is added with the date and the reason.
 - **Skills and agents** from the [Claude kit](../claude-kit/README.md) give every session
-  the same procedures (record a decision, close a session, review a change, run the
-  design phase).
+  the same procedures: the skills `decision-record`, `design-phase`, `session-close`,
+  `upskilling`, `verify-claim` and the read-only agent `change-reviewer`. Documentation
+  gates run from a product repository as
+  `python3 ../gse-light/scripts/check_docs.py ../<pm-repo>` (the project-management
+  repository as root argument).
 - **One writer per repository** at a time. With several parallel sessions, give each a
   name, one writing session and read-only watchers.
 - **Verify AI claims**: a session's statement about the system is accepted only with the
@@ -531,17 +568,18 @@ checks (gates and measurements).
   with no memory — state, rules, what remains, traps.
 - **Cost**: model usage per session is recorded in `instances/<instance>/journal/metrics.csv`; expensive
   actions (paid APIs, large generations) need a go-ahead.
-- **Model access**: Claude Code licences come from the Project Advisor; API keys for
-  complementary models come from the client organisation. Keys live in a git-ignored
-  `.env` per repository, one variable per vendor; "direct" and "through a model
-  provider" differ only by configuration, never by code.
+- **Model access**: who provides the Claude Code licences and the API keys for
+  complementary models is a project decision (`PD`) written in the instance's roles
+  record. Keys live in a git-ignored `.env` per repository, one variable per vendor;
+  "direct" and "through a model provider" differ only by configuration, never by code.
 - **Coding agent**: the kit targets Claude Code; independence from the agent is a goal of
   the method's follow-up.
 - **The Project Advisor's own kit** (`pm-kit/`, installed in each project-management repository's `.claude/`) is separate from the
-  engineers' kit: `advisor` (the entry point), `meeting` (brief, record, transcribe,
-  minutes with the tasks per participant), `slides`, and the read-only agents
-  `delivery-auditor` and `minutes-verifier`. It serves the weekly meeting; it manages
-  nothing.
+  engineers' kit: the skills `advisor` (the entry point), `meeting` (brief, record,
+  transcribe, minutes with the tasks per participant), `slides`, `method-lesson`,
+  `decision-record`, `cockpit-update`, `session-close`, `genai-onboarding`, and the
+  read-only agents `delivery-auditor`, `minutes-verifier` and `design-reviewer`. It
+  serves the weekly meeting; it manages nothing.
 
 ---
 
@@ -552,8 +590,17 @@ that prove it, and back.
 
 ### Rules
 
-- Identifiers: `FR-<AREA>-NNN` and `NFR-<AREA>-NNN` for requirements, `DD-NN` for design
-  decisions, test names citing the requirement they cover.
+- Identifiers: `FR-<AREA>-NNN` and `NFR-<AREA>-NNN` for requirements
+  ([template](../templates/requirement-record.md): statement, the example it rests on,
+  acceptance criteria, the test that proves it), `EX-<AREA>-NNN` for examples
+  ([template](../templates/example-record.md)), `DD-NN` for design decisions, test names
+  citing the requirement they cover.
+- **Examples and sources.** An instance keeps one file per real example in
+  `instances/<instance>/requirements/40-examples/` and one dated report per source
+  (an interview, an export, a document) in
+  `instances/<instance>/requirements/50-sources/<date>-<source>.md`. Personal data stays
+  out of git: an example is written at the level the instance's data-regime record
+  allows (ch. 11), and the real data stays where the regime says.
 - A traceability table (`instances/<instance>/requirements/70-traceability.md`) is generated from these
   identifiers by a script, not maintained by hand.
 - Each requirement links to the example that motivates it (principle 1); the weekly map
@@ -572,16 +619,17 @@ done with the choices of the design phase; none of them names a tool here.
 
 | When | Item | Who |
 |---|---|---|
-| **W1 · design phase** | **Drivers collected, `DD` records opened and decided with the team** (the twelve decisions of `design-phase` §2, in order) — skill `design-phase`; the Project Advisor advises, the project lead decides | Person (team, project lead); Ask Claude (`design-phase`) |
-| Day 0 (W1, in parallel) | Kit installed in each product repository (`install.sh` from inside the clone); `CLAUDE.md` filled with the instance and the project-management repository | Person (project lead); Automatic (`install.sh`) |
+| Day 0 (between the kick-off and W1) | Each member's sandbox repository created and cloned next to `gse-light` and the project-management repository; kit installed by the one command; `/upskilling` run; first journal entry written | Person (project lead or Project Advisor creates; each member installs); Ask Claude (`upskilling`, `session-close`) |
 | Day 0 | Registers and cockpit in place in `instances/<instance>/` | Ask Claude (pm-kit) |
-| Day 0 | Day-0 CI green: `./gates.sh` is a stub that prints "no gates yet: design phase in progress" and passes, run on every pull request and on `main` | Automatic (CI) |
+| **W1 · design phase** | **Drivers collected, `DD` records opened and decided with the team** (the twelve decisions of `design-phase` §2, in order) — skill `design-phase`, run in the project lead's sandbox; the Project Advisor advises, the project lead decides | Person (team, project lead); Ask Claude (`design-phase`) |
+| W1 · once the repository layout is decided | Product repositories created; kit installed in each (`install.sh` from inside the clone); `CLAUDE.md` filled with the instance and the project-management repository; sandboxes may be deleted | Person (project lead); Automatic (`install.sh`) |
+| W1 | Day-0 CI green in each product repository: `./gates.sh` is a stub that prints "no gates yet: design phase in progress" and passes, run on every pull request and on `main` | Automatic (CI) |
 | After the design phase | Gates script filled from the `DD` records (lint, types, tests, migrations, dependency scan, documentation checks); runs locally and in CI, empty test suite green | Ask Claude; Automatic (CI) |
-| Week 1–2 | Rehearsal environment declared as code, in the hosting model decided | Ask Claude; Person (go-ahead) |
-| Week 1–2 | Sign-in with the identity provider decided, on rehearsal | Ask Claude; Person (client access) |
-| Week 1–2 | Database with first migration, backups on (owner per the hosting `DD`) | Ask Claude |
-| Week 1–2 | Secrets in the vault decided; CI reaches the hosting provider through a short-lived identity (OIDC), never a stored password | Ask Claude; Person (go-ahead) |
-| Week 1–2 | One end-to-end path deployed to rehearsal, smoke-checked, one end-to-end test through the real interface run by Claude | Ask Claude; Person (reads) |
+| W1–W2 | Rehearsal environment declared as code, in the hosting model decided | Ask Claude; Person (go-ahead) |
+| W1–W2 | Sign-in with the identity provider decided, on rehearsal | Ask Claude; Person (client access) |
+| W1–W2 | Database with first migration, backups on (owner per the `DD` data store) | Ask Claude |
+| W1–W2 | Secrets in the vault decided; CI reaches the hosting provider through a short-lived identity (OIDC), never a stored password | Ask Claude; Person (go-ahead) |
+| W1–W2 | One end-to-end path deployed to rehearsal, smoke-checked, one end-to-end test through the real interface run by Claude | Ask Claude; Person (reads) |
 | Before first production | Production environment, separate from rehearsal | Ask Claude; Person (go-ahead) |
 | Before first production | Probe, alerts, runbooks, restore drill done | Ask Claude; Person (reads the drill) |
 | Before first production | Data protection contact sign-off on data flows | Person |
@@ -596,26 +644,35 @@ the record to open. Tool names are **not** here: options seen in past projects, 
 and non-normative, are in [40 — Tool landscape: examples](40-tool-landscape-examples.md).
 Each instance lists its own choices in `instances/<instance>/design/00-design-choices.md`.
 
-| Category | Questions (drivers) | Criteria | Record |
-|---|---|---|---|
-| Source control & CI | — (GitHub is a prerequisite of the method's tooling, ch. 0) | — | — |
-| Hosting | imposed platform? residency? who operates after the project? load shape? | control, cost, effort, isolation, compliance, lock-in, scaling (ch. 4) | `DD` hosting |
-| Database | managed or self-run? volume, retention, acceptable loss? | engine the team knows, backup ownership, migrations (ch. 7) | `DD` database |
-| Infrastructure as code | what the hosting provider offers? | declarative, reviewable in a pull request, applied by CI (ch. 6) | `DD` infrastructure as code |
-| Secrets | client policy on vaults? provider vault available? | identity-based access, rotation, no value in git (ch. 6) | `DD` secrets |
-| Sign-in | identity provider in the client organisation? external users? | single sign-on, roles from groups, least privilege (ch. 11) | `DD` identity |
-| Language and back end | team skills, computation class, who maintains after the project? | learning cost, ecosystem for the computation, test tooling (ch. 3) | `DD` language and frameworks |
-| Data processing | volumes, transformations, who writes them? | reproducibility, snapshot versioning (ch. 7) | `DD` data processing |
-| Optimisation | is there a scheduling, allocation or planning problem, of what size? | an independent oracle for cross-validation (ch. 8) | `DD` optimisation |
-| Tests | what is the real user interface? what are the peaks? | a tool Claude can run and read; drives the real interface (ch. 9) | `DD` tests |
-| Observability | what the platform provides? stakes of an outage? | probes, structured logs, metrics, alerts that open tickets (ch. 12) | `DD` observability |
-| Dependency updates | — | automatic proposals that pass the gates (ch. 8) | `DD` dependency updates |
+The last two columns name the decision each category feeds: one of the twelve decisions
+of `design-phase` §2, by its number and its name.
+
+| Category | Questions (drivers) | Criteria | design-phase # | Record |
+|---|---|---|---|---|
+| Repository layout | how many deployable units, who changes each? | team size, release rhythm per unit, shared code (ch. 3) | 1 | `DD` repository layout |
+| Source control & CI | where do the gates run, on which events? (GitHub is a prerequisite of the method's tooling, ch. 0) | the same gates locally and in CI (ch. 8) | 8 | `DD` continuous integration |
+| Hosting | imposed platform? residency? domains and gateway? who operates after the project? load shape? | control, cost, effort, isolation, compliance, lock-in, scaling (ch. 4) | 2 | `DD` hosting |
+| Environments | how many environments, who promotes to each, which branch deploys where? | parity of shape, isolation, one go-ahead per step (ch. 5, 10) | 3 | `DD` environments and promotion path |
+| Database | managed or self-run? volume, retention, acceptable loss? | engine the team knows, backup ownership, migrations (ch. 7) | 5 | `DD` data store |
+| Infrastructure as code | what the hosting provider offers? | declarative, reviewable in a pull request, applied by CI (ch. 6) | 7 | `DD` infrastructure as code |
+| Secrets | client policy on vaults? provider vault available? | identity-based access, rotation, no value in git (ch. 6) | 10 | `DD` secrets |
+| Sign-in | identity provider in the client organisation? external users? | single sign-on, roles from groups, least privilege (ch. 11) | 6 | `DD` identity |
+| Language and back end | team skills, computation class, who maintains after the project? | learning cost, ecosystem for the computation, test tooling (ch. 3) | 4 | `DD` stack and language |
+| Data processing | volumes, transformations, who writes them? | reproducibility, snapshot versioning (ch. 7) | 4 | `DD` stack and language |
+| Optimisation | is there a scheduling, allocation or planning problem, of what size? | an independent oracle for cross-validation (ch. 8) | 4 | `DD` stack and language |
+| Tests | what is the real user interface? what are the peaks? | a tool Claude can run and read; drives the real interface (ch. 9) | 9 | `DD` test tools |
+| Observability | what the platform provides? stakes of an outage? | probes, structured logs, metrics, alerts that open tickets (ch. 12) | 12 | `DD` monitoring |
+| Dependency updates | — | automatic proposals that pass the gates (ch. 8) | 11 | `DD` dependency updates |
 
 ## Appendix B — Templates
 
 - Decision record (with its **Drivers** line): [`templates/decision-record.md`](../templates/decision-record.md)
 - Design drivers of an instance (`instances/<instance>/design/10-design-drivers.md`): [`templates/design-drivers.md`](../templates/design-drivers.md)
+- Example record (`instances/<instance>/requirements/40-examples/`): [`templates/example-record.md`](../templates/example-record.md)
+- Requirement record (`FR-`/`NFR-`, with acceptance criteria and the test that proves it): [`templates/requirement-record.md`](../templates/requirement-record.md)
 - Session journal entry: [`templates/session-journal.md`](../templates/session-journal.md)
+- Meeting agenda and minutes: [`templates/meeting-agenda.md`](../templates/meeting-agenda.md), [`templates/meeting-minutes.md`](../templates/meeting-minutes.md)
+- Skills grid for the kick-off round table: [`templates/skills-grid.md`](../templates/skills-grid.md)
 - Product repository instructions: [`claude-kit/templates/CLAUDE.product-repo.md`](../claude-kit/templates/CLAUDE.product-repo.md)
 - CI pipeline and gates script: installed by the kit as a stub, filled after the design
   phase from [`claude-kit/templates/ci-gates.yml`](../claude-kit/templates/ci-gates.yml).
@@ -641,8 +698,12 @@ image or artefact), *migration* (a numbered script that changes the database str
 *OIDC* (a way for CI to obtain short-lived cloud rights without a stored password), *gate*
 (an automated check that blocks a merge or a promotion), *driver* (a fact or constraint
 of the project that a decision rests on), *rehearsal environment* (a copy of production
-where a version is deployed and checked before production), *forge* (a code-hosting
-service with pull requests and CI, such as GitHub).
+where a version is deployed and checked before production), *increment* (the set of
+changes promoted to production on one go-ahead), *sandbox repository* (a personal,
+private, throwaway repository with the kit installed, used before the product
+repositories exist), *data regime* (the level of personal data a product may hold:
+aggregate, pseudonymised or identified, ch. 11), *forge* (a code-hosting service with
+pull requests and CI, such as GitHub).
 
 ---
 

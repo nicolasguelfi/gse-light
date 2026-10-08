@@ -1,11 +1,12 @@
 ---
 name: slides
-description: Make, reopen, update or export a presentation of the active instance as a claude.ai Slides artifact - kick-off, weekly meeting, hand-over or any talk the Project Advisor gives. Dark template, numbered slides, actor marks; sources kept in instances/<instance>/meetings/<date>/slides/project/; the published version is synced back into the repository before any change, so the Project Advisor's edits in the viewer are never lost; a registry of links in instances/<instance>/meetings/README.md. Use whenever NG wants slides for a session, or to reopen or change those of any week.
+description: Make, reopen, update or export a presentation of the active instance as a claude.ai Slides artifact - kick-off, weekly meeting, hand-over or any talk the Project Advisor gives. Dark template, numbered slides, actor marks; sources kept in instances/<instance>/meetings/<date>/slides/project/; the published version is synced back into the repository before any change, so the Project Advisor's edits in the viewer are never lost; a registry of links in instances/<instance>/meetings/README.md. Use whenever the Project Advisor wants slides for a session, or to reopen or change those of any week.
 ---
 
 # slides — one deck per session, its source in git, never out of sync
 
-NG prepares his sessions with Slides artifacts on claude.ai (NG, 2026-10-07). A deck
+Nicolas Guelfi (NG), the Project Advisor, prepares his sessions with Slides artifacts on
+claude.ai (NG, 2026-10-07). A deck
 lives in two places: **published** on claude.ai (what NG sees, presents, edits in the
 viewer, shares and exports) and **in git** (`instances/<instance>/meetings/<date>/slides/project/`, so any
 later session can reopen it). The published version wins: NG may have edited it in the
@@ -20,7 +21,8 @@ No row: it is a new deck (§1). A row: reopen it (§2).
 
 1. Source of content: the meeting's `agenda.md` (weekly brief), the previous
    `minutes.md`, or [`../gse-light/method/15-project-advisor.md`](https://github.com/nicolasguelfi/gse-light/blob/main/method/15-project-advisor.md)
-   for a milestone meeting (`meeting` §1b). Ask NG at most one QCM (audience, length).
+   for a milestone meeting (`meeting` §1b). Ask NG at most one short multiple-choice
+   question (QCM: audience, length).
 2. `cp -R ../gse-light/templates/slides instances/<instance>/meetings/<date>/slides`; edit `project/deck.json` (title,
    `order`, sections) and one `project/slides/<id>.html` per slide, starting from the
    six models (cover, marks, table, cards, statement, next). Slide format: the Slides
@@ -43,7 +45,10 @@ No row: it is a new deck (§1). A row: reopen it (§2).
    published files into the repository (NG's edits win) and commit "slides <date>: sync
    from the viewer".
 2. Edit the repository files; publish **only the changed files** with the same `url` and
-   `root` (send `deck.json` only when the order, title or sections change).
+   `root` (send `deck.json` only when the order, title or sections change). **After adding,
+   removing or reordering slides, renumber every footer** `n / N` (bottom right of each
+   `project/slides/<id>.html`) to match the new `order`, and publish every slide whose
+   number changed — a deck with two slides "7 / 21" is a defect.
 3. A publish refused because the deck changed meanwhile: read the files it names, merge
    onto them, publish again. Never resend a copy you have not merged, never `force`
    (2026-10-07: one of NG's slides was overwritten once).
@@ -81,3 +86,7 @@ Export › PDF) if it is to be distributed; commit it in `instances/<instance>/m
 Publish a deck that was not synced first; delete a deck or a slide NG did not ask to
 remove; share a deck (only NG shares, from the Share menu — the link is private until
 then).
+
+---
+
+© 2026 [right-on-skill](https://rightonskill.odoo.com/) · [`gse-light`](https://github.com/nicolasguelfi/gse-light) by Nicolas Guelfi · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) — non-commercial use, cite the author and the repository ([licence](https://github.com/nicolasguelfi/gse-light/blob/main/LICENSE.md))

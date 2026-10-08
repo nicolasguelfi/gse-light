@@ -1,16 +1,20 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 # Template for .github/workflows/gates.yml in a product repository (Day-0 CI).
-# Rule (reference design ch. 8): CI runs exactly the local gates command (./gates.sh), nothing else.
-# Day 0: ./gates.sh is a stub that prints "no gates yet" and exits 0, so this workflow is green
-# on an empty repository. Services and extra branches: fill after the design phase from the DD
-# records (stack, repository layout, environments) — in the same commit as gates.sh.
+# Rule (reference design ch. 8): CI runs exactly the local gates command (bash ./gates.sh),
+# nothing else. "bash ./gates.sh" rather than "./gates.sh": the script then runs even when it
+# was committed without the executable bit (a Git Bash clone on Windows does that).
+# Day 0: gates.sh is a stub that prints "no gates yet" and exits 0, so this workflow is green
+# on an empty repository. Services, toolchain and extra branches: fill after the design phase
+# from its design decisions (DD records — the twelve decisions of `design-phase` §2, in order:
+# environments and promotion path, stack and language, data store, continuous integration) —
+# in the same commit as gates.sh.
 name: gates
 
 on:
   pull_request:
   push:
-    branches: [main]   # extra branches: fill after the design phase from the DD records
+    branches: [main]   # extra branches: fill after the design phase from the environments and promotion path decision
 
 permissions:
   contents: read
@@ -18,9 +22,9 @@ permissions:
 jobs:
   gates:
     runs-on: ubuntu-latest
-    # services (database, queue…): fill after the design phase from the DD records
+    # services (database, queue…): fill after the design phase from the data store decision
     steps:
       - uses: actions/checkout@v5
-      # toolchain setup (language runtime, package manager): fill after the design phase from the DD records
+      # toolchain setup (language runtime, package manager): fill after the design phase from the stack and language decision
       - name: All gates (identical to the local command)
-        run: ./gates.sh
+        run: bash ./gates.sh

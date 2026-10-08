@@ -18,5 +18,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+      - name: Scripts parse (bash -n, py_compile)
+        run: |
+          for f in claude-kit/install.sh claude-kit/check.sh claude-kit/templates/gates.sh pm-kit/install.sh scripts/meeting/meeting.sh; do bash -n "$f"; done
+          python3 -m py_compile scripts/*.py scripts/meeting/*.py
       - name: Documentation gates (same as local)
         run: python3 scripts/check_docs.py

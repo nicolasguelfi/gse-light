@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 # Day-0 check for a developer (claude-kit/INSTALL.md). Read-only: changes nothing.
-# Usage, from inside your product repository:  ../gse-light/claude-kit/check.sh
+# Usage, from the root of your product repository:  ../gse-light/claude-kit/check.sh
 # Prints one line per check (OK / MISSING / WARN) and exits 1 if anything is MISSING.
 # Works with bash 3.2 (macOS) and Git Bash.
 set -uo pipefail
@@ -54,7 +54,12 @@ if [ -f .claude/settings.json ]; then
 else miss ".claude/settings.json" "kit not installed by install.sh: ask the project lead"; fi
 
 if [ -f gates.sh ]; then
-  [ -x gates.sh ] && ok "gates.sh present and executable (./gates.sh)" || warn "gates.sh" "not executable: chmod +x gates.sh (then commit the mode)"
+  # executable on this disk (what ./gates.sh needs here) and in git (what a fresh clone and CI get)
+  [ -x gates.sh ] && ok "gates.sh present and executable (./gates.sh)" || warn "gates.sh" "not executable here: chmod +x gates.sh"
+  mode="$(git ls-files -s gates.sh 2>/dev/null | awk '{print $1}')"
+  if [ -n "$mode" ] && [ "$mode" != 100755 ]; then
+    warn "gates.sh mode in git ($mode)" "not executable in git: git update-index --chmod=+x gates.sh, then commit (the project lead)"
+  fi
 else miss "gates.sh" "the gates command is missing: the project lead re-runs install.sh"; fi
 [ -f .github/workflows/gates.yml ] && ok "CI workflow gates.yml present" || warn "gates.yml" "no CI workflow: the project lead re-runs install.sh"
 if [ -f .gitattributes ] && grep -qF '*.sh text eol=lf' .gitattributes; then ok ".gitattributes keeps scripts LF"
@@ -63,11 +68,18 @@ else warn ".gitattributes" "'*.sh text eol=lf' missing: scripts may break on Win
 if [ -n "$(git ls-files .claude/skills | head -1)" ]; then ok "kit committed in the repository"
 else miss "kit committed" "the kit files are not in git: the project lead commits them (INSTALL.md §2)"; fi
 
-# kit version = last commit of gse-light that touched claude-kit/ (not HEAD)
+# kit version = last commit of gse-light that touched claude-kit/ (not HEAD). Two clones can lag:
+# this repository's kit behind ../gse-light (the project lead refreshes), or ../gse-light itself
+# behind GitHub (you pull) — the recorded commit is then unknown in your clone.
 if [ -f .claude/KIT_VERSION ]; then
   v="$(tr -d '[:space:]' < .claude/KIT_VERSION)"
   last="$(git -C "$gse" log -1 --format=%h -- claude-kit 2>/dev/null || echo '?')"
-  [ "$v" = "$last" ] && ok "kit version $v (current)" || warn "kit version $v" "the kit in gse-light is at $last: the project lead may refresh it (install.sh)"
+  if [ "$v" = "$last" ]; then ok "kit version $v (current)"
+  elif ! git -C "$gse" merge-base --is-ancestor "$v" HEAD 2>/dev/null; then
+    warn "kit version $v" "your clone of gse-light is behind (it does not know $v): git pull in ../gse-light (and git pull here too)"
+  else
+    warn "kit version $v" "the kit in gse-light is newer ($last): the project lead refreshes it (install.sh), then you git pull here"
+  fi
 else miss "KIT_VERSION" "kit not installed by install.sh"; fi
 
 [ -f .claude/KIT_LICENSE.md ] && ok "kit licence notice present" || warn "KIT_LICENSE.md" "licence notice of the kit missing: the project lead re-runs install.sh"

@@ -5,11 +5,13 @@ description: The Project Advisor's weekly meeting chain for the active instance 
 
 # meeting — one skill, five steps, one folder
 
-NG is the **Project Advisor**: he gives feedback and advice; the project lead runs the
-project. This skill serves his two-hour weekly meeting and must fit in his two hours of
-preparation. Everything lands in `instances/<instance>/meetings/<YYYY-MM-DD>/` (layout in
-`instances/<instance>/meetings/README.md`). Recordings and transcripts stay in NG's Dropbox folder; audio is
-git-ignored; consent is NG's own process — do not raise it.
+Nicolas Guelfi (NG) is the **Project Advisor**: he gives feedback and advice; the project
+lead runs the project. This skill serves his two-hour meeting with the team (the rhythm
+and the day are fixed with the team: the project lead dates the weeks) and must fit in his
+two hours of preparation. Everything lands in `instances/<instance>/meetings/<YYYY-MM-DD>/`
+(layout in `instances/<instance>/meetings/README.md`). Recordings stay in the Advisor's
+private storage, outside git (audio is git-ignored); consent is his own process — do not
+raise it.
 
 | Step | When | Produces |
 |---|---|---|
@@ -24,8 +26,8 @@ never read `.env` yourself — the scripts do).
 
 ## 1. `brief` — the day before
 
-1. **Date.** Next meeting date from NG (ask in one short QCM if unknown); create
-   `instances/<instance>/meetings/<date>/`.
+1. **Date.** Next meeting date from NG (ask in one short multiple-choice question, QCM,
+   if unknown); create `instances/<instance>/meetings/<date>/`.
 2. **Facts.** Run the `delivery-auditor` agent (read-only). It measures what the team
    delivered since the last meeting — sprint file in `instances/<instance>/planning/sprints/`, GitHub
    milestone, pull requests, gates, journal entries, registers — and returns facts with
@@ -43,13 +45,14 @@ never read `.env` yourself — the scripts do).
 6. Tell NG in five lines what the brief says and what he should look at before the
    meeting. Do not refresh the cockpit for this (session-close does).
 
-## 1b. `brief` for a milestone meeting — kick-off, W6 hand-over
+## 1b. `brief` for a milestone meeting — kick-off, Wn hand-over
 
 Not every meeting is a sprint meeting (2026-10-07, a kick-off once done by hand).
-For a milestone meeting there is nothing to audit: skip `delivery-auditor`.
+For a milestone meeting — the kick-off, the hand-over of the last week Wn — there is
+nothing to audit: skip `delivery-auditor`.
 
 1. One QCM with three questions: audience (the client, the team, both), support (document +
-   slides, slides only, document only), scope (the six weeks, or this meeting only) —
+   slides, slides only, document only), scope (the whole project, or this meeting only) —
    each with its advantages, drawbacks and consequences.
 2. Write `agenda.md` (participants, timed agenda, decisions awaiting someone in the
    room, points the Project Advisor intends to raise, material) from
@@ -107,8 +110,10 @@ For a milestone meeting there is nothing to audit: skip `delivery-auditor`.
 3. **Verify.** Run the `minutes-verifier` agent: every task and decision must be backed
    by a transcript excerpt. Fix or remove what it flags; never argue with it in the
    minutes.
-4. **Validate with NG** — one QCM: send as is · change (he says what) · hold. The skill
-   never distributes the minutes itself; NG does, or asks for it explicitly.
+4. **Validate with NG** — one QCM: send as is · change (he says what) · hold. On "send as
+   is", write "validated by NG on YYYY-MM-DD" in the header of `minutes.md`.
+   <!-- keep this exact wording: situation.py reads "validated by NG on YYYY-MM-DD" -->
+   The skill never distributes the minutes itself; NG does, or asks for it explicitly.
 5. The tasks feed the project lead's next sprint file; point him to `minutes.md`.
 
 ## Rules
@@ -118,5 +123,11 @@ For a milestone meeting there is nothing to audit: skip `delivery-auditor`.
 - Measure before asserting: every fact in `agenda.md` and `minutes.md` carries its
   command or its transcript timestamp.
 - Costs: any Gemini or OpenRouter call goes through `../gse-light/scripts/llm_call.py`; say the
-  estimate first.
+  estimate first (rule of thumb for audio sent to Gemini: about 32 tokens per second of
+  recording — a two-hour meeting is roughly 230,000 input tokens, priced at the model's
+  input rate).
 - At the end of the session: `session-close` (journal entry, cockpit).
+
+---
+
+© 2026 [right-on-skill](https://rightonskill.odoo.com/) · [`gse-light`](https://github.com/nicolasguelfi/gse-light) by Nicolas Guelfi · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) — non-commercial use, cite the author and the repository ([licence](https://github.com/nicolasguelfi/gse-light/blob/main/LICENSE.md))

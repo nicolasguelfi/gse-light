@@ -3,9 +3,11 @@
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 """Session-start hook: print what the Project Advisor's session needs first, in ~30 lines.
 
-  1. instances/<INSTANCE>/BRIEFING.md §1 — what awaits the Project Advisor (task id and title);
-  2. the latest journal entry's hand-over ("For the next session");
-  3. the number of uncommitted files, measured by `git status --short`.
+  1. who is working (`git config user.name`) — sessions opened in a project-management
+     repository are the Project Advisor's; team members work from their sandbox or product repository;
+  2. instances/<INSTANCE>/BRIEFING.md §1 — what awaits the Project Advisor (task id and title);
+  3. the latest journal entry's hand-over ("For the next session");
+  4. the number of uncommitted files, measured by `git status --short`.
 
 Wired in .claude/settings.json under hooks.SessionStart. Read-only; prints nothing that
 is not already in the repository. Exit code 0 always (a hook must never block a session).
@@ -61,6 +63,14 @@ def last_handover() -> tuple[str, str]:
     return last.name, section(last.read_text(encoding="utf-8"), "For the next session")
 
 
+def git_user() -> str:
+    try:
+        r = subprocess.run(["git", "config", "user.name"], cwd=PM, capture_output=True, text=True, timeout=10)
+        return r.stdout.strip() or "(git user.name not set)"
+    except Exception as e:  # noqa: BLE001 — a hook never fails the session
+        return f"(git user unavailable: {e})"
+
+
 def uncommitted() -> str:
     try:
         r = subprocess.run(["git", "status", "--short"], cwd=PM, capture_output=True, text=True, timeout=10)
@@ -72,7 +82,8 @@ def uncommitted() -> str:
 
 def main() -> int:
     try:
-        print(f"{PM.name} — session start (hook, read-only, method gse-light) · active instance: {INST.name} ({INST.relative_to(PM)}/README.md). NG is the Project Advisor; keep it light.")
+        print(f"{PM.name} — session start (hook, read-only, method gse-light) · active instance: {INST.name} ({INST.relative_to(PM)}/README.md). Keep it light.")
+        print(f"Git user: {git_user()} — sessions here are the Project Advisor's; team members work from their sandbox or product repository.")
         print("Improve the project from this session: when a request has no artefact or an artefact "
               "does not fit, name the gap, do the task, propose the smallest fix (CLAUDE.md rule).")
         print(f"Repository: {uncommitted()} (`git status --short`).")

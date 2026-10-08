@@ -32,6 +32,17 @@ Be encouraging and concrete; never grade the person.
    "ask me to propose a change to this function, then read my diff and tell me one thing
    you would refuse", "write one test for this function with me". Note what you observe
    (measured), next to what they declared.
+   **While `gates.sh` is still the Day-0 stub** (it prints "no gates yet: design phase in
+   progress"), there is no code to check against: use documents and the person's
+   **sandbox repository** instead (`<project>-sandbox-<first name>`, their private,
+   throwaway repository with the kit installed — the one this session most likely runs
+   in). For example: "read `<pm-zone>/governance/10-roles-and-go-aheads.md` and tell me
+   who gives the go-ahead for a promotion to the rehearsal environment"; "draft, in your
+   answer only, a 🔴 record for a question of your choice in the format of
+   `../gse-light/templates/decision-record.md`"; "write a ten-line function and one test
+   for it in the sandbox, run the test and quote the output"; "ask me to state a fact
+   about this sandbox (its branch, its last commit) and check that I quote the command".
+   Say which check used the sandbox and which a document.
 
 ## 2. Compare with what their responsibilities need
 

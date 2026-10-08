@@ -1,3 +1,4 @@
+<!-- Template of the gse-light method (https://github.com/nicolasguelfi/gse-light), CC BY-NC 4.0. Documents made from this template carry no licence obligation: fill it in and keep the result as your own. -->
 ## XX-NN — <the decision, as a question or a short statement>
 
 🔴 **Pending** <!-- 🟢 Decided (who, YYYY-MM-DD) · 🟡 Provisional (until when) -->

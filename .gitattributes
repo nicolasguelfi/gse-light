@@ -1,0 +1,6 @@
+# Line endings: text files normalised in git; shell and Python scripts always LF, so the kits'
+# install.sh, check.sh and the method's scripts run on macOS, Linux and Git Bash alike
+# (a CRLF script fails on "bash\r" or "python3\r").
+* text=auto
+*.sh text eol=lf
+*.py text eol=lf

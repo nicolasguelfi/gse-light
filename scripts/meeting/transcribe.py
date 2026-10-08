@@ -3,18 +3,23 @@
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 """Transcribe a meeting recording: locally by default, with Gemini on request.
 
-  python3 ../gse-light/scripts/meeting/transcribe.py instances/<name>/meetings/2026-10-14            # engine from .env (default local)
-  python3 ../gse-light/scripts/meeting/transcribe.py instances/<name>/meetings/2026-10-14 --engine gemini
+  python3 ../gse-light/scripts/meeting/transcribe.py instances/<instance>/meetings/<date>            # engine from .env (default local)
+  python3 ../gse-light/scripts/meeting/transcribe.py instances/<instance>/meetings/<date> --engine gemini
   python3 ../gse-light/scripts/meeting/transcribe.py path/to/audio.m4a --language fr
+
+Given a folder, the audio file is audio.m4a (what meeting.sh records) when present, else the
+first audio file in name order; the choice and the other candidates are printed.
 
 Engines
   local   mlx-whisper (Apple Silicon, fast) if installed, else whisper.cpp's `whisper-cli`.
-          Nothing leaves the machine. No speaker labels. Install once, outside Dropbox:
+          Nothing leaves the machine. No speaker labels. Install once, outside any synced folder:
               uv tool install mlx-whisper        # then the model downloads on first run (~1.6 GB)
           or  brew install whisper-cpp           # and set WHISPER_CPP_MODEL to a ggml model file
   gemini  Google AI Studio (GOOGLE_API_KEY in .env) through scripts/llm_call.py: the audio
           is uploaded; the model returns a transcript with timestamps and speaker labels.
           The cost line goes to instances/<INSTANCE>/journal/llm-costs.csv and <meeting>/cost.json.
+          Rule of thumb for the cost: Gemini counts about 32 input tokens per second of audio,
+          so one hour of meeting is about 115 000 input tokens (plus the transcript as output).
 
 Output, next to the audio: transcript.md (one paragraph per segment, [hh:mm:ss] prefix),
 plus transcript.srt and transcript.json for the local engine.
@@ -49,12 +54,17 @@ def hms(seconds: float) -> str:
 
 
 def find_audio(target: Path) -> tuple[Path, Path]:
-    """Return (meeting_dir, audio_file) from a folder or a file path."""
+    """Return (meeting_dir, audio_file) from a folder or a file path. In a folder, audio.m4a (the
+    recorder's own file) comes first, else the first audio file in name order; the choice is printed."""
     if target.is_dir():
-        cands = sorted(p for p in target.iterdir() if p.suffix.lower() in AUDIO_EXT)
+        cands = sorted(p for p in target.iterdir() if p.is_file() and p.suffix.lower() in AUDIO_EXT)
         if not cands:
             sys.exit(f"no audio file in {target} (expected one of {', '.join(AUDIO_EXT)})")
-        return target, cands[0]
+        chosen = next((p for p in cands if p.name == "audio.m4a"), cands[0])
+        others = [p.name for p in cands if p != chosen]
+        print(f"[transcribe] audio: {chosen.name}" + (f" (also here, not used: {', '.join(others)} — pass the file path to pick one)" if others else ""),
+              file=sys.stderr)
+        return target, chosen
     if target.suffix.lower() in AUDIO_EXT and target.exists():
         return target.parent, target
     sys.exit(f"not a meeting folder nor an audio file: {target}")
@@ -73,7 +83,7 @@ def local_engine() -> tuple[str, str] | None:
 def transcribe_local(mdir: Path, audio: Path, language: str, env: dict) -> Path:
     eng = local_engine()
     if not eng:
-        sys.exit("no local engine. Install once (outside Dropbox):\n"
+        sys.exit("no local engine. Install once (outside any synced folder):\n"
                  "  uv tool install mlx-whisper      (Apple Silicon; model downloads on first run)\n"
                  "  or: brew install whisper-cpp     (then WHISPER_CPP_MODEL=/path/to/ggml-large-v3-turbo.bin in .env)\n"
                  "Or run with --engine gemini.")

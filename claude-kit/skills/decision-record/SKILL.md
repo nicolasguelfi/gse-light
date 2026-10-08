@@ -8,8 +8,11 @@ description: Record a decision or open question of the active instance in the ri
 Each instance keeps every decision and open question in one of three registers, all in the
 project-management repository — the private repository that holds `instances/<instance>/`
 (this repository if it has an `instances/` folder; from a product repository, the sibling
-folder named in its `CLAUDE.md`; if absent, draft the record in your answer and ask the
-engineer to open a pull request there). Paths below are relative to it; the method is `../gse-light`:
+folder named in its `CLAUDE.md`, `../<pm-repo>`; if absent, draft the record in your answer
+and ask the engineer to open a pull request there). The same holds from a personal
+**sandbox repository**, used while the product repositories do not exist yet: a sandbox
+holds no register — its records go to `../<pm-repo>` like any other. Paths below are
+relative to the project-management repository; the method is `../gse-light`:
 
 | Kind | Register | Prefix |
 |---|---|---|
@@ -46,14 +49,19 @@ engineer to open a pull request there). Paths below are relative to it; the meth
    the product owner or the data protection contact, §1b — **only from a session in the
    project-management repository**: from a product repository, `BRIEFING.md` is denied to
    Claude; report what §1 or §1b should say in the journal entry instead.
-8. Run `python3 ../gse-light/scripts/check_docs.py` in the project-management repository.
-   Then, when the author is a developer or the project lead and the record is **new and
-   🔴**: `git add` the register, `git commit` and `git push` in the project-management
-   repository (developers have write access there for their own journal entries and new
-   🔴 records). A decided (🟢) record, an amendment of someone else's record and
-   `BRIEFING.md` are never committed from a product repository: they change through a
-   session in the project-management repository, protected by the kit's deny rules and by
-   review. The Project Advisor's sessions push only on his go-ahead.
+8. Run the documentation gates: inside the project-management repository,
+   `python3 ../gse-light/scripts/check_docs.py`; from a product or sandbox repository,
+   `python3 ../gse-light/scripts/check_docs.py ../<pm-repo>` (the argument names the
+   repository to check). Then, when the author is a developer or the project lead and the
+   record is **new and 🔴**: `git -C ../<pm-repo> add instances/<instance>/<register>`,
+   `git -C ../<pm-repo> commit -m "<XX-NN> opened"`, `git -C ../<pm-repo> push` (inside the
+   project-management repository, drop `-C ../<pm-repo>`) — developers have write access
+   there for their own journal entries and new 🔴 records, and the kit's settings make
+   Claude ask before any `git push` in a product repository. A decided (🟢) record, an
+   amendment of someone else's record and `BRIEFING.md` are never committed from a product
+   or sandbox repository: they change through a session in the project-management
+   repository, protected by the kit's deny rules and by review. The Project Advisor's
+   sessions push only on his go-ahead.
 
 Never write "open questions" inside another document: link to the record instead.
 

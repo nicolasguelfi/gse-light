@@ -5,9 +5,10 @@ description: Refresh instances/<instance>/BRIEFING.md, the Project Advisor's coc
 
 # Refresh the cockpit
 
-`instances/<instance>/BRIEFING.md` is the Project Advisor's single entry point (NG is the Project Advisor, not the project
-manager). A stale §1 is a defect; so is a §1 that carries project-management
-tasks that belong to the project lead.
+`instances/<instance>/BRIEFING.md` is the Project Advisor's single entry point (Nicolas
+Guelfi, NG, is the Project Advisor, not the project manager). A stale §1 is a defect; so
+is a §1 that carries project-management tasks that belong to the project lead. Only his
+sessions, opened in this repository, edit it (roles record).
 
 1. **Collect** the 🔴 rows of the three dashboards (`instances/<instance>/governance/05-project-decisions.md`,
    `instances/<instance>/requirements/05-decisions.md`, `instances/<instance>/design/05-design-decisions.md`) with their "Who
@@ -21,10 +22,17 @@ tasks that belong to the project lead.
    project lead, the product owner or the data protection contact, with the Project Advisor's
    part ("advice", "chosen with you").
 3. **§2 — What changed**: dated bullets of what happened since the last
-   acknowledgement, newest first. Facts only, each traceable to a journal entry or a
+   acknowledgement, newest first — the session stamps **its own date** (and session
+   number) on each bullet it adds. Facts only, each traceable to a journal entry or a
    commit.
 4. **§3 — State**: update the table; counts of 🔴 per register are **counted**, not
-   copied from the previous version.
-5. **Re-stamp** "Last acknowledgement" only when the Project Advisor has read and acknowledged;
-   otherwise leave the date and keep accumulating §2.
+   copied from the previous version, on one line in this exact form, which
+   `check_docs.py` reads: `🔴 PD n · 🟡 PD n · 🔴 DEC n · 🔴 DD n`.
+5. **Re-stamp** "Last acknowledgement" **only when the Project Advisor has read and
+   acknowledged** the cockpit (he says so in the session); otherwise leave the date and
+   keep accumulating §2. Closing a session is not an acknowledgement.
 6. Run `python3 ../gse-light/scripts/check_docs.py`.
+
+---
+
+© 2026 [right-on-skill](https://rightonskill.odoo.com/) · [`gse-light`](https://github.com/nicolasguelfi/gse-light) by Nicolas Guelfi · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) — non-commercial use, cite the author and the repository ([licence](https://github.com/nicolasguelfi/gse-light/blob/main/LICENSE.md))

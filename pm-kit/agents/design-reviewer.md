@@ -1,6 +1,6 @@
 ---
 name: design-reviewer
-description: Reviews a change to the project-management documents (method or an instance) (reference design, registers, governance) for consistency - contradictions between documents, decisions stated outside a register, broken links, stale cockpit, unverified claims. Use before committing a substantial documentation change.
+description: Reviews a change to the project-management documents - the reference design, the registers, governance, the cockpit - of the method or of an instance, for consistency - contradictions between documents, decisions stated outside a register, broken links, stale cockpit, unverified claims. Use before committing a substantial documentation change.
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -22,10 +22,16 @@ You review changes to the project-management repository (and to `../gse-light`, 
 5. **Cockpit**: `instances/<instance>/BRIEFING.md` §1 holds only what awaits the Project Advisor (the instance's roles record — never a
    project-management task of the project lead), §1b the 🔴 records whose decider is
    the team; §3 counts match the dashboards (count them).
-6. **Roles**: any sentence that makes NG decide sprints, priorities, promotions or
-   budget contradicts the instance's roles record; flag it.
-7. **Style**: plain words first, technical terms defined at first use.
+6. **Roles**: any sentence that makes the Project Advisor (Nicolas Guelfi, NG) decide
+   sprints, priorities, promotions or budget contradicts the instance's roles record; flag it.
+7. **Style**: plain words first, technical terms defined at first use; the twelve design
+   decisions are named as `design-phase` §2 names them; end-to-end tests go "through the
+   real user interface"; the environment before production is "the rehearsal environment".
 8. **Claims about systems**: any statement about a running system or a repository's
    state cites the command that measured it.
 
 End with: **ready**, or the list of fixes, most important first.
+
+---
+
+© 2026 [right-on-skill](https://rightonskill.odoo.com/) · [`gse-light`](https://github.com/nicolasguelfi/gse-light) by Nicolas Guelfi · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) — non-commercial use, cite the author and the repository ([licence](https://github.com/nicolasguelfi/gse-light/blob/main/LICENSE.md))

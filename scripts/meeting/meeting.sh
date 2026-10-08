@@ -9,10 +9,12 @@
 #   ../gse-light/scripts/meeting/meeting.sh status                  # is a recording running? for how long?
 #   ../gse-light/scripts/meeting/meeting.sh stop                    # stop cleanly (ffmpeg finalises the file)
 #   ../gse-light/scripts/meeting/meeting.sh import FILE [DATE]      # copy an audio/transcript file into the day folder
+#                                                                   # (.docx is converted to text with textutil on macOS)
 #
 # Run from the project-management repository (the folder holding instances/), e.g.
 #   ../gse-light/scripts/meeting/meeting.sh status
-# Settings come from `.env` at its root (MEETING_AUDIO_DEVICE, INSTANCE, MEETINGS_DIR).
+# Settings come from `.env` at its root (MEETING_AUDIO_DEVICE, INSTANCE, MEETINGS_DIR); a value
+# may end with an inline comment, and a blank value counts as unset.
 # Output: <MEETINGS_DIR>/<DATE>/audio.m4a (AAC mono 48 kHz 96 kb/s ≈ 43 MB per hour),
 # meta.json (start, stop, device, duration), record.log. Audio files are git-ignored.
 set -euo pipefail
@@ -27,12 +29,16 @@ if [ -z "$root" ]; then
 fi
 cd "$root"
 
-# --- .env: only KEY=VALUE lines, no code is sourced
+# --- .env: only KEY=VALUE lines, no code is sourced. The inline comment is stripped, then the
+# blanks around the value (MEETINGS_DIR=   # comment  once gave a folder named by spaces), then
+# the quotes; an empty value is left unset so the defaults below apply.
+trim() { local x="$1"; x="${x#"${x%%[![:space:]]*}"}"; x="${x%"${x##*[![:space:]]}"}"; printf '%s' "$x"; }
 if [ -f .env ]; then
   while IFS='=' read -r k v; do
     case "$k" in ''|\#*) continue ;; esac
-    v="${v%% #*}"; v="${v%\"}"; v="${v#\"}"
-    export "$k=$v"
+    v="${v%%[[:space:]]#*}"; case "$v" in \#*) v="" ;; esac   # inline comment: blank then #, or # first
+    v="$(trim "$v")"; v="${v%\"}"; v="${v#\"}"; v="${v%\'}"; v="${v#\'}"
+    [ -n "$v" ] && export "$k=$v"
   done < <(grep -E '^[A-Za-z_][A-Za-z0-9_]*=' .env || true)
 fi
 if [ -z "${INSTANCE:-}" ]; then
@@ -127,19 +133,22 @@ PY
     [ -f "$src" ] || { echo "not a file: $src" >&2; exit 1; }
     d="$(day_dir "$date_arg")"; mkdir -p "$d"
     ext="${src##*.}"; lower="$(echo "$ext" | tr '[:upper:]' '[:lower:]')"
+    convert=""
     case "$lower" in
       m4a|mp3|wav|aac|ogg|flac|mp4|mov|webm) dest="$d/audio.$lower" ;;
-      vtt|srt)                               dest="$d/transcript-imported.$lower" ;;
-      txt|md|docx)                           dest="$d/transcript-imported.$lower" ;;
+      vtt|srt|txt|md)                        dest="$d/transcript-imported.$lower" ;;
+      docx)  # a word-processor transcript: plain text when textutil (macOS) is there, else the file as-is
+        if command -v textutil >/dev/null 2>&1; then convert=textutil; dest="$d/transcript-imported.txt"
+        else echo "no textutil here: .docx imported as-is (convert it to .txt by hand, or import the .txt)"; dest="$d/transcript-imported.docx"; fi ;;
       *) echo "unknown extension .$ext — importing as-is"; dest="$d/$(basename "$src")" ;;
     esac
     [ -e "$dest" ] && dest="${dest%.*}-$(date +%H%M%S).${dest##*.}"
-    cp "$src" "$dest"
+    if [ "$convert" = textutil ]; then textutil -convert txt -output "$dest" "$src"; else cp "$src" "$dest"; fi
     printf '{"imported_from": "%s", "file": "%s", "imported_at": "%s"}\n' "$src" "$(basename "$dest")" "$(date -Iseconds)" >> "$d/imports.jsonl"
     echo "imported → $dest"
     ;;
 
-  *)
-    sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'
+  *)  # help: the comment block at the top of this file, without the licence header lines
+    awk 'NR > 3 && /^set -/ { exit } NR > 3 && /^#/ { sub(/^# ?/, ""); print }' "$0"
     ;;
 esac

@@ -1,6 +1,6 @@
 ---
 name: method-lesson
-description: Turn something learned in a session (a gap between a request and the kit, an artefact that did not fit, a mistake, a rule NG stated) into one dated lesson written at the right place - CLAUDE.md, a skill, a template, the reference design or the kit template for product repositories - then propagate and journal it (standing rule "Improve the project from every interaction"). Use as soon as a gap is named and NG says yes to the fix, or whenever NG states a way of working.
+description: Turn something learned in a session (a gap between a request and the kit, an artefact that did not fit, a mistake, a rule the Project Advisor stated) into one dated lesson written at the right place - CLAUDE.md, a skill, a template, the reference design or the kit template for product repositories - then propagate and journal it (standing rule "Improve the project from every interaction"). Use as soon as a gap is named and the Project Advisor says yes to the fix, or whenever he states a way of working.
 ---
 
 # method-lesson — one lesson, one place, dated
@@ -13,7 +13,7 @@ rest point to it.
 ## 1. Name the lesson (one line each)
 
 - **Trigger**: what happened — the request nobody could serve, the artefact that did
-  not fit, the mistake, NG's sentence.
+  not fit, the mistake, the sentence of the Project Advisor (Nicolas Guelfi, NG).
 - **Rule**: what a session must do differently next time, in plain words, testable.
 - **Why**: the reason, so a later reader can retire the rule when the reason is gone.
 
@@ -25,7 +25,7 @@ rest point to it.
 | one step of one skill or agent | that `SKILL.md` or agent file | a sentence in the step, with the date in parentheses |
 | what a document must contain | the template in `../gse-light/templates/` | a field or a comment line |
 | how a product is built or run (binding for every instance's team) | `../gse-light/method/00-reference-design.md`, the chapter's "Rules" | a bullet; if it changes a decision, a register record first (`decision-record`) |
-| how engineers' sessions behave in product repositories | `../gse-light/claude-kit/templates/CLAUDE.product-repo.md` → "Lessons learned here", or the kit skill | same forms; then `kit-release` (when it exists) propagates |
+| how engineers' sessions behave in product repositories | `../gse-light/claude-kit/templates/CLAUDE.product-repo.md` → "Lessons learned here", or the kit skill | same forms; then, after `git pull` in `gse-light`, each product repository (and each sandbox) refreshes its skills and agents with `../gse-light/claude-kit/install.sh <instance>` run inside the clone, and this repository with `../gse-light/pm-kit/install.sh .`; a lesson written in the `CLAUDE.md` template is copied by hand into the `CLAUDE.md` of repositories that already have one (the installer creates it once, never overwrites it) |
 | how NG wants to be asked or informed | `CLAUDE.md` lessons **and** the session memory | bullet + memory file |
 
 A lesson that is really a **decision** (a choice between options, with consequences for
@@ -58,5 +58,9 @@ the team) is not a lesson: record it with `decision-record` and write only the p
 - Never rewrite a journal entry to add a lesson; the journal cites, the rule lives
   elsewhere.
 - Never add a rule NG did not state or confirm; a hypothesis is written as "to confirm
-  with NG" and asked by QCM.
+  with NG" and asked by one short multiple-choice question (QCM).
 - Keep it light: a lesson takes two minutes to write and ten seconds to read.
+
+---
+
+© 2026 [right-on-skill](https://rightonskill.odoo.com/) · [`gse-light`](https://github.com/nicolasguelfi/gse-light) by Nicolas Guelfi · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) — non-commercial use, cite the author and the repository ([licence](https://github.com/nicolasguelfi/gse-light/blob/main/LICENSE.md))

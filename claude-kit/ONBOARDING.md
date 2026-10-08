@@ -1,16 +1,32 @@
 # Working with generative AI under this method — starting guide for engineers
 
-Status: v0.5 · 2026-10-08 · generic · for the project lead and the engineers · maintained by the Project Advisor (NG)
+Status: v0.6 · 2026-10-08 · generic · for the project lead and the engineers · maintained by the Project Advisor
 
 > **Essentials** — A project run with this method (an *instance*) is built
-> in weekly sprints with Claude Code as a working
+> in sprints with Claude Code as a working
 > partner, under a few firm rules: measure before asserting, decisions in registers,
 > nothing state-changing without a go-ahead. This guide gets you from zero to your first
-> productive session in about an hour, and tells you the rhythm of the weeks after.
+> productive session in about an hour (15 minutes to install, 15 for `/upskilling`, 30 for
+> the first session), and tells you the rhythm of the weeks after.
 > Fields written `<like this>` are filled by the project lead at the kick-off; `<instance>`
 > is your project's folder name in `instances/` of its project-management repository
 > `<pm-repo>`. Three repositories, side by side: `gse-light` (this method, public),
-> `<pm-repo>` (your project's management, private) and your product repository.
+> `<pm-repo>` (your project's management, private) and your product repository — or, until
+> it exists, your sandbox (§1).
+
+> **Words used here** — *Instance*: one project run with this method, and its folder
+> `instances/<instance>/` in `<pm-repo>`. *Kit*: the Claude Code files (skills, agent, rules,
+> gates stub, CI workflow) committed in a product repository by one command. *Register* and
+> *record*: the three files where decisions live (`PD` project, `DEC` requirements, `DD`
+> design decisions), one record per decision, with a status badge (🔴 pending, 🟢 decided,
+> 🟡 provisional). *Gate*: an automated check that blocks a merge or a promotion
+> (`./gates.sh`, the same in CI). *Go-ahead*: the written yes of the person who holds a
+> right, given before a state-changing action. *Rehearsal environment*: a copy of
+> production where a version is deployed and checked before production. *Walking skeleton*:
+> the thinnest end-to-end slice of the product — one path from the user interface to the
+> data store, deployed and tested — built first. *Sandbox*: your personal, private,
+> throwaway repository, where Day 0 and your experiments happen until the product
+> repositories exist. More terms: [reference design, Appendix D](../method/00-reference-design.md#appendix-d--glossary).
 
 The one-page version, to keep at hand: [QUICKSTART.md](../QUICKSTART.md).
 
@@ -18,16 +34,16 @@ The one-page version, to keep at hand: [QUICKSTART.md](../QUICKSTART.md).
 
 | You need | Who gives it | How |
 |---|---|---|
-| A **Claude Code licence** (the coding agent) | Nicolas Guelfi, the Project Advisor | an invitation to his Claude team, by e-mail; sign in with it, not with a personal account |
-| **API keys** for complementary models (if a task needs one) | the client organisation, through the project lead | one variable per vendor in your `.env` (see §1.4); never in a file under git |
-| Access to the **repositories** (on GitHub) | the project lead | `<product repository URL>` and `<pm-repo>` (your project's management: everyone reads it; you write your own journal entries and new 🔴 records in `instances/<instance>/`, pushed by `session-close` and `decision-record`; the project lead also writes the sprints; the cockpit `BRIEFING.md` is the Project Advisor's); the method `nicolasguelfi/gse-light` is public |
-| The **rules** | `gse-light` and `<pm-repo>` | `gse-light/method/00-reference-design.md` (chapters 1 and 13 first), your instance's `<pm-repo>/instances/<instance>/design/00-design-choices.md`, and your repository's `CLAUDE.md` |
+| A **Claude Code licence** (the coding agent) | the Project Advisor (named in the roles record, `<pm-repo>/instances/<instance>/governance/10-roles-and-go-aheads.md`) | an invitation to the Advisor's Claude team, by e-mail; sign in with it, not with a personal account |
+| **API keys** for complementary models (if a task needs one) | the client organisation, through the project lead | one variable per vendor in your `.env` (see §1); never in a file under git |
+| Access to the **repositories** (on GitHub) | `<product-repo>` and your sandbox: the project lead; `<pm-repo>`: whoever hosts it (named in the roles record) | `<product-repo>` (the code), your sandbox `<project>-sandbox-<firstname>`, and `<pm-repo>` (your project's management: everyone reads it; you write your own journal entries and new 🔴 records in `instances/<instance>/`, pushed by `session-close` and `decision-record`; the project lead also writes the sprints; the cockpit `BRIEFING.md` is the Project Advisor's); the method `nicolasguelfi/gse-light` is public |
+| The **rules** | `gse-light` and `<pm-repo>` | `gse-light/method/00-reference-design.md` (chapters 0–2 and 13 first; the project lead adds 15), your instance's `<pm-repo>/instances/<instance>/design/00-design-choices.md`, and your repository's `CLAUDE.md` |
 
 The kit targets **Claude Code only**.
 If you work with another coding agent, tell the project lead: the rules still apply, the
 kit does not install itself there.
 
-## 1. Day 0 — get set up (30 minutes)
+## 1. Day 0 — get set up (15 minutes to install, 15 for `/upskilling`)
 
 The full procedure, with prerequisites for macOS and Windows and what is shared or
 personal, is **[INSTALL.md](INSTALL.md)**. In short:
@@ -35,24 +51,32 @@ personal, is **[INSTALL.md](INSTALL.md)**. In short:
 1. **Prerequisites**: Git with access to the repositories on GitHub, a bash terminal (Git
    Bash on Windows), `python3`, Claude Code signed in with the account the Project Advisor
    invited ([INSTALL.md §1](INSTALL.md#1-prerequisites-everyone)).
-2. **Clone side by side** `gse-light`, `<pm-repo>` and your product repository, in one
-   parent folder: the kit is already in the product repository, installed by the project
-   lead with one command from inside its clone and committed. **You never run `install.sh`**;
-   if you cloned before the kit was there, `git pull` once the project lead has pushed
-   ([INSTALL.md §3](INSTALL.md#3-developer--get-the-kit-about-15-minutes)).
-3. **Your `.env`**: `cp .env.example .env`, then fill it with what the project lead gave you.
-4. **Check**: `../gse-light/claude-kit/check.sh` from inside the product repository —
-   every line OK, or it tells you what to do.
-5. **Open a session**: `claude`, accept the workspace trust dialog, type `/` and check that
+2. **Before W1 — in your sandbox.** Until the product repositories exist (the first
+   decision of the design phase, repository layout, names them), you work in
+   `<project>-sandbox-<firstname>`: a personal, private, throwaway repository on GitHub,
+   created for you by the project lead or the Project Advisor. Clone it next to `gse-light`
+   and `<pm-repo>`, run the one command in it **yourself**
+   (`../gse-light/claude-kit/install.sh <instance>`) and commit the kit
+   ([INSTALL.md §3](INSTALL.md#3-developer--get-the-kit-about-15-minutes)). Your sessions'
+   journal entries and 🔴 records go to `<pm-repo>/instances/<instance>/` through the
+   skills, as from any product repository. You never open Claude Code in `<pm-repo>`: the
+   sessions opened there are the Project Advisor's.
+3. **Once the product repository exists**, clone it side by side with the two others, in
+   the same parent folder: the kit is already in it, installed by the project lead with one
+   command from inside its clone and committed. **You never run `install.sh` there**; if you
+   cloned before the kit was there, `git pull` once the project lead has pushed.
+4. **Your `.env`**: `cp .env.example .env`, then fill it with what the project lead gave you.
+5. **Check**: `../gse-light/claude-kit/check.sh` from inside the repository — every line
+   OK, or it tells you what to do.
+6. **Open a session**: `claude`, accept the workspace trust dialog, type `/` and check that
    `design-phase`, `decision-record`, `session-close`, `verify-claim` and `upskilling` appear.
    Work locally: a Claude Code session started on claude.ai (web or cloud) sees one
    repository only, not `../gse-light` nor `../<pm-repo>`.
-
-6. **Start from where you are**: in the session, type `/upskilling`. Ten minutes of
+7. **Start from where you are**: in the session, type `/upskilling`. Ten minutes of
    questions and two or three small checks, then a short personal plan matched to your
    responsibilities; your answers stay in your home folder, outside the repository
    ([method](../method/20-upskilling.md)). The method comes in two steps: the base in your
-   first week, tests and coverage in the second.
+   first sprint, tests and coverage in the second.
 
 **Check you are done**: `../gse-light/claude-kit/check.sh` prints no MISSING line.
 
@@ -64,27 +88,28 @@ Seven principles ([reference design ch. 1](../method/00-reference-design.md#1-gu
 Each says who carries it: **you** (a person), **ask Claude**, or **automatic** (Claude by
 the rules of your `CLAUDE.md`, or the CI):
 
-1. **Examples first.** Before specifying a need, get a real instance and its data from
-   the client. Link each requirement
-   to its example. *You collect; ask Claude to analyse.*
+1. **Examples first.** Before specifying a need, get a real example and its data from
+   the client (one file per example in `<pm-repo>/instances/<instance>/requirements/40-examples/`;
+   personal data stays out of git). Link each requirement to its example. *You collect;
+   ask Claude to analyse.*
 2. **Tests at every step.** Ask for code *with* its tests: unit, integration (real
    database) and, for every user path, **end-to-end tests through the real user interface,
    driven by Claude to play the use case** — this is how the product is verified and
-   validated, and it is a firm rule; the tool is the instance's choice (test `DD`;
-   Playwright is the example for a web interface). Each test names the requirement it
+   validated, and it is a firm rule; the tool is the instance's choice (the test-tools
+   `DD`; Playwright is one example for a web interface). Each test names the requirement it
    proves. *Ask Claude; you read them.*
 3. **Green gates to move forward.** Nothing merges with a red gate (`./gates.sh`, the same
-   in CI); nothing goes to the rehearsal environment decided in the instance's environments
-   `DD`, nor to production, without its go-ahead. *Automatic (CI); a person for the go-ahead.*
+   in CI); nothing goes to the rehearsal environment (the environments-and-promotion-path
+   `DD`), nor to production, without its go-ahead. *Automatic (CI); a person for the go-ahead.*
 4. **Know what is verified.** Coverage on every change, and a weekly map of which
    requirements and qualities have passing tests. *Automatic (CI); you read it.*
 5. **Measure before asserting.** "Tests pass", "the rehearsal environment is on 1.4", "the
    import ran": only with the command and its output, dated. Ask Claude the same: *show me
    the command*. Skill `verify-claim`. *Automatic (Claude); ask if missing.*
-6. **One source of truth.** No hard-coded course, session or user identifier in code or
-   tests (tests create their own data); schema from migrations, client from the API
-   contract; documentation changes with the code, in the same pull request.
-   *Automatic (gates).*
+6. **One source of truth.** No hard-coded identifier of a business object (for example a
+   course, a session, a user) in code or tests (tests create their own data); schema from
+   migrations, client from the API contract; documentation changes with the code, in the
+   same pull request. *Automatic (gates).*
 7. **Evaluate is not execute.** Asking Claude to assess changes nothing. Pushing to a
    branch that deploys, migrating a shared database, creating cloud resources, spending
    money: only with the written go-ahead of the person in
@@ -111,16 +136,19 @@ And three habits:
 `main`, or to any branch that deploys, without the go-ahead; a personal-data field outside
 the regime of your instance's data-regime record; a claim about a running system without its
 command; editing `<pm-repo>/instances/<instance>/BRIEFING.md` (the Project Advisor's cockpit)
-or anything under `gse-light` from a project session — the kit's `settings.json` denies both
-to Claude.
+or anything under `gse-light` from a project session; opening Claude Code in `<pm-repo>`.
+The kit's `settings.json` denies Claude the Edit tool on the cockpit and under `gse-light`,
+and the literal command `git push origin main`; Claude asks before any `git push`. These
+rules are conveniences for the session, not a security boundary: review by a person guards
+the rest, with GitHub branch protection on `main` when the project has enabled it (recommended; roles record).
 
 ## 3. Your first session, step by step (30 minutes)
 
 Open `claude` in the product repository and work through this, in your own words:
 
-1. *"Read CLAUDE.md and the reference design chapters 1 and 13, then tell me in five lines
-   how you will work here."* — check the answer names the gates command, the registers and
-   the go-aheads.
+1. *"Read CLAUDE.md and the reference design chapters 0–2 and 13, then tell me in five
+   lines how you will work here."* — check the answer names the gates command, the
+   registers and the go-aheads.
 2. *"Run the gates and show me the output."* — `./gates.sh` (the Day-0 stub until the
    design phase fills it); green or not, you now know the state, measured.
 3. Take a ticket (GitHub issue, in the sprint milestone; it names the requirement or
@@ -130,31 +158,33 @@ Open `claude` in the product repository and work through this, in your own words
 4. *"Do it on a feature branch, run the gates, show me the diff."* — review the diff
    yourself; Claude's code is accepted through the gates **and** your reading.
 5. *"Run the change-reviewer agent."* — fix what it lists, then open the pull request to
-   the integration branch of the instance's branch model (`DD`, named in `CLAUDE.md`). The
-   pull request updates the document that describes the behaviour, in the same diff.
+   the integration branch named in `CLAUDE.md` (from the environments-and-promotion-path
+   `DD`). The pull request updates the document that describes the behaviour, in the same
+   diff.
 6. *"Close the session."* (skill `session-close`) — journal entry in `<pm-repo>/instances/<instance>/journal/`,
    one row in `metrics.csv`. Read the entry: a colleague with no memory must be able to
    resume from it.
 
-What good looks like after a week: every claim in your journal has a command next to it;
+What good looks like after a sprint: every claim in your journal has a command next to it;
 every pull request was reviewed by the agent and by you; no decision lives only in a chat.
 
-## 4. The rhythm of a week
+## 4. The rhythm of a sprint
 
-- **Sprint**: one week, a goal, 3–7 tickets with acceptance criteria, each linked to a
+- **Sprint**: a goal, 3–7 tickets with acceptance criteria, each linked to a
   requirement or a decision. The project lead keeps `<pm-repo>/instances/<instance>/planning/sprints/W<n>.md`
-  and the GitHub milestone.
-- **Meeting with the Project Advisor**: two hours a week, day fixed at each meeting for the next
-  one. The Project Advisor arrives with a brief measured from GitHub and the journal (merged pull
-  requests, gates, increment demonstrable or not, tickets without a requirement, journal
-  entries) — so link your tickets and write your journal: that is how your work becomes
-  visible. The minutes list, per participant, the tasks for the next sprint, each with the
-  timestamp where it was said.
+  and the GitHub milestone, and dates and sizes the sprints with the team.
+- **Meeting with the Project Advisor**: the method's rhythm is weekly — two hours, the day
+  fixed at each meeting for the next one; a part-time period (an October start, for
+  example) may hold only two meetings, as the instance's planning says. The Project Advisor
+  arrives with a brief measured from GitHub and the journal (merged pull requests, gates,
+  increment demonstrable or not, tickets without a requirement, journal entries) — so link
+  your tickets and write your journal: that is how your work becomes visible. The minutes
+  list, per participant, the tasks for the next sprint, each with the timestamp where it
+  was said.
 - **Iterative and incremental**: every sprint ends with something demonstrable, merged to
-  the integration branch of the instance's branch model and, when the gates are green and
-  the project lead says so, promoted to the rehearsal environment decided in the
-  environments `DD`. Branches that live a week without a merge are the first thing the
-  brief shows.
+  the integration branch and, when the gates are green and the project lead says so,
+  promoted to the rehearsal environment (the environments-and-promotion-path `DD`).
+  Branches that live a sprint without a merge are the first thing the brief shows.
 
 ## 5. If you are the project lead
 
@@ -165,32 +195,47 @@ In addition to the above, you:
   increments and gives the production and budget go-aheads; the Project Advisor advises;
 - **write in `<pm-repo>`** directly: `instances/<instance>/planning/sprints/`, your journal entries, new 🔴
   records in the registers — never `instances/<instance>/BRIEFING.md`;
+- **create the sandboxes** on GitHub, one per team member (`<project>-sandbox-<firstname>`,
+  private), or ask the Project Advisor to;
+- **run the design phase in W1 (the first sprint), in your own sandbox** (skill
+  `design-phase`, with Claude): the project's drivers → `DD` records (the twelve decisions
+  of `design-phase` §2, in order) → fill `gates.sh`, the CI and the `<…>` fields of
+  `CLAUDE.md` from its decisions; the first decision, repository layout, names the product
+  repositories, which then receive the kit; list them in `<pm-repo>/instances/<instance>/README.md`;
 - **install, commit and refresh the kit** in each product repository, with one command run
   from inside the product clone ([INSTALL.md §2](INSTALL.md#2-project-lead--install-the-kit-in-the-product-repository--once-per-product-repository));
   ask Claude to fill the `<…>` fields of `CLAUDE.md` (purpose, commands), and keep "Lessons
   learned here" alive: a rule learned from an incident is added the same day, dated;
-- **run the design phase in week 1** (skill `design-phase`, with Claude): the project's
-  drivers → `DD` records (the twelve decisions of `design-phase` §2, in order) → fill `gates.sh`, the CI and the `<…>` fields of `CLAUDE.md` from its decisions;
-  list the project's repositories in `<pm-repo>/instances/<instance>/README.md`;
-- run the **kick-off checklist** ([reference design ch. 15](../method/00-reference-design.md#15-starting-a-new-project)):
+- run the **start-of-project checklist** ([reference design ch. 15](../method/00-reference-design.md#15-starting-a-new-project)):
   kit installed in each product repository, gates green on an empty suite (the Day-0 stub,
   then the real gates), the rehearsal environment declared as code, sign-in, database with
-  its first migration, secrets in the vault, one end-to-end path through the real interface.
+  its first migration, secrets in the vault, one end-to-end path through the real user
+  interface (the walking skeleton).
 
-## 6. Day-0 checklist
+## 6. Checklists
 
-Copy into your first journal entry and tick with the command that proves each line.
+Copy into your journal entries and tick with the command that proves each line.
+
+### 6a. Day 0 — in your sandbox, before W1
 
 - [ ] Git, `python3` and Claude Code installed, Claude signed in with the invited account — `git --version`, `python3 --version`, `claude --version`
-- [ ] `gse-light`, `<pm-repo>` and `<product repository>` cloned side by side, in one parent folder — `ls ..`
-- [ ] Kit present and personal files out of git — `../gse-light/claude-kit/check.sh` (no MISSING line)
+- [ ] `gse-light`, `<pm-repo>` and your sandbox `<project>-sandbox-<firstname>` cloned side by side, in one parent folder — `ls ..`
+- [ ] Kit installed in the sandbox by the one command and committed — `git log --oneline -1 -- .claude`
+- [ ] Personal files out of git — `../gse-light/claude-kit/check.sh` (no MISSING line)
 - [ ] `.env` created from `.env.example`, not tracked — `git status --short | grep -c .env` → 0
-- [ ] Gates run once — `./gates.sh` output quoted (the Day-0 stub, or the real gates once the design phase is done)
-- [ ] Design phase done by the project lead (`DD` records in `<pm-repo>`, `gates.sh` filled) — or its date known
-- [ ] Reference design chapters 1 and 13 read; `CLAUDE.md` read
-- [ ] First ticket taken, first pull request opened to the integration branch, `change-reviewer` run
+- [ ] Gates run once — `./gates.sh` output quoted (the Day-0 stub)
+- [ ] Reference design chapters 0–2 and 13 read (the project lead adds 15); `CLAUDE.md` read
 - [ ] `/upskilling` run once; plan noted in your private record
-- [ ] First journal entry written and pushed (`session-close`)
+- [ ] First journal entry written and pushed to `<pm-repo>` (`session-close`), from the sandbox
+
+### 6b. First sprint — in the product repository
+
+- [ ] Design phase done by the project lead (`DD` records in `<pm-repo>`, product repositories named and listed in the instance's `README.md`) — or its date known
+- [ ] `<product-repo>` cloned next to the others, kit present — `../gse-light/claude-kit/check.sh` (no MISSING line)
+- [ ] `.env` created from `.env.example`, not tracked — `git status --short | grep -c .env` → 0
+- [ ] Gates run once — `./gates.sh` output quoted (the real gates once the design phase has filled them)
+- [ ] First ticket taken, first pull request opened to the integration branch, `change-reviewer` run
+- [ ] Journal entry written and pushed (`session-close`)
 
 ## 7. Where to ask
 

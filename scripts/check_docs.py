@@ -2,10 +2,12 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 """Documentation gates, for the method (gse-light) and for a project-management repository.
-Run from the repository to check; exit code 1 on any failure.
+Exit code 1 on any FAIL line; WARN lines never fail the run.
 
-  python3 scripts/check_docs.py                 # in gse-light: the method
-  python3 ../gse-light/scripts/check_docs.py    # in a project-management repository (holds instances/)
+  python3 scripts/check_docs.py                           # in gse-light: the method
+  python3 ../gse-light/scripts/check_docs.py              # in a project-management repository (holds instances/)
+  python3 ../gse-light/scripts/check_docs.py ../<pm-repo> # from a product repository: the root argument names
+                                                          # the repository to check (default: the git toplevel of the current folder)
 
 Checks:
   1. every relative Markdown link points to an existing file, and its #anchor to an existing heading
@@ -13,10 +15,14 @@ Checks:
   2. in gse-light: skills present both in pm-kit/skills and claude-kit/skills are identical;
   3. in a project-management repository:
      - every register record has a status badge and a dashboard row, and every dashboard row a record;
-     - in each instances/<name>/, the pending counts in BRIEFING.md §3 match its registers' dashboards;
+     - in each instances/<name>/, the pending counts in BRIEFING.md §3 match its registers' dashboards:
+       FAIL when the register holds fewer 🔴 than §3 says (a record closed without the cockpit),
+       WARN only when it holds more (new 🔴 opened by the team; the Project Advisor's next session
+       refreshes the cockpit) — a developer's commit never turns CI red for that;
      - .claude/skills and .claude/agents are identical to gse-light's pm-kit (else: refresh with pm-kit/install.sh);
      - leak guard: no file tracked in gse-light, and no commit message, matches a line of instances/<name>/private-terms.txt
-       (the terms stay in the private repository; gse-light is public).
+       (the terms stay in the private repository; gse-light is public). Limit: the guard knows only the
+       terms each instance lists — a built-in generic list of client names would itself name the clients.
 """
 from __future__ import annotations
 
@@ -29,12 +35,18 @@ METHOD = Path(__file__).resolve().parent.parent  # gse-light
 METHOD_URL = "https://github.com/nicolasguelfi/gse-light/blob/main/"
 
 
-def repo_root() -> Path:
+def repo_root(arg: str | None) -> Path:
+    """The repository to check: the root argument (a folder), else the git toplevel of the current folder."""
+    if arg:
+        root = Path(arg).expanduser().resolve()
+        if not root.is_dir():
+            sys.exit(f"check_docs: no such folder: {arg}")
+        return root
     r = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True)
     return Path(r.stdout.strip()).resolve() if r.returncode == 0 else Path.cwd().resolve()
 
 
-ROOT = repo_root()  # the repository being checked
+ROOT = repo_root(sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("-") else None)  # the repository being checked
 IS_PM = (ROOT / "instances").is_dir()
 REGISTERS = {  # relative to each instance folder instances/<name>/
     "PD": "governance/05-project-decisions.md",
@@ -45,7 +57,8 @@ LINK = re.compile(r"(?<!!)\[[^\]]*\]\(([^)\s]+)\)")
 HEADING = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
 FENCE = re.compile(r"^\s*(```|~~~)")
 
-errors: list[str] = []
+errors: list[str] = []    # printed as FAIL; exit code 1
+warnings: list[str] = []  # printed as WARN; never fail the run
 
 
 def strip_code(text: str) -> list[tuple[int, str]]:
@@ -150,8 +163,11 @@ def check_registers() -> None:
             m = re.search(rf"🔴 {prefix} (\d+)", briefing)
             if not m:
                 errors.append(f"{name}/BRIEFING.md: §3 has no pending count for {prefix}")
-            elif int(m.group(1)) != pending:
+            elif int(m.group(1)) > pending:
                 errors.append(f"{name}/BRIEFING.md: §3 says {m.group(1)} pending {prefix}, the register has {pending}")
+            elif int(m.group(1)) < pending:  # the team opened a 🔴 record; the cockpit follows at the Advisor's next session
+                warnings.append(f"{name}/BRIEFING.md: §3 says {m.group(1)} pending {prefix}, the register has {pending} "
+                                "(new 🔴 opened by the team; the Project Advisor's next session refreshes the cockpit)")
 
 
 def same_tree(src: Path, copy: Path, label: str, hint: str, only_common: bool) -> None:
@@ -214,14 +230,19 @@ def check_leaks() -> None:
 
 
 def main() -> int:
+    if len(sys.argv) > 1 and sys.argv[1] in ("-h", "--help"):
+        print(__doc__)
+        return 0
     check_links()
     if IS_PM:
         check_registers()
     check_copies()
     check_leaks()
+    for w in warnings:
+        print(f"WARN {w}")
     for e in errors:
         print(f"FAIL {e}")
-    print(f"check_docs ({ROOT.name}): {'FAILED' if errors else 'ok'} ({len(errors)} problem(s))")
+    print(f"check_docs ({ROOT.name}): {'FAILED' if errors else 'ok'} ({len(errors)} problem(s), {len(warnings)} warning(s))")
     return 1 if errors else 0
 
 

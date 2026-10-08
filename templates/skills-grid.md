@@ -1,3 +1,4 @@
+<!-- Template of the gse-light method (https://github.com/nicolasguelfi/gse-light), CC BY-NC 4.0. Documents made from this template carry no licence obligation: fill it in and keep the result as your own. -->
 # Skills grid — where do we start?
 
 Used at the kick-off round table (each person, two minutes) and by the kit skill

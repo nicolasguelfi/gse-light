@@ -20,6 +20,12 @@ Required Notice: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.co
 The exact mapping, file by file, is in [`REUSE.toml`](REUSE.toml) (the [REUSE](https://reuse.software)
 convention); code files also carry an `SPDX-License-Identifier` line.
 
+## Documents made from the templates
+
+A document you write from a file of `templates/` (a decision record, a journal entry, an
+agenda…) is your own: it carries no licence obligation from this repository. The notice at the
+top of each template says so.
+
 ## How to cite
 
 In any copy, adaptation, fork or publication that uses this work, keep the **Required

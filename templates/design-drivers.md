@@ -1,3 +1,4 @@
+<!-- Template of the gse-light method (https://github.com/nicolasguelfi/gse-light), CC BY-NC 4.0. Documents made from this template carry no licence obligation: fill it in and keep the result as your own. -->
 # Design drivers — <instance>
 
 - **Written:** YYYY-MM-DD by <project lead> with Claude (skill `design-phase`); amended <dates>

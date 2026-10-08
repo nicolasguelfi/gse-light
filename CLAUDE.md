@@ -18,17 +18,19 @@ project-management repository (`instances/<name>/`), cloned next to this one.
   on any of them found here, in files and in commit messages (leak guard). Run it from such
   a repository before every push of gse-light, and write commit messages without project names.
 - **The method names no technology for the product.** Rules are invariants; choices are the
-  instance's `DD` records, taken in its design phase from its drivers (kit skill
-  `design-phase`). Tool names live only in `method/40-tool-landscape-examples.md` (dated,
-  non-normative); a Claude session never proposes an example project's stack as a default.
-  Two exceptions, stated as such: end-to-end tests through the real user interface, run by
-  Claude, are a firm rule (the tool is the instance's choice), and GitHub is a prerequisite
-  of the method's own tooling.
+  instance's `DD` records — the twelve decisions of `claude-kit/skills/design-phase/SKILL.md`
+  §2, always named by those twelve names, in that order — taken in its design phase from
+  its drivers. Tool names live only in `method/40-tool-landscape-examples.md` (dated,
+  non-normative), apart from GitHub (prerequisite of the tooling) and Playwright, named as
+  the one example of the firm end-to-end rule (end-to-end tests go through the real user
+  interface, run by Claude; the tool is the instance's choice). A Claude session never
+  proposes an example project's stack as a default. The environment before production is
+  "the rehearsal environment".
 - **Plain words first, technical words second**; define each technical term at first use.
 - **Measure before asserting**: a claim about the state of a system comes with the command
   that measured it.
 - **Evaluate ≠ execute**: when asked to evaluate or propose, change nothing outside the
-  document being written. Push only on NG's go-ahead.
+  document being written. Push only on the go-ahead of Nicolas Guelfi (NG), the author.
 - **Kits stay in step**: skills present in both `claude-kit/skills/` and `pm-kit/skills/` are
   identical (`check_docs`). After a change, the project-management repositories refresh with
   `../gse-light/pm-kit/install.sh .`, the product repositories with `claude-kit/install.sh`.
@@ -42,13 +44,20 @@ project-management repository (`instances/<name>/`), cloned next to this one.
   `uvx --from 'reuse[charset-normalizer]' reuse lint` must stay compliant.
 - **Language**: documents in English; NG may write in French — answer him in French.
 - **Never "the repository" alone**: name it — `gse-light`, the project-management repository
-  `<pm-repo>`, the product repository `<product-repo>`.
+  `<pm-repo>`, the product repository `<product-repo>`, a sandbox repository
+  `<project>-sandbox-<firstname>`.
+- **Team-facing pages name roles, not people**: "the Project Advisor" (named in the
+  instance's roles record), never the author's name or initials; the author's name stays in
+  status lines, licence footers and the pm-kit README. Abbreviations are expanded at first
+  use ("a short multiple-choice question (QCM)").
 
 ## Checks
 
 `python3 scripts/check_docs.py` here (links, kit copies); from a project-management
 repository, `python3 ../gse-light/scripts/check_docs.py` (adds registers, `.claude/` copies
-and the leak guard). CI runs the first (`.github/workflows/docs.yml`).
+and the leak guard); from a product repository,
+`python3 ../gse-light/scripts/check_docs.py ../<pm-repo>` (the project-management
+repository as root argument). CI runs the first (`.github/workflows/docs.yml`).
 
 ---
 

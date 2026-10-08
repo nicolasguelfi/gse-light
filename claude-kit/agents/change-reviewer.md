@@ -19,8 +19,9 @@ and a concrete fix:
 2. **Data regime** (the instance's data-regime record, chapter 11): no new stored, logged or exported field holding
    personal data beyond what the regime allows.
 3. **Secrets**: no key, token, password or connection string in the diff.
-4. **State as constant** (principle 6): no hard-coded identifier of something that
-   changes at run time (course, session, user) outside fixtures marked as such.
+4. **State as constant** (principle 6): no hard-coded identifier of a business object
+   that changes at run time (for example a course, a session, a user) outside fixtures
+   marked as such.
 5. **Migrations** (chapter 7): schema changed only through a migration; expand-then-
    contract respected; no destructive step without a note on the go-ahead.
 6. **Documentation with the code** (principle 6): behaviour changed ⇒ the describing

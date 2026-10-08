@@ -1,12 +1,12 @@
-# TEST-DAY0 in one paste — v0.4 · 2026-10-08 · same steps as TEST-DAY0.md §0–§2 and §4
+# TEST-DAY0 in one paste — v0.5 · 2026-10-08 · same steps as TEST-DAY0.md §0–§2 and §4
 # Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light) · CC BY-NC 4.0 (LICENSE.md)
-# Needs: git, gh (signed in once: gh auth login), python3, a bash terminal (Git Bash on Windows).
-# Copy ONE block at a time into a bash or zsh terminal, in order. Run outside Dropbox.
+# Needs: git, python3, a bash terminal (Git Bash on Windows). About 15 minutes for the three blocks.
+# Copy ONE block at a time into a bash or zsh terminal, in order. Run outside any synced folder.
 # The repositories, three side by side per person: gse-light (cloned from GitHub); remote-pm.git and
-# remote-product.git (local: stand for the project-management repository and the product repository);
-# lead/… and dev/… (their clones).
+# remote-product.git (local: stand for the project-management repository and the product — or sandbox —
+# repository); lead/… and dev/… (their clones).
 # check.sh exits 1 when a line is MISSING: it is followed by ";" (not "&&") so the
-# block goes on — a "&&" there stopped the PM block before the commit (NG's run, 2026-10-07).
+# block goes on — a "&&" there stopped the project-lead block before the commit (found in a rehearsal, 2026-10-07).
 
 
 # 0. RESET — deletes ~/gse-test only (the throwaway folder of this test), then the settings
@@ -17,13 +17,13 @@ rm -rf "$TEST"
 
 # 1. PROJECT LEAD — instance folder in lead/pm; kit installed in lead/product with ONE command, committed, pushed
 # expected: two "cloned an empty repository" warnings; install.sh finds ../gse-light and lead/pm by itself
-# (else: install.sh "$INST" --pm pm); MISSING kit committed + WARN .env, exit 1; ./gates.sh says "no gates yet"
+# (else: install.sh "$INST" --pm pm); MISSING kit committed + WARN .env, exit 1; bash ./gates.sh says "no gates yet"
 mkdir -p "$TEST/lead" && \
 cd "$TEST" && \
 git init -q --bare remote-pm.git && \
 git init -q --bare remote-product.git && \
 cd lead && \
-gh repo clone nicolasguelfi/gse-light && \
+git clone -q https://github.com/nicolasguelfi/gse-light.git && \
 git clone -q ../remote-pm.git pm && \
 (cd pm && mkdir -p "instances/$INST" && echo "# $INST" > "instances/$INST/README.md" && git add . && git commit -q -m "Instance $INST" && git push -q origin HEAD) && \
 git clone -q ../remote-product.git product && \
@@ -32,7 +32,7 @@ git commit -q --allow-empty -m init && \
 git push -q origin HEAD && \
 ../gse-light/claude-kit/install.sh "$INST" && \
 { ../gse-light/claude-kit/check.sh; echo "exit $? (1 expected before the commit)"; } && \
-./gates.sh && \
+bash ./gates.sh && \
 git add CLAUDE.md .claude .gitattributes gates.sh .env.example .gitignore .github && \
 git commit -q -m "Install the Claude kit ($INST)" && \
 git push -q origin HEAD && \
@@ -41,10 +41,12 @@ echo "PROJECT LEAD done: kit committed and pushed to remote-product.git"
 
 # 2. DEV — clone gse-light, remote-pm.git and remote-product.git into dev/, .env, check
 # expected: only OK lines (settings, gates.sh, .gitattributes, kit version current), exit 0;
-# then git status shows nothing (.env ignored)
+# then git status shows nothing (.env ignored). Outside this rehearsal, "kit version" can WARN:
+# "the kit in gse-light is newer" (the project lead refreshes with install.sh) or "your clone of
+# gse-light is behind" (git pull in your gse-light).
 mkdir -p "$TEST/dev" && \
 cd "$TEST/dev" && \
-gh repo clone nicolasguelfi/gse-light && \
+git clone -q https://github.com/nicolasguelfi/gse-light.git && \
 git clone -q ../remote-pm.git pm && \
 git clone -q ../remote-product.git product && \
 cd product && \
@@ -54,6 +56,6 @@ echo "--- git status of dev/product (must be empty):" && \
 git status --short
 
 
-# 3. DEV — first session (interactive, not part of the paste): in dev/product run
-#    claude     then type /  and  /upskilling ; ask "what is in ../pm/instances/demo/?" (read-only access)
+# 3. DEV — first session (interactive, not part of the paste; 15 minutes of /upskilling, 30 minutes of work): in dev/product run
+#    claude     then type /  and  /upskilling ; ask "what is in ../pm/instances/demo/?" (read-only access; any git push is asked first)
 # 4. CLEAN UP afterwards:  rm -rf ~/gse-test   (and ~/.claude/upskilling/demo if /upskilling wrote one)

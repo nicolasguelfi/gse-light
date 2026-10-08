@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 # Documentation gates of a project-management repository: its registers and links, its copy of
 # the pm-kit, and the leak guard on gse-light (instances/<name>/private-terms.txt).
+# gse-light is checked out at the commit recorded in .claude/PM_KIT_VERSION (written by
+# pm-kit/install.sh), so a newer pm-kit on GitHub never turns this repository's CI red by itself:
+# the copies of the skills are compared with the version they were installed from. Full history
+# (fetch-depth 0): the short hash resolves, and the leak guard reads every commit message.
 name: docs
 
 on:
@@ -19,10 +23,26 @@ jobs:
       - uses: actions/checkout@v5
         with:
           path: pm
+      - name: Read the installed pm-kit version
+        id: kit
+        run: echo "ref=$(tr -d '[:space:]' < pm/.claude/PM_KIT_VERSION 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v5
         with:
           repository: nicolasguelfi/gse-light   # public; a private copy would need a token
           path: gse-light
+          fetch-depth: 0
+      - name: gse-light at the installed pm-kit version
+        env:
+          REF: ${{ steps.kit.outputs.ref }}
+        run: |
+          # actions/checkout takes a branch, a tag or a full 40-character SHA, not the short hash
+          # that install.sh records: resolve it here, after the full fetch
+          if [ -n "$REF" ] && git -C gse-light cat-file -e "$REF^{commit}" 2>/dev/null; then
+            git -C gse-light checkout -q --detach "$REF"
+            echo "gse-light at $REF (the version the pm-kit was installed from)"
+          else
+            echo "::warning::.claude/PM_KIT_VERSION missing or unknown in gse-light ('$REF'): checking against its main branch — refresh the kit with ../gse-light/pm-kit/install.sh"
+          fi
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"

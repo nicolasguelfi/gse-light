@@ -1,6 +1,6 @@
 ---
 name: design-phase
-description: Run the project's design phase with the project lead in W1, time-boxed to one or two sessions - collect the project's drivers (users, data, the client's existing estate, team skills, budget, hosting, security, how well Claude works in a language, verification needs) by multiple-choice questions into <pm-zone>/design/10-design-drivers.md, open the ordered design decisions (repository layout, hosting, environments, stack, data store, identity, infrastructure as code, CI, test tools, secrets, dependency updates, monitoring) as DD records with options derived from the drivers, then, once decided, fill the kit's placeholders in each product repository. Use in W1 after the examples are gathered, or whenever a technology choice appears before the design decisions exist.
+description: Run the project's design phase with the project lead in W1, time-boxed to one or two sessions - collect the project's drivers (users, data, the client's existing estate, team skills, budget, hosting, security, how well Claude works in a language, verification needs) by multiple-choice questions into <pm-zone>/design/10-design-drivers.md, open the twelve design decisions in order (repository layout, hosting, environments and promotion path, stack and language, data store, identity, infrastructure as code, continuous integration, test tools, secrets, dependency updates, monitoring) as DD records with options derived from the drivers, then, once decided, fill the kit's placeholders in each product repository. Use in W1 after the examples are gathered, or whenever a technology choice appears before the design decisions exist.
 ---
 
 # design-phase — choose the technology from the project's drivers, not from a default
@@ -16,6 +16,12 @@ that prints "no gates yet: design phase in progress").
 area; the Project Advisor advises on drivers and options and **decides nothing**; the person
 who holds each right decides (`<pm-zone>/governance/10-roles-and-go-aheads.md`).
 **When**: W1, once the examples and data exports are gathered.
+**Where**: in the project lead's personal **sandbox repository** (`<project>-sandbox-<first name>`,
+private, throwaway, with the kit installed) — or in the first product repository if it
+already exists. The zone written to is always `<pm-zone>` = `../<pm-repo>/instances/<instance>/`;
+the sandbox holds nothing of the project. Decision 1 (repository layout) names the real
+product repositories, which then receive the kit (`../gse-light/claude-kit/install.sh <instance>`
+run inside each clone).
 **Time box**: one or two sessions. If a decision does not close in the box, it stays 🔴
 with its options written, and the project moves on with what is decided.
 
@@ -71,8 +77,8 @@ order — a later decision depends on the earlier ones:
 6. **Identity** — who signs in and how (the client's identity provider, or another).
 7. **Infrastructure as code** — how environments are declared and recreated.
 8. **Continuous integration** — where the gates run, on which events.
-9. **Test tools, including the end-to-end tool** — unit, integration, and the tool that
-   drives the real user interface (the firm rule of §1, last row).
+9. **Test tools** — unit, integration, and the end-to-end tool that drives the real user
+   interface (the firm rule of §1, last row; for a web interface, Playwright is one example).
 10. **Secrets** — where they live, how CI and engineers reach them.
 11. **Dependency updates** — how and how often.
 12. **Monitoring** — probe, alerts, logs, who is called.
@@ -92,18 +98,24 @@ In **each** product repository listed in the repository-layout record:
 
 - `gates.sh`: the real gates (install, lint, tests, coverage threshold, the end-to-end
   suite) — the stub is replaced, never kept next to the real one;
-- the kit's CI workflow (`.github/workflows/gates.yml`): services the tests need, the
-  branches and events that run the gates, the branches that deploy;
+- the kit's CI workflow (`.github/workflows/gates.yml`, which runs `bash ./gates.sh` and
+  nothing else): services the tests need, the branches and events that run the gates
+  (continuous integration record), the branches that deploy (environments record);
 - `CLAUDE.md`: the "Commands" table, the environments and the promotion path from the
-  environments record, the data regime in force;
-- `.claude/settings.json`: deny rules for every branch that deploys (from the environments
-  record); `main` stays denied to Claude pushes.
+  environments and promotion path record, the data regime in force;
+- `.claude/settings.json`: nothing to add for safety. The kit's rules — Claude asks before
+  any `git push`, the literal command `git push origin main` is denied, no edit under
+  `../gse-light/` nor of the cockpit — are **conveniences, not a security boundary**. The
+  boundary is **branch protection on GitHub** (recommended): the environments and promotion
+  path record says whether `main` and the other branches that deploy are protected, and the
+  roles record who enables it.
 
 Then in the project-management repository: list the product repositories in
-`<pm-zone>/README.md`; update `<pm-zone>/governance/30-skills-and-responsibilities.md`
-with the stack decided (the skill `upskilling` reads it); run
-`python3 ../gse-light/scripts/check_docs.py`. Each change is measured (the gates run once,
-output quoted) before it is called done.
+`<pm-zone>/README.md` (sandboxes are not product repositories: they are not listed);
+update `<pm-zone>/governance/30-skills-and-responsibilities.md` with the stack decided
+(the skill `upskilling` reads it); run `python3 ../gse-light/scripts/check_docs.py ../<pm-repo>`
+from the product repository (the argument names the repository to check). Each change is
+measured (the gates run once, output quoted) before it is called done.
 
 ## 4. Hand-over (Ask Claude)
 

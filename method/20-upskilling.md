@@ -1,6 +1,6 @@
 # 20 — Upskilling: starting from the team's real levels
 
-Status: draft · v0.1 · 2026-10-07 · author: Nicolas Guelfi, with Claude (review board r3)
+Status: draft · v0.2 · 2026-10-08 · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — A team's levels in generative AI, coding agents and development are
 > unknown at the start and rarely even. The method does not assume them: it measures
@@ -23,7 +23,7 @@ Advisor notes the aggregated picture, never individual scores in public.
 |---|---|---|---|
 | Asking an agent for a task, reading its proposal, saying no | 2 | 2 | 1 |
 | Reviewing AI-written code and tests before merging | 2 | 3 | — |
-| Using the kit (`decision-record`, `session-close`, `verify-claim`, `change-reviewer`) | 2 | 3 | — |
+| Using the kit (`decision-record`, `design-phase`, `session-close`, `upskilling`, `verify-claim`, agent `change-reviewer`) | 2 | 3 | — |
 | Git, pull requests, CI gates | 2 | 3 | — |
 | Writing tests with Claude (unit, integration, end-to-end) | 2 | 2 | — |
 | The project's technical skills — the stack decided in the design phase (instance list) | per responsibility | per responsibility | — |
@@ -59,8 +59,10 @@ before the base is in place.
 ## 5. Privacy
 
 Individual answers and plans live in the person's home folder, outside every repository,
-one sub-folder per project (`~/.claude/upskilling/<instance>/record.md`; NG, 2026-10-07) —
-where Claude Code keeps each user's own data. The shared file holds only
+one sub-folder per project (`~/.claude/upskilling/<instance>/record.md`; decided
+2026-10-07) — where Claude Code keeps each user's own data. The skill is run from the
+person's sandbox or product repository, never from the project-management repository.
+The shared file holds only
 counts per dimension and level, with no names, and the alignment tasks decided.
 
 ---

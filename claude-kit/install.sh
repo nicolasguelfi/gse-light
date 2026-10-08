@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 # Install or refresh the Claude kit in a product repository of an instance.
-# Usage, from INSIDE the product repository (any folder of it):
+# Usage, run from the root of the product repository:
 #   ../gse-light/claude-kit/install.sh <instance> [--pm <folder>]
 #   e.g.  ../gse-light/claude-kit/install.sh shop
 # Three repositories side by side in the same parent folder: the product repository (where you
@@ -16,7 +16,7 @@
 # Works with bash 3.2 (macOS) and Git Bash.
 set -euo pipefail
 
-usage="usage: ../gse-light/claude-kit/install.sh <instance> [--pm <folder>]   (run from inside the product repository)"
+usage="usage: ../gse-light/claude-kit/install.sh <instance> [--pm <folder>]   (run from the root of the product repository)"
 instance=""; pmopt=""
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -30,9 +30,9 @@ done
 [ -n "$instance" ] || { echo "$usage" >&2; exit 1; }
 case "$instance" in */*|.*) echo "instance must be a folder name (no slash, no leading dot): $instance" >&2; exit 1 ;; esac
 
-# the product repository: where the command is run
+# the product repository: the git repository the command is run in
 target="$(git rev-parse --show-toplevel 2>/dev/null || true)"
-[ -n "$target" ] || { echo "not inside a git repository: run this from inside the product repository" >&2; exit 1; }
+[ -n "$target" ] || { echo "not inside a git repository: run this from the root of the product repository" >&2; exit 1; }
 parent="$(cd "$target/.." && pwd)"
 product="$(basename "$target")"
 
@@ -81,8 +81,8 @@ for agent in "$kit"/agents/*.md; do
   echo "agent   $(basename "$agent" .md)"
 done
 
-# fill <instance> and <pm-repo> in a template (folder names: no slash, safe for sed)
-fill() { sed -e "s/<instance>/$instance/g" -e "s/<pm-repo>/$pmname/g" "$1"; }
+# fill <instance>, <pm-repo> and <repository name> in a template (folder names: no slash, safe for sed)
+fill() { sed -e "s/<instance>/$instance/g" -e "s/<pm-repo>/$pmname/g" -e "s/<repository name>/$product/g" "$1"; }
 
 if [ ! -f CLAUDE.md ]; then
   fill "$kit/templates/CLAUDE.product-repo.md" > CLAUDE.md
@@ -90,7 +90,7 @@ if [ ! -f CLAUDE.md ]; then
 fi
 if [ ! -f .claude/settings.json ]; then
   fill "$kit/templates/settings.json" > .claude/settings.json
-  echo "created .claude/settings.json (reads ../gse-light and ../$pmname; never writes gse-light nor the cockpit)"
+  echo "created .claude/settings.json (reads ../gse-light and ../$pmname; Edit denied under ../gse-light/** and on the cockpit; asks before any git push)"
 fi
 if [ ! -f .gitattributes ]; then
   cp "$kit/templates/gitattributes" .gitattributes
@@ -101,24 +101,27 @@ elif ! grep -qF '*.sh text eol=lf' .gitattributes; then
 fi
 if [ ! -f gates.sh ]; then
   cp "$kit/templates/gates.sh" gates.sh
-  echo "created gates.sh — a stub until the design phase decides the test tools and the CI (then fill it from those DD records)"
+  echo "created gates.sh — a stub until the design phase decides the test tools and the continuous integration (then fill it from those DD records)"
 fi
 chmod +x gates.sh 2>/dev/null || true
+# the executable bit must also be in git, or a fresh clone (and CI) gets a non-executable gates.sh
+git update-index --add --chmod=+x gates.sh 2>/dev/null || true
 if [ ! -f .env.example ]; then
-  cp "$kit/templates/env.example" .env.example
+  fill "$kit/templates/env.example" > .env.example
   echo "created .env.example — copy it to .env and fill it (never commit .env)"
 fi
 if [ ! -f .github/workflows/gates.yml ]; then
   mkdir -p .github/workflows
   cp "$kit/templates/ci-gates.yml" .github/workflows/gates.yml
-  echo "created .github/workflows/gates.yml — runs ./gates.sh; services and branches come after the design phase"
+  echo "created .github/workflows/gates.yml — runs bash ./gates.sh; services and branches come after the design phase"
 fi
 
 # personal files stay out of git: Claude Code excludes .claude/settings.local.json itself,
-# not CLAUDE.local.md (claude-kit/INSTALL.md, "Shared and personal")
+# not CLAUDE.local.md (claude-kit/INSTALL.md, "Shared and personal"); .env.* covers .env.local
+# and the like, .env.example stays tracked
 touch .gitignore
-for p in CLAUDE.local.md .env; do
-  grep -qxF "$p" .gitignore || { echo "$p" >> .gitignore; echo "added $p to .gitignore"; }
+for p in CLAUDE.local.md .env '.env.*' '!.env.example'; do
+  grep -qxF -- "$p" .gitignore || { echo "$p" >> .gitignore; echo "added $p to .gitignore"; }
 done
 
 # licence notice travels with the kit (LICENSE.md of the gse-light repository)
@@ -132,12 +135,16 @@ new="$(git -C "$gse" log -1 --format=%h -- claude-kit 2>/dev/null || true)"
 old=""; [ -f .claude/KIT_VERSION ] && old="$(tr -d '[:space:]' < .claude/KIT_VERSION)"
 if [ -n "$new" ]; then
   if [ -n "$old" ] && [ "$old" != "$new" ]; then
-    # a refresh: the templates copied once (CLAUDE.md, settings) are yours — tell when the kit's own changed
-    for t in CLAUDE.product-repo.md settings.json; do
-      if [ -n "$(git -C "$gse" diff --name-only "$old..HEAD" -- "claude-kit/templates/$t" 2>/dev/null)" ]; then
-        echo "template $t changed since your install ($old): compare with ../gse-light/claude-kit/templates/$t"
+    if ! git -C "$gse" cat-file -e "$old^{commit}" 2>/dev/null; then
+      echo "warning: KIT_VERSION $old is unknown in ../gse-light (clone behind, or history rewritten): git pull in ../gse-light, then rerun"
+    else
+      # a refresh: the templates copied once (CLAUDE.md, settings, gates, CI…) are yours — tell when the kit's own changed
+      changed="$(git -C "$gse" diff --name-only "$old..$new" -- claude-kit/templates/ 2>/dev/null | sed 's#^claude-kit/templates/##' | tr '\n' ' ')"
+      if [ -n "$changed" ]; then
+        echo "templates changed since your install ($old): $changed"
+        echo "  compare and carry over by hand:  git -C ../gse-light diff $old..$new -- claude-kit/templates/"
       fi
-    done
+    fi
   fi
   echo "$new" > .claude/KIT_VERSION
   echo "kit version $new recorded in .claude/KIT_VERSION"

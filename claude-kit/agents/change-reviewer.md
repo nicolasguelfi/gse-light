@@ -26,12 +26,21 @@ and a concrete fix:
 6. **Documentation with the code** (principle 6): behaviour changed ⇒ the describing
    document changed in the same diff.
 7. **Decisions**: a new choice made in the code without a register record ⇒ ask for a
-   record (skill `decision-record`).
+   record (skill `decision-record`). **No technology chosen without a `DD` record**: a
+   new language, framework, library of consequence, service or vendor in the diff must
+   match a decided record of `<pm-zone>/design/05-design-decisions.md`; every `DD`
+   record the change touches or cites names its drivers
+   (`<pm-zone>/design/10-design-drivers.md`) — a record without drivers is a finding.
 8. **Tests** (principles 2 and 4): new or changed behaviour comes with its tests (unit,
-   integration, end-to-end for a user path); each test names the requirement it proves;
-   coverage did not drop (quote the coverage report); a bug fix comes with a test that
-   would have caught it.
+   integration, and for a user path an **end-to-end test through the real user interface,
+   drivable by Claude, that simulates the use case** — firm rule of the method; the tool is
+   the one the instance's test-tools `DD` record names); each test names the requirement
+   it proves; coverage did not drop (quote the coverage report); a bug fix comes with a
+   test that would have caught it.
 9. **Examples** (principle 1): a new requirement links to the example that motivates it.
+10. **Environments**: a change that deploys or promotes names its target environment as
+    the environments `DD` record names it (for example the rehearsal environment), with the
+    go-ahead it needs.
 
 End with a verdict: **ready**, **ready after fixes** (list), or **not ready** (list).
 Never claim a check passed without its output.

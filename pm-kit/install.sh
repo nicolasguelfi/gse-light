@@ -34,5 +34,6 @@ done
 
 cp "$kit/../claude-kit/templates/KIT_LICENSE.md" "$target/.claude/KIT_LICENSE.md"
 [ -z "$(git -C "$kit" status --porcelain -- . 2>/dev/null)" ] || echo "warning: pm-kit has uncommitted changes; PM_KIT_VERSION records the last commit only"
-git -C "$kit" rev-parse --short HEAD > "$target/.claude/PM_KIT_VERSION" 2>/dev/null || true
-echo "pm-kit version recorded in .claude/PM_KIT_VERSION; check: python3 ../gse-light/scripts/check_docs.py"
+# kit version = last commit of gse-light that touched pm-kit/ (not HEAD: other changes do not age the kit)
+git -C "$kit/.." log -1 --format=%h -- pm-kit > "$target/.claude/PM_KIT_VERSION" 2>/dev/null || true
+echo "pm-kit version $(cat "$target/.claude/PM_KIT_VERSION" 2>/dev/null) recorded in .claude/PM_KIT_VERSION; check: python3 ../gse-light/scripts/check_docs.py"

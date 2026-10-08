@@ -1,6 +1,6 @@
 # 15 — The Project Advisor: the method and where the Advisor steps in
 
-Status: draft · v0.3 · 2026-10-07 · generic · author: Nicolas Guelfi, with Claude
+Status: draft · v0.4 · 2026-10-08 · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a project is run in a few weekly sprints with generative AI under
 > this method, who does each action (a person, a person asking Claude, or Claude and the CI
@@ -29,7 +29,7 @@ theirs:
 | Who | Does | Decides |
 |---|---|---|
 | **Product owner** (client side) | says what the product must achieve; gives real examples and data of the need; accepts each delivered piece | the vision; acceptance of increments; production; cloud and client budget |
-| **Project lead** (lead engineer) | runs the weeks: plans each week, reviews code, keeps the sprint record | sprints, priorities, tickets, technical choices, promotion to staging |
+| **Project lead** (lead engineer) | runs the weeks: plans each week, reviews code, keeps the sprint record; leads the design phase | sprints, priorities, tickets, the design decisions (`DD`), promotion to the rehearsal environment |
 | **Engineers** | build the product with Claude Code as working partner; collect the examples | implementation within their tickets |
 | **Data protection contact** (client side) | guards personal data | any new flow of personal data |
 | **Project Advisor** (NG) | conceptual feedback and advice; owns the AI method and the kit; may propose tickets and priorities — the project lead decides | the method and the kit; the Claude Code licences |
@@ -40,9 +40,10 @@ Full table, per instance: `instances/<instance>/governance/10-roles-and-go-ahead
 **Go-ahead.** Before anyone — a person or Claude — does something that changes a shared
 system (deploys a version, changes a shared database, creates a cloud resource, spends
 money, opens a new flow of personal data), the person responsible for it writes "yes, do
-it" for that one action. The next action of the same kind needs a new "yes". Staging:
-project lead. Production, cloud, budget: product owner. Personal data: data protection
-contact.
+it" for that one action. The next action of the same kind needs a new "yes". Promotion
+to the rehearsal environment (the copy of production where a version is checked first;
+its name and shape are an instance `DD`): project lead. Production, cloud, budget:
+product owner. Personal data: data protection contact.
 
 **Who provides what**: the Advisor provides the Claude Code licences; the client provides
 the API keys (access codes to paid AI models) for complementary models — the product owner
@@ -65,8 +66,8 @@ are those of the reference design ch. 1 and of the engineers' kit.
 | # | Principle | In practice | Who |
 |---|---|---|---|
 | 1 | **Examples first** | every need is illustrated with real instances and data before it is specified | Person (product owner gives, team collects); Ask Claude (analyse them into requirements) |
-| 2 | **Tests at every step** | unit tests (one function), integration tests (pieces together, real database), end-to-end tests (a user path in a real browser, driven by Playwright); Claude writes them with the code | Ask Claude; Person reads them |
-| 3 | **Green gates to move forward** | a change moves along the pipeline (branch → dev → staging → production) only when every gate is green, then on its go-ahead | Automatic (CI); Person (go-ahead) |
+| 2 | **Tests at every step** | unit tests (one function), integration tests (pieces together, real database), end-to-end tests: **they drive the real user interface and simulate the use cases, run by Claude, for verification and validation** (firm rule; the tool is the instance's test `DD` — for a web interface, Playwright is one such tool); Claude writes them with the code | Ask Claude; Person reads them |
+| 3 | **Green gates to move forward** | a change moves along the pipeline (working branch → integration → rehearsal → production; names from the instance's `DD`) only when every gate is green, then on its go-ahead | Automatic (CI); Person (go-ahead) |
 | 4 | **Know what is verified** | coverage measured on each change (which lines and branches the tests run) and a map of which features and qualities have passing tests and which do not, read every week | Automatic (CI, built with the walking skeleton); Person (reads the map) |
 | 5 | **Measure before asserting** | no statement about a system without the command that measured it | Automatic (Claude shows the command); Person (asks for it) |
 | 6 | **One source of truth** | each fact has one source; nothing that changes at run time is hard-coded; documentation changes with the code | Automatic (gates check it) |
@@ -88,8 +89,9 @@ to Wn follow, one sprint each; the project lead dates them.
 
 | When | Project Advisor (Person) | Team (Person) | Claude |
 |---|---|---|---|
-| **W-1 · framing** | names, vision draft, licences, reference design; recommends where the repositories live | — | Ask Claude: prepares the kick-off supports |
-| **W-1 · kick-off** | presents the method and the kit; leads the round table "where do we start" on the skills grid ([upskilling](20-upskilling.md)) | proposes how to adopt the reference design; asks the client for the examples | Ask Claude: kick-off slides (`slides`) |
+| **W-1 · framing** | names, vision draft, licences; presents the method and its principles — not a reference design to adopt: the team chooses its technology in W1; recommends where the project-management repository lives | — | Ask Claude: prepares the kick-off supports |
+| **W-1 · kick-off** | presents the method, its principles and the kit; leads the round table "where do we start" on the skills grid ([upskilling](20-upskilling.md)) | plans the design phase of W1; asks the client for the examples | Ask Claude: kick-off slides (`slides`) |
+| **W1 · design phase** | advises on the drivers and the options; decides nothing | the team with the project lead collects the drivers (facts and constraints) and decides the `DD` records: architecture, hosting, repository layout, environments, data, tests, delivery, identity, residency | Ask Claude: `design-phase` skill (opens the records with their options; never proposes a stack as default) |
 | **Each week · day before the meeting** | reads a one-page brief | keeps sprint file, linked tickets, journal | Ask Claude (Advisor's session): measures and writes the brief |
 | **Each week · meeting (2 h)** | conceptual feedback on conduct and deliverables; may propose tickets and priorities (the project lead decides) | shows what was delivered; the project lead presents the next sprint | — |
 | **Each week · same evening** | validates and sends the minutes | takes its tasks into the next sprint | Ask Claude: transcript, draft minutes, checked against the recording |

@@ -12,8 +12,8 @@ Method principle 5: **measure before asserting** (reference design, chapter 1).
    request to a health or version endpoint, CI status, log search. Never a command that
    changes state to "check".
 3. **Run it** and quote the relevant output with the date and the environment.
-4. **State the claim only as far as the output supports it.** "Staging serves 1.4.2
-   (`curl https://…/version`, 2026-10-06 14:02)" — not "the release is out".
+4. **State the claim only as far as the output supports it.** "The rehearsal environment
+   serves 1.4.2 (`curl https://…/version`, 2026-10-06 14:02)" — not "the release is out".
 5. **Causes**: a cause is stated as verified only if the measurement was repeated after
    the fix and the symptom is gone. Otherwise write "hypothesis".
 6. **Deviation ≠ defect**: before calling a measured deviation a defect, read the

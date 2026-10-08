@@ -13,12 +13,16 @@ Project Advisor must do for them, and check later that Day 0 happened.
 
 1. **Ask NG once** (QCM, short): name, role (project lead / engineer), start date,
    e-mail for the Claude invitation if he has not sent it. Repositories and the gates
-   command come from the registers (repositories, stack) — if still 🔴, the note keeps the
-   `<…>` fields and says so.
+   command come from the `DD` records of the design phase (repository layout, stack,
+   test tools) — if still 🔴, the note keeps the `<…>` fields and says that the design
+   phase (kit skill `design-phase`, run by the project lead in W1) will fill them.
 2. **Write `instances/<instance>/governance/onboarding/<first-name>-<YYYY-MM-DD>.md`** (private repository;
    no personal data beyond name, role, e-mail domain):
    - a five-line welcome in the Project Advisor's voice: role, first meeting date, what the first
-     week is about;
+     week is about — examples and data, then the **design phase**: the stack, hosting and
+     tools are chosen from the project's drivers in W1, not before (a project lead is told
+     he runs it with the `design-phase` skill; an engineer that the kit's gates stay a
+     stub until it is done);
    - "What you receive and from whom" filled for them (licence invitation sent on
      `<date>`, keys via the project lead, repository URLs);
    - the link to `../gse-light/claude-kit/ONBOARDING.md` and the §5 extras if project lead;

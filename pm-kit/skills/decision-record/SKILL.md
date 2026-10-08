@@ -24,20 +24,36 @@ engineer to open a pull request there). Paths below are relative to it; the meth
    question is already decided, say so and cite the record — do not reopen it unless
    asked.
 2. **Pick the next number** in the chosen register.
-3. **Write the record** from `../gse-light/templates/decision-record.md`: problem in plain words,
+3. **Drivers** (design records, and any record where a technology or a vendor is an
+   option): cite the lines of `instances/<instance>/design/10-design-drivers.md` the
+   decision rests on (section and fact), and name the driver next to each option. No
+   driver page yet, or no line for this choice: say so and run the `design-phase` skill
+   (or add the missing driver row) before writing the options. **Never propose an
+   illustration project's stack (Sumvadis, StreamTeX) as a default**: the method cites
+   them to show how a choice played out, not to set this project's answer.
+4. **Write the record** from `../gse-light/templates/decision-record.md`: problem in plain words,
    what to consult, every reasonable option with advantages and drawbacks, one
    recommendation with its reason, status badge.
-4. **Update the §0 dashboard** of the register: a row under 🔴 Pending (with the
+5. **Update the §0 dashboard** of the register: a row under 🔴 Pending (with the
    "Who decides" column, from `instances/<instance>/governance/10-roles-and-go-aheads.md`) or 🟢 Decided,
    with an anchor link to the record.
-5. **Mark a decision 🟢 only on an explicit decision** by the person who holds that
+6. **Mark a decision 🟢 only on an explicit decision** by the person who holds that
    right (`instances/<instance>/governance/10-roles-and-go-aheads.md`). Write who and when in the outcome.
    The Project Advisor's advice is not a decision; a provisional decision he takes before the
    holder is named is 🟡.
-6. If the decision awaits the Project Advisor (his method, his kit, his approval, advice the team
+7. If the decision awaits the Project Advisor (his method, his kit, his approval, advice the team
    asked for), add or update a task in `instances/<instance>/BRIEFING.md` §1; if it awaits the project lead,
-   the product owner or the data protection contact, §1b.
-7. Run `python3 ../gse-light/scripts/check_docs.py` in the project-management repository.
+   the product owner or the data protection contact, §1b — **only from a session in the
+   project-management repository**: from a product repository, `BRIEFING.md` is denied to
+   Claude; report what §1 or §1b should say in the journal entry instead.
+8. Run `python3 ../gse-light/scripts/check_docs.py` in the project-management repository.
+   Then, when the author is a developer or the project lead and the record is **new and
+   🔴**: `git add` the register, `git commit` and `git push` in the project-management
+   repository (developers have write access there for their own journal entries and new
+   🔴 records). A decided (🟢) record, an amendment of someone else's record and
+   `BRIEFING.md` are never committed from a product repository: they change through a
+   session in the project-management repository, protected by the kit's deny rules and by
+   review. The Project Advisor's sessions push only on his go-ahead.
 
 Never write "open questions" inside another document: link to the record instead.
 

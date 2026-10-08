@@ -26,10 +26,11 @@ Advisor notes the aggregated picture, never individual scores in public.
 | Using the kit (`decision-record`, `session-close`, `verify-claim`, `change-reviewer`) | 2 | 3 | — |
 | Git, pull requests, CI gates | 2 | 3 | — |
 | Writing tests with Claude (unit, integration, end-to-end) | 2 | 2 | — |
-| The project's technical skills (instance list) | per responsibility | per responsibility | — |
+| The project's technical skills — the stack decided in the design phase (instance list) | per responsibility | per responsibility | — |
 
-Levels are the grid's scale (0–3). The instance lists its technical skills and each
-person's responsibilities in `instances/<instance>/governance/30-skills-and-responsibilities.md`, in the project's
+Levels are the grid's scale (0–3). The instance lists its technical skills (from the
+stack its `DD` records decided in the design phase) and each person's responsibilities
+in `instances/<instance>/governance/30-skills-and-responsibilities.md`, in the project's
 project-management repository.
 
 ## 3. The method, introduced in two steps
@@ -37,7 +38,7 @@ project-management repository.
 | When | What applies | Who |
 |---|---|---|
 | **First week** — the base | measure before asserting; evaluate ≠ execute (go-aheads); a journal entry per session; decisions in the registers; gates run before every merge | Automatic (Claude by the kit's rules) + Person |
-| **Second week** — with the walking skeleton | tests at every step with Claude, coverage, the map of what is verified, end-to-end tests in a browser | Ask Claude + Automatic (CI) |
+| **Second week** — with the walking skeleton | tests at every step with Claude, coverage, the map of what is verified, end-to-end tests through the real user interface (tool decided in the design phase) | Ask Claude + Automatic (CI) |
 
 The `upskilling` skill follows the same order: it does not train someone on coverage maps
 before the base is in place.

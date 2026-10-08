@@ -1,0 +1,4 @@
+# Line endings: text files normalised in git; shell scripts always LF so gates.sh and the
+# kit's scripts run on macOS, Linux and Git Bash alike (a CRLF script fails on "bash\r").
+* text=auto
+*.sh text eol=lf

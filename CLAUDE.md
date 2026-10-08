@@ -9,12 +9,21 @@ project-management repository (`instances/<name>/`), cloned next to this one.
 
 ## Standing rules
 
-- **Nothing about a client or a project here.** No client or project name, person, data,
-  budget, infrastructure detail or register number of an instance; examples are fictitious
-  or generic. Each project-management repository lists its private terms in
-  `instances/<name>/private-terms.txt`, and its `check_docs` run fails on any of them found
-  here, in files and in commit messages (leak guard). Run it from such a repository before
-  every push of gse-light, and write commit messages without project names.
+- **Nothing about a client or a client's project here.** No client or project name, person,
+  data, budget, infrastructure detail or register number of an instance; examples are
+  fictitious or generic. The author's own projects, Sumvadis (https://sumvadis.ai/) and
+  StreamTeX (https://streamtex.org/), may be cited as **illustrations** that a rule can be
+  applied — never as defaults or starting points. Each project-management repository lists
+  its private terms in `instances/<name>/private-terms.txt`, and its `check_docs` run fails
+  on any of them found here, in files and in commit messages (leak guard). Run it from such
+  a repository before every push of gse-light, and write commit messages without project names.
+- **The method names no technology for the product.** Rules are invariants; choices are the
+  instance's `DD` records, taken in its design phase from its drivers (kit skill
+  `design-phase`). Tool names live only in `method/40-tool-landscape-examples.md` (dated,
+  non-normative); a Claude session never proposes an example project's stack as a default.
+  Two exceptions, stated as such: end-to-end tests through the real user interface, run by
+  Claude, are a firm rule (the tool is the instance's choice), and GitHub is a prerequisite
+  of the method's own tooling.
 - **Plain words first, technical words second**; define each technical term at first use.
 - **Measure before asserting**: a claim about the state of a system comes with the command
   that measured it.

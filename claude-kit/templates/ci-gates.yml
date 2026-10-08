@@ -1,14 +1,16 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
-# Template for .github/workflows/gates.yml in a product repository.
-# Rule (reference design ch. 8): CI runs exactly the local gates command, nothing else.
-# Replace <…> once the stack is chosen (the instance's stack decision).
+# Template for .github/workflows/gates.yml in a product repository (Day-0 CI).
+# Rule (reference design ch. 8): CI runs exactly the local gates command (./gates.sh), nothing else.
+# Day 0: ./gates.sh is a stub that prints "no gates yet" and exits 0, so this workflow is green
+# on an empty repository. Services and extra branches: fill after the design phase from the DD
+# records (stack, repository layout, environments) — in the same commit as gates.sh.
 name: gates
 
 on:
   pull_request:
   push:
-    branches: [dev, staging, main]
+    branches: [main]   # extra branches: fill after the design phase from the DD records
 
 permissions:
   contents: read
@@ -16,18 +18,9 @@ permissions:
 jobs:
   gates:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_PASSWORD: postgres
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
-    env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+    # services (database, queue…): fill after the design phase from the DD records
     steps:
       - uses: actions/checkout@v5
-      # <toolchain setup, e.g. astral-sh/setup-uv for Python>
+      # toolchain setup (language runtime, package manager): fill after the design phase from the DD records
       - name: All gates (identical to the local command)
-        run: <make gates>
+        run: ./gates.sh

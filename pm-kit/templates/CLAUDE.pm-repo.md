@@ -9,7 +9,12 @@ reference design, templates, scripts, the kits — lives in the **public** repos
 
 **Active instance**: `INSTANCE` in `.env` (empty = the only folder in `instances/`). In skills,
 agents and documents, `instances/<instance>/` means the active instance's folder. At the start
-of a session, read the active instance's `README.md` for its project, phase and people.
+of a session, read the active instance's `README.md` for its project, phase, people **and the
+list of its repositories**. **This repository is the project's overall view**: a product may
+span several repositories (decided in the design phase, repository-layout `DD`); the product
+kit is installed in each, and each one's sessions write their decisions and journal here.
+For cross-repository work, Claude Code is opened here with the product repositories added
+(`claude --add-dir ../<repo>`, or `permissions.additionalDirectories` in `.claude/settings.json`).
 **Method changes go to `../gse-light`, project facts stay here**: never write a client's name,
 data or project detail in `gse-light` — `instances/<instance>/private-terms.txt` lists the
 terms the leak guard refuses there.
@@ -17,9 +22,14 @@ terms the leak guard refuses there.
 Nicolas Guelfi (NG), author of gse-light, is the **Project Advisor** of each instance, not
 its project manager: he gives feedback and advice on project conduct and deliverables, owns the generative-AI method
 and the Claude kits, and takes part in requirements choices — two hours of meeting and two
-hours of preparation per week. Each instance's project lead writes in its instance folder
-(`planning/sprints/`, the team's journal entries, new 🔴 records — never `BRIEFING.md`);
-roles per instance in `instances/<instance>/governance/10-roles-and-go-aheads.md`.
+hours of preparation per week. Who writes in an instance folder: the **developers** have
+write access and push their own journal entries and new 🔴 records (the product kit's
+`session-close` and `decision-record` commit and push those paths only); the **project lead**
+also writes `planning/sprints/` and runs the **design phase in week 1** (skill `design-phase`
+in the product repository: drivers → `DD` records here → gates, CI and `CLAUDE.md` filled
+there); **NG's sessions own `BRIEFING.md`** and the decided records — never written by a
+developer's session (denied by the product kit's `settings.json`). Roles per instance in
+`instances/<instance>/governance/10-roles-and-go-aheads.md`.
 
 ## Standing rules
 
@@ -38,8 +48,8 @@ roles per instance in `instances/<instance>/governance/10-roles-and-go-aheads.md
   outside the document being written. State-changing actions (push, deploy, delete,
   create cloud resources, send messages) need an explicit go-ahead from the person
   named in `instances/<instance>/governance/10-roles-and-go-aheads.md` — in this repository, from the owner
-  of the folder being changed: NG for everything except `instances/<instance>/planning/sprints/`,
-  the team's journal entries and new 🔴 records, which the project lead owns.
+  of the file being changed: NG for everything except `instances/<instance>/planning/sprints/`
+  (the project lead) and each person's own journal entries and new 🔴 records (their author).
 - **Measure before asserting**: never state the state of a system (a branch, a
   deployment, a count) without the command that measured it. Never announce an
   unverified cause.
@@ -135,8 +145,9 @@ Branch `main`, in this repository and in `../gse-light`. Commit coherent units o
 in its own repository; a method change is committed in `gse-light` first, then
 `../gse-light/pm-kit/install.sh .` refreshes `.claude/` here (commit that too). A session working for NG pushes only on
 his go-ahead (or when he asked for the push in the same request); a session working for
-the project lead pushes only his own commits (sprints, journal, new 🔴 records)
-and only on his go-ahead.
+the project lead or a developer pushes only that person's own commits (sprints for the lead;
+journal entries and new 🔴 records for anyone, through `session-close` and
+`decision-record`) and only on their go-ahead.
 
 ---
 

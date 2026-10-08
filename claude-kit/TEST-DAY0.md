@@ -1,19 +1,22 @@
 # Rehearse a developer's Day 0 on your own machine
 
-Status: v0.3 · 2026-10-07 · for the Project Advisor or a project lead · about 15 minutes
+Status: v0.4 · 2026-10-08 · for the Project Advisor or a project lead · about 15 minutes
 
 > **Essentials** — Plays, in a throwaway folder, what [INSTALL.md](INSTALL.md) asks of a
-> project lead (install the kit once in the product repository, commit it) and of a
-> developer (clone, `.env`, `check.sh`, a first session). It clones the `gse-light`
+> project lead (install the kit once in the product repository with one command, commit it)
+> and of a developer (clone, `.env`, `check.sh`, a first session). It clones the `gse-light`
 > repository from GitHub like an engineer would, and simulates the project-management
 > repository and the product repository with local ones. It touches none of your working
 > copies. Run it **outside Dropbox** (here `~/gse-test`).
 
 **In a hurry?** [TEST-DAY0-fast.txt](TEST-DAY0-fast.txt) holds §0–§2 and §4 as three
 blocks (reset, project lead, developer) to paste one after the other — kept in step with
-this page.
+this page, command by command.
 
 ## The repositories in this test
+
+Three repositories side by side in one parent folder, as on an engineer's machine: the
+product repository, the method `gse-light`, and the private project-management repository.
 
 | Name in the commands | Which repository | Stands for |
 |---|---|---|
@@ -23,6 +26,9 @@ this page.
 | `lead/pm`, `lead/product` | the project lead's clones of `remote-pm.git` and `remote-product.git` | the project lead's working copies |
 | `dev/pm`, `dev/product` | the developer's clones of the same | a developer's working copies |
 
+Prerequisites on the machine: `git`, `gh` (signed in once with `gh auth login`), `python3`
+(the method's scripts), a bash terminal (Git Bash on Windows).
+
 ## 0. Settings
 
 Copy these two lines in your terminal first; every block below uses them.
@@ -31,10 +37,6 @@ Copy these two lines in your terminal first; every block below uses them.
 INST=demo                      # the instance (folder name in instances/ of the project-management repository)
 TEST=~/gse-test                # throwaway folder, outside Dropbox
 ```
-
-If `gh repo clone` asks you to sign in: `gh auth login` once. The test clones `gse-light` from GitHub:
-it runs once `nicolasguelfi/gse-light` exists there (while it is private, only with an account
-that has access).
 
 ## 1. Project lead — install the kit in the product repository and commit it
 
@@ -50,16 +52,21 @@ git clone -q ../remote-pm.git pm                       # clones remote-pm.git in
   && git add . && git commit -q -m "Instance $INST" && git push -q origin HEAD)   # lead/pm gets its instance folder, pushed to remote-pm.git
 git clone -q ../remote-product.git product             # clones remote-product.git into lead/product (same expected warning)
 cd product && git commit -q --allow-empty -m init && git push -q origin HEAD   # first commit of lead/product, pushed to remote-product.git
-../gse-light/claude-kit/install.sh . ../pm "$INST"     # installs the kit into lead/product
+../gse-light/claude-kit/install.sh "$INST"             # ONE command, from inside lead/product: finds ../gse-light and the sibling folder holding instances/demo/ (lead/pm)
 ../gse-light/claude-kit/check.sh                       # checks lead/product — expected: MISSING "kit committed"
-git add CLAUDE.md .claude .env.example .gitignore .github
+./gates.sh                                             # the Day-0 stub — expected: "no gates yet: design phase in progress …", exit 0
+git add CLAUDE.md .claude .gitattributes gates.sh .env.example .gitignore .github
 git commit -q -m "Install the Claude kit ($INST)" && git push -q origin HEAD   # the kit is now in remote-product.git
 ```
 
-**Expected**: `install.sh` lists four skills (`decision-record`, `session-close`,
-`upskilling`, `verify-claim`) and one agent (`change-reviewer`); `check.sh` shows one
-`MISSING kit committed` line before the commit, and one `WARN .env` line — normal here:
-the project lead needs no `.env` in `lead/product` for this rehearsal.
+**Expected**: `install.sh` prints the line `product repository product · method ../gse-light ·
+project management ../pm/instances/demo/`, lists five skills (`decision-record`,
+`design-phase`, `session-close`, `upskilling`, `verify-claim`) and one agent (`change-reviewer`), and
+creates `CLAUDE.md`, `.claude/settings.json`, `.gitattributes`, `gates.sh`, `.env.example`
+and `.github/workflows/gates.yml`; `check.sh` shows one `MISSING kit committed` line before
+the commit, and one `WARN .env` line — normal here: the project lead needs no `.env` in
+`lead/product` for this rehearsal. If `install.sh` answers "several sibling folders hold
+instances/demo/", name the right one: `../gse-light/claude-kit/install.sh "$INST" --pm pm`.
 
 ## 2. Developer — clone, `.env`, check
 
@@ -73,6 +80,10 @@ cp .env.example .env                                   # personal settings of de
 ../gse-light/claude-kit/check.sh; echo "exit $?"       # checks dev/product — expected: only OK lines, exit 0
 ```
 
+**Expected**: every line `OK`, among them `settings.json gives Claude read access…`,
+`gates.sh present and executable`, `.gitattributes keeps scripts LF`, `kit version <hash>
+(current)` — the hash is the last commit of `gse-light` that touched `claude-kit/`.
+
 ## 3. Developer — first session in `dev/product`
 
 ```bash
@@ -81,8 +92,11 @@ claude
 
 In the session:
 
-- type `/` — `decision-record`, `session-close`, `verify-claim` and `upskilling` appear;
-- type `/upskilling` — ten minutes of questions and small checks, then a personal plan.
+- type `/` — `decision-record`, `design-phase`, `session-close`, `verify-claim` and `upskilling` appear;
+- type `/upskilling` — ten minutes of questions and small checks, then a personal plan;
+- ask *"what is in ../pm/instances/demo/?"* — Claude reads it (`additionalDirectories`)
+  but cannot edit `../gse-light` nor the instance's `BRIEFING.md` (deny rules of
+  `.claude/settings.json`).
 
 ## 4. Check that nothing personal went into `dev/product`'s git history
 

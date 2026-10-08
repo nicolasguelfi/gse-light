@@ -17,6 +17,9 @@ Be encouraging and concrete; never grade the person.
   `<pm-zone>/governance/30-skills-and-responsibilities.md` — `<pm-zone>` is the project
   management zone named in this repository's `CLAUDE.md`
   (`../<pm-repo>/instances/<instance>/`, in the private project-management repository).
+  "The project's technical skills" are the stack decided in the design phase (skill
+  `design-phase`, `DD` records); while they are still 🔴, assess only the first five
+  dimensions of the grid and say that the technical ones wait for the design decisions.
 - Their private record, if any: `~/.claude/upskilling/<instance>/record.md` in **their home
   folder**, outside every repository — one sub-folder per project, since a person may use
   this skill on several projects. Create it if absent. Never write it inside a repository.
@@ -43,7 +46,8 @@ Prioritise what blocks their first tickets.
   a journal entry).
 - Follow the method's two steps: first week the base (measure before asserting,
   evaluate ≠ execute, journal, registers, gates before merge); second week tests with
-  Claude, coverage, end-to-end in a browser. Do not train the second step before the first.
+  Claude, coverage, end-to-end tests through the real user interface with the tool the
+  project chose (its test-tools `DD` record). Do not train the second step before the first.
 - Name the actor of each step: *Person* (they do), *Ask Claude* (they ask you), *Automatic*.
 - Suggest pairing with a teammate when a gap is large; the project lead decides pairs.
 

@@ -23,10 +23,17 @@ that repository; the method is `../gse-light`.
 4. **Refresh `instances/<instance>/BRIEFING.md`** with the `cockpit-update` skill if it is available,
    otherwise by hand: §1 what awaits the Project Advisor, §1b what awaits the team, §2 delta
    since the last acknowledgement, new acknowledgement date. Only the Project Advisor's sessions
-   edit `instances/<instance>/BRIEFING.md` (roles record); a session of the project lead reports what §1b should
-   say in its journal entry instead.
+   edit `instances/<instance>/BRIEFING.md` (roles record); a session of the project lead or of a
+   developer reports what §1 or §1b should say in its journal entry instead. From a product
+   repository `BRIEFING.md` is denied to Claude by the kit's settings: never touch it from there.
 5. **Never edit an earlier journal entry.** A correction is a new entry citing it.
-6. Run `python3 ../gse-light/scripts/check_docs.py` there, then commit (do not push unless asked).
+6. Run `python3 ../gse-light/scripts/check_docs.py` there, then **commit and push** the journal
+   entry and the metrics row in the project-management repository — only those paths
+   (`git add instances/<instance>/journal/YYYY-MM-DD-sNN.md instances/<instance>/journal/metrics.csv`,
+   plus a new 🔴 record opened in the session, then `git commit`, `git push`). Developers and the
+   project lead have write access there and push their own entries. The Project Advisor's
+   sessions push only on his go-ahead (commit, then ask). If the push is refused because the
+   branch moved, pull, re-read what changed, merge, push again — never force.
 
 ---
 

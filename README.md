@@ -28,7 +28,7 @@ use at each moment of the project, in one page.
 
 | Folder | What it holds |
 |---|---|
-| [`method/`](method/) | [Reference design](method/00-reference-design.md) (rules and tools), [the Project Advisor's page](method/15-project-advisor.md), [upskilling](method/20-upskilling.md) |
+| [`method/`](method/) | [Reference design](method/00-reference-design.md) (rules as invariants, "how to choose" drivers), [the Project Advisor's page](method/15-project-advisor.md), [upskilling](method/20-upskilling.md), [tool landscape — examples](method/40-tool-landscape-examples.md) (dated, non-normative) |
 | [`templates/`](templates/) | Decision record, journal entry, meeting agenda and minutes, skills grid, slide deck, artifact shortcut |
 | [`scripts/`](scripts/) | `check_docs.py` (links, registers, kit copies, leak guard), `situation.py` and the session-start hook, `llm_call.py` (paid models, costs logged), `meeting/` (record, transcribe) — run from a project-management repository |
 | [`pm-kit/`](pm-kit/README.md) | The Project Advisor's Claude artefacts for a project-management repository: `advisor` (single entry point), `meeting`, `slides`, `method-lesson`, `decision-record`, `cockpit-update`, `session-close`, `genai-onboarding`; agents `delivery-auditor`, `minutes-verifier`, `design-reviewer` |
@@ -44,7 +44,15 @@ use at each moment of the project, in one page.
 4. **Measure before asserting**: a claim about the state of a system is backed by a
    command anyone can rerun.
 
-Status: v0.4 · 2026-10-07 · the method, separated from its projects
+## What the method fixes, what each project chooses
+
+- **Design phase (first week)**: the team collects its drivers (facts and constraints) and decides its technology in `DD` records with the kit skill `design-phase`; the method's rules name no tool.
+- **Tool landscape**: [`method/40-tool-landscape-examples.md`](method/40-tool-landscape-examples.md) lists options seen in past projects, dated and non-normative — illustrations, never defaults.
+- **Firm rule**: end-to-end tests drive the real user interface and simulate the use cases, run by Claude, for verification and validation; the tool is the project's choice.
+- **Prerequisite of the tooling**: GitHub (`gh`, pull requests, issues, CI workflows); another forge needs an adapted agent.
+- **Multi-repository products**: the repository layout is a design decision; the kit is installed in each product repository, and the instance `README.md` in the project-management repository lists them for the overall view.
+
+Status: v0.5 · 2026-10-08 · rules as invariants, technology chosen per project
 
 ## Licence
 

@@ -11,41 +11,33 @@ method's author (Nicolas Guelfi) in his role of Project Advisor; another Project
 use it as is. The method itself needs only [`claude-kit`](../claude-kit/README.md), also
 called the product kit: the kit of the product and sandbox repositories.
 
-> **Words used here** — *Project-management repository* `<pm-repo>`: the project's shared
-> record — decisions, requirements, plans, minutes, journal — private, one per project;
-> everyone reads it, each person writes their own part in it through the kit's skills (the
-> project lead: the sprints; the Project Advisor: the cockpit and the minutes); nobody
-> manages the project from it. *Kit*: the files that make every Claude Code session in a
-> repository follow the method — `CLAUDE.md`, skills, an agent, permissions, a CI workflow —
-> installed with one command, committed with the code. *Session*: one conversation with
-> Claude Code, from opening it in a folder to closing it. *Instance*: one project run with
-> the method, and its folder `instances/<instance>/` in `<pm-repo>`. *Skill*: a procedure
-> Claude runs when asked (`/name`) or when the situation calls for it; *agent*: a read-only
-> helper Claude launches (an auditor, a reviewer). *Cockpit*: `BRIEFING.md`, the Project
-> Advisor's one-page dashboard in the instance — what awaits him, what awaits the team, what
-> changed; written by his sessions only. *Register*: one document per kind of decision —
-> project `PD`, requirements `DEC`, design `DD` — one numbered record per decision, each
-> with a status badge: 🔴 pending, 🟢 decided, 🟡 provisional; the *decider* is the person
-> the roles record names for that record, the only one who turns it 🟢. *Sandbox*: a
-> personal, private, throwaway repository `<project>-sandbox-<firstname>` with the kit, for
-> Day 0 and experiments until the product repositories exist; the project lead's sandbox
-> hosts the design phase. *Leak guard*: the check (`check_docs.py`) that no private name of
-> the client or project reaches the public `gse-light` repository, in files or commit
-> messages. *Start hook*: the small script run when a session opens in `<pm-repo>`; it
-> prints where the project stands. Every other term: [GLOSSARY.md](../GLOSSARY.md).
+**Words used here** (every other term: [GLOSSARY.md](../GLOSSARY.md))
+
+| Word | Meaning |
+|---|---|
+| **Project-management repository** `<pm-repo>` | the project's shared record — decisions, requirements, plans, minutes, journal — private, one per project. Everyone reads it; each person writes their own part in it through the kit's skills (the project lead: the sprints; the Project Advisor: the cockpit and the minutes); nobody manages the project from it |
+| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, skills, an agent, permissions, a CI workflow — installed with one command, committed with the code |
+| **Session** | one conversation with Claude Code, from opening it in a folder to closing it |
+| **Instance** | one project run with the method, and its folder `instances/<instance>/` in `<pm-repo>` |
+| **Skill, agent** | a skill is a procedure Claude runs when asked (`/name`) or when the situation calls for it; an agent is a read-only helper Claude launches (an auditor, a reviewer) |
+| **Cockpit** | `BRIEFING.md`, the Project Advisor's one-page dashboard in the instance — what awaits him, what awaits the team, what changed; written by his sessions only |
+| **Register** | one document per kind of decision — project `PD`, requirements `DEC`, design `DD` — one numbered record per decision, each with a status badge: 🔴 pending, 🟢 decided, 🟡 provisional; the *decider* is the person the roles record names for that record, the only one who turns it 🟢 |
+| **Sandbox** | a personal, private, throwaway repository `<project>-sandbox-<firstname>` with the kit, for Day 0 and experiments until the product repositories exist; the project lead's sandbox hosts the design phase |
+| **Leak guard** | the check (`check_docs.py`) that no private name of the client or project reaches the public `gse-light` repository, in files or commit messages |
+| **Start hook** | the small script run when a session opens in `<pm-repo>`; it prints where the project stands |
 
 <!-- who-is-who:start -->
-**Who is who.** The **client** is the organisation the product is built for; it names the
-**product owner** (owns the need, accepts each delivered increment, gives the production and
-budget go-aheads) and the **data protection contact** (decides how personal data may enter
-the product). The **project lead** (lead developer) runs the project inside the team:
-sprints, tickets, technical choices, code review; the developers' first contact. The
-**developers** build the product with Claude Code, each in their own repository; "team
-member" means the project lead or a developer. The **Project Advisor** is outside the team:
-the method's author, two hours of meeting and two hours of preparation a week; gives
-feedback and advice, decides nothing in the project. **Claude sessions** propose, measure,
-write and test; they decide nothing and act on a go-ahead. Who decides what in a given
-project: its **roles record**, `<pm-repo>/instances/<instance>/governance/10-roles-and-go-aheads.md`.
+**Who is who** — who decides what in a given project: its **roles record**, `<pm-repo>/instances/<instance>/governance/10-roles-and-go-aheads.md`.
+
+| Role | Side | What they do | What they decide or write |
+|---|---|---|---|
+| **Client** | the organisation the product is built for | names the product owner and the data protection contact | — |
+| **Product owner** | client | owns the need; accepts each delivered increment | the production and budget go-aheads |
+| **Data protection contact** | client | — | how personal data may enter the product |
+| **Project lead** (lead developer) | the team | runs the project: sprints, tickets, technical choices, code review; the developers' first contact | the sprints; the design decisions |
+| **Developers** | the team | build the product with Claude Code, each in their own repository ("team member" = the project lead or a developer) | the implementation of their tickets; their own journal entries and pending records |
+| **Project Advisor** | outside the team; the method's author | two hours of meeting and two hours of preparation a week; feedback and advice | nothing in the project — the method and the kits only |
+| **Claude sessions** | in every repository | propose, measure, write, test | nothing; they act on a go-ahead |
 <!-- who-is-who:end -->
 
 ## The repositories
@@ -59,75 +51,53 @@ project: its **roles record**, `<pm-repo>/instances/<instance>/governance/10-rol
 
 ## If you are the Project Advisor
 
-**What you read first.** [The Project Advisor's page](../method/15-project-advisor.md) —
-who is in the project, the weeks and where the Advisor steps in, the weekly meeting, what
-he does by default and does not; the [reference design](../method/00-reference-design.md),
-chapters 0 (purpose and how to read it), 1 (principles), 2 (how people and AI share the
-decisions), 13 (working with the AI day to day) and 15 (the start-of-project checklist);
-the [glossary](../GLOSSARY.md) for every term.
+- **Read first**:
+  - [the Project Advisor's page](../method/15-project-advisor.md) — who is in the project, the weeks and where the Advisor steps in, the weekly meeting, what he does by default and does not;
+  - the [reference design](../method/00-reference-design.md), chapters 0 (purpose and how to read it), 1 (principles), 2 (how people and AI share the decisions), 13 (working with the AI day to day) and 15 (the start-of-project checklist);
+  - the [glossary](../GLOSSARY.md) for every term.
+- **Install**: the machine first, once — [`scripts/README.md`](../scripts/README.md) (ffmpeg, `uv`, the Python environment in `~/.venvs/<pm-repo>` linked as `.venv`, `.env`). Then the project-management repository and this kit:
 
-**What you install.** The machine first, once: [`scripts/README.md`](../scripts/README.md)
-(ffmpeg, `uv`, the Python environment in `~/.venvs/<pm-repo>` linked as `.venv`, `.env`).
-Then the project-management repository and this kit:
+  ```bash
+  cd ~/dev/<project>                                          # parent folder: the clones side by side
+  git clone https://github.com/nicolasguelfi/gse-light.git   # the gse-light repository (this method)
+  mkdir -p <pm-repo>/instances/<instance> && cd <pm-repo> && git init   # <instance>: the folder name of the project under instances/
+  ../gse-light/pm-kit/install.sh .                          # skills, agents, settings, CLAUDE.md, .env.example, CI, and the instance skeleton
+  cp .env.example .env                                        # fill it (never committed)
+  printf 'ClientName\nProjectName\n' > instances/<instance>/private-terms.txt   # terms the leak guard refuses in gse-light (regular expressions, one per line)
+  ```
 
-```bash
-cd ~/dev/<project>                                          # parent folder: the clones side by side
-git clone https://github.com/nicolasguelfi/gse-light.git   # the gse-light repository (this method)
-mkdir -p <pm-repo>/instances/<instance> && cd <pm-repo> && git init   # <instance>: the folder name of the project under instances/
-../gse-light/pm-kit/install.sh .                          # skills, agents, settings, CLAUDE.md, .env.example, CI, and the instance skeleton
-cp .env.example .env                                        # fill it (never committed)
-printf 'ClientName\nProjectName\n' > instances/<instance>/private-terms.txt   # terms the leak guard refuses in gse-light (regular expressions, one per line)
-```
+  `pm-kit/install.sh` copies [`templates/instance/`](templates/instance/) into an empty `instances/<instance>/`:
+  - `README.md` — the instance's entry page: people, **the list of the project's repositories**, the calendar, where each role starts;
+  - `BRIEFING.md` — the cockpit: §1, §1b, §2, §3 with the pending counts;
+  - the three registers in the format of [`templates/decision-record.md`](../templates/decision-record.md) — `governance/05-project-decisions.md`, `requirements/05-decisions.md`, `design/05-design-decisions.md` — with their §0 dashboards;
+  - the roles record `governance/10-roles-and-go-aheads.md`;
+  - `journal/` and `meetings/`.
 
-`pm-kit/install.sh` copies [`templates/instance/`](templates/instance/) into an empty
-`instances/<instance>/`: `README.md` (the instance's entry page: people, **the list of the
-project's repositories**, the calendar, where each role starts), `BRIEFING.md` (the cockpit:
-§1, §1b, §2, §3 with the pending counts), the three registers in the format of
-[`templates/decision-record.md`](../templates/decision-record.md)
-(`governance/05-project-decisions.md`, `requirements/05-decisions.md`,
-`design/05-design-decisions.md`) with their §0 dashboards, the roles record
-`governance/10-roles-and-go-aheads.md`, `journal/` and `meetings/`. Then fill the `<…>`
-fields of `CLAUDE.md` and of the skeleton (the people in `README.md` and in the roles
-record, the calendar), run `python3 ../gse-light/scripts/check_docs.py`, commit, create the
-repository on GitHub (private; branch protection on `main` is recommended, decided in the
-roles record) and push. Each team member's sandbox is created on GitHub by the project lead
-or by you, and receives the product kit by its one command
-([`claude-kit/README.md`](../claude-kit/README.md)).
+  Then, in order:
+  1. fill the `<…>` fields of `CLAUDE.md` and of the skeleton (the people in `README.md` and in the roles record, the calendar);
+  2. run `python3 ../gse-light/scripts/check_docs.py`;
+  3. commit;
+  4. create the repository on GitHub (private; branch protection on `main` is recommended, decided in the roles record) and push.
 
-**What you write, every week.** Open Claude Code in `<pm-repo>`: the start hook prints the
-situation (today, next meeting, next step); say "go". The `advisor` skill does the step and
-asks you only what only you know, one short multiple-choice question (QCM) at a time:
-`meeting brief` the day before (facts measured by the `delivery-auditor` agent, decisions
-awaiting, a timed agenda), `record` or `import` on the day, `transcribe`, `minutes` (checked
-by `minutes-verifier`, then validated by you: "validated by <your name> on YYYY-MM-DD" in
-the header), `decision-record` for what was decided, `session-close` (journal entry, metrics
-row, cockpit). Your sessions write the cockpit `BRIEFING.md`, the minutes, the instance
-`README.md`, your journal entries, and the 🟢 of the records you decide (the method, the
-kits, your own spending); a lesson learned goes through `method-lesson`.
+  Each team member's sandbox is created on GitHub by the project lead or by you, and receives the product kit by its one command ([`claude-kit/README.md`](../claude-kit/README.md)).
+- **Write**, every week: open Claude Code in `<pm-repo>` — the start hook prints the situation (today, next meeting, next step) — and say "go". The `advisor` skill does the step and asks you only what only you know, one short multiple-choice question (QCM) at a time:
+  - `meeting brief` the day before — facts measured by the `delivery-auditor` agent, decisions awaiting, a timed agenda;
+  - `record` or `import` on the day;
+  - `transcribe`;
+  - `minutes` — checked by `minutes-verifier`, then validated by you: "validated by <your name> on YYYY-MM-DD" in the header;
+  - `decision-record` for what was decided;
+  - `session-close` — journal entry, metrics row, cockpit.
 
-**Cross-repository work.** Open Claude Code in `<pm-repo>` with the product repositories
-added — `claude --add-dir ../<repo-a> --add-dir ../<repo-b>`, or list them in
-`permissions.additionalDirectories` of `.claude/settings.json` — to read code, pull requests
-and gates of every repository of the project from the overall view. A Claude Code session
-on claude.ai (web or cloud) sees one repository only; the overall view is a local session.
-
-**What you never do.** Write a sprint, a ticket or code; decide in the project (sprints,
-priorities, promotions, the client's budget: the roles record names who does); turn 🟢 a
-record whose decider is someone else; push without having run `check_docs`; write a client's
-or project's name in `gse-light` (the leak guard refuses it).
+  Your sessions write the cockpit `BRIEFING.md`, the minutes, the instance `README.md`, your journal entries, and the 🟢 of the records you decide (the method, the kits, your own spending); a lesson learned goes through `method-lesson`.
+- **Cross-repository work**: open Claude Code in `<pm-repo>` with the product repositories added — `claude --add-dir ../<repo-a> --add-dir ../<repo-b>`, or list them in `permissions.additionalDirectories` of `.claude/settings.json` — to read code, pull requests and gates of every repository of the project from the overall view. A Claude Code session on claude.ai (web or cloud) sees one repository only; the overall view is a local session.
+- **Never**: write a sprint, a ticket or code; decide in the project (sprints, priorities, promotions, the client's budget: the roles record names who does); turn 🟢 a record whose decider is someone else; push without having run `check_docs`; write a client's or project's name in `gse-light` (the leak guard refuses it).
 
 ## If you are the project lead or a developer
 
-This kit is not yours: yours is the product kit, `claude-kit`, installed in your sandbox and
-in each product repository. Start with [QUICKSTART.md](../QUICKSTART.md) (what gse-light does
-for you, the one install command, what to use at each moment of the project). You never
-open Claude Code in `<pm-repo>`: a session opened there loads this kit and acts in the Project
-Advisor's name (it writes his cockpit, it closes decisions). From your sandbox or a product
-repository, your kit's skills `session-close` and `decision-record` push your journal entries
-and your new 🔴 records into `<pm-repo>` (those paths only); the project lead also writes
-`planning/sprints/` there. A record turns 🟢 only in a session of its decider; `BRIEFING.md`
-is the Advisor's (the product kit's `settings.json` denies the Edit tool on it — a
-convenience, not a security boundary; branch protection on `main` is the real guard).
+- **Read first**: [QUICKSTART.md](../QUICKSTART.md) — what gse-light does for you, the one install command, what to use at each moment of the project.
+- **Install**: not this kit — yours is the product kit, `claude-kit`, installed in your sandbox and in each product repository.
+- **Write**: from your sandbox or a product repository, your kit's skills `session-close` and `decision-record` push your journal entries and your new 🔴 records into `<pm-repo>` (those paths only); the project lead also writes `planning/sprints/` there. A record turns 🟢 only in a session of its decider; `BRIEFING.md` is the Advisor's (the product kit's `settings.json` denies the Edit tool on it — a convenience, not a security boundary; branch protection on `main` is the real guard).
+- **Never**: open Claude Code in `<pm-repo>` — a session opened there loads this kit and acts in the Project Advisor's name (it writes his cockpit, it closes decisions).
 
 ## Reference
 
@@ -146,7 +116,10 @@ convenience, not a security boundary; branch protection on `main` is the real gu
 
 ### Refresh after a change in gse-light
 
-`git pull` in `gse-light`, then `../gse-light/pm-kit/install.sh .` in `<pm-repo>`, commit.
+1. `git pull` in `gse-light`;
+2. `../gse-light/pm-kit/install.sh .` in `<pm-repo>`;
+3. commit.
+
 `check_docs` fails while `.claude/` differs from the pm-kit (from a product or sandbox
 repository: `python3 ../gse-light/scripts/check_docs.py ../<pm-repo>`, the repository to
 check as the argument).

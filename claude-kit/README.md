@@ -8,104 +8,83 @@ everywhere. This page is its map — for the project lead who installs it, the d
 receive it, the product owner who only needs to know what it guarantees, and the Project
 Advisor who maintains it: read your section (§1–§4), then the contents table (§5).
 
-> **Words used here** — *Kit*: the files that make every Claude Code session in a
-> repository follow the method — `CLAUDE.md`, five skills, one agent, permissions, a
-> `gates.sh` stub, a CI workflow — installed with one command, committed with the code; two
-> kits: this `claude-kit` for product and sandbox repositories, the
-> [`pm-kit`](../pm-kit/README.md) for the Project Advisor in `<pm-repo>`. *Skill*: a
-> procedure Claude runs when asked (`/name`) or when the situation calls for it; *agent*: a
-> read-only helper Claude launches (a reviewer, an auditor). *Project-management
-> repository* `<pm-repo>`: the project's shared record — decisions, requirements, plans,
-> minutes, journal — private, one per project; everyone reads it, each person writes their
-> own part in it through the kit's skills; nobody manages the project from it. *Instance*:
-> one project run with the method, and its folder `instances/<instance>/` in `<pm-repo>`.
-> *Product repository* `<product-repo>`: the code, private, one or several (repository
-> layout, the first design decision); the kit is committed in it. *Sandbox*: a personal,
-> private, throwaway repository `<project>-sandbox-<firstname>` with the kit, for Day 0
-> (each person's first hour on the project) and experiments until the product repositories
-> exist; the project lead's sandbox hosts the design phase. *Placeholders* `<instance>`,
-> `<pm-repo>`, `<product-repo>`, `<project>`, `<firstname>`: the project's real names;
-> `<instance>` is the folder name under `instances/` (`ls ../<pm-repo>/instances` shows it;
-> the project lead gives it). *Design phase*: the step of W1 (the first project week) where
-> the project lead, with Claude, turns the project's facts and constraints into twelve
-> technical decisions (`DD` records), in order: repository layout, hosting, environments
-> and promotion path, stack and language, data store, identity, infrastructure as code,
-> continuous integration, test tools, secrets, dependency updates, monitoring — recorded
-> with the skill `design-phase`. *Decision record and badges*: every `PD-NN`, `DEC-NNN` or
-> `DD-NN` in these pages is one numbered decision record, with a status badge — 🔴 pending,
-> 🟢 decided, 🟡 provisional; its *decider* (the person the roles record names) is the only
-> one who turns it 🟢. *Gates*: the project's automated checks (tests, lint, end-to-end) run
-> by `gates.sh` and the CI before a merge; on Day 0 a stub that says "no gates yet". Every
-> other term: [GLOSSARY.md](../GLOSSARY.md).
+**Words used here** (every other term: [GLOSSARY.md](../GLOSSARY.md))
+
+| Word | Meaning |
+|---|---|
+| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, five skills, one agent, permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with the code. Two kits: this `claude-kit` for product and sandbox repositories, the [`pm-kit`](../pm-kit/README.md) for the Project Advisor in `<pm-repo>` |
+| **Skill, agent** | a skill is a procedure Claude runs when asked (`/name`) or when the situation calls for it; an agent is a read-only helper Claude launches (a reviewer, an auditor) |
+| **Project-management repository** `<pm-repo>` | the project's shared record — decisions, requirements, plans, minutes, journal — private, one per project. Everyone reads it; each person writes their own part in it through the kit's skills; nobody manages the project from it |
+| **Instance** | one project run with the method, and its folder `instances/<instance>/` in `<pm-repo>` |
+| **Product repository** `<product-repo>` | the code, private, one or several (repository layout, the first design decision); the kit is committed in it |
+| **Sandbox** | a personal, private, throwaway repository `<project>-sandbox-<firstname>` with the kit, for Day 0 (each person's first hour on the project) and experiments until the product repositories exist; the project lead's sandbox hosts the design phase |
+| **Placeholders** `<instance>`, `<pm-repo>`, `<product-repo>`, `<project>`, `<firstname>` | the project's real names; `<instance>` is the folder name under `instances/` (`ls ../<pm-repo>/instances` shows it; the project lead gives it) |
+| **Design phase** | the step of W1 (the first project week) where the project lead, with Claude, turns the project's facts and constraints into twelve technical decisions (`DD` records), in order: repository layout, hosting, environments and promotion path, stack and language, data store, identity, infrastructure as code, continuous integration, test tools, secrets, dependency updates, monitoring — recorded with the skill `design-phase` |
+| **Decision record and badges** | every `PD-NN`, `DEC-NNN` or `DD-NN` in these pages is one numbered decision record, with a status badge — 🔴 pending, 🟢 decided, 🟡 provisional; its *decider* (the person the roles record names) is the only one who turns it 🟢 |
+| **Gates** | the project's automated checks (tests, lint, end-to-end) run by `gates.sh` and the CI before a merge; on Day 0 a stub that says "no gates yet" |
 
 <!-- who-is-who:start -->
-**Who is who.** The **client** is the organisation the product is built for; it names the **product owner** (owns the need, accepts each delivered increment, gives the production and budget go-aheads) and the **data protection contact** (decides how personal data may enter the product). The **project lead** (lead developer) runs the project inside the team: sprints, tickets, technical choices, code review; the developers' first contact. The **developers** build the product with Claude Code, each in their own repository; "team member" means the project lead or a developer. The **Project Advisor** is outside the team: the method's author, two hours of meeting and two hours of preparation a week; gives feedback and advice, decides nothing in the project. **Claude sessions** propose, measure, write and test; they decide nothing and act on a go-ahead. Who decides what in a given project: its **roles record**, `<pm-repo>/instances/<instance>/governance/10-roles-and-go-aheads.md`.
+**Who is who** — who decides what in a given project: its **roles record**, `<pm-repo>/instances/<instance>/governance/10-roles-and-go-aheads.md`.
+
+| Role | Side | What they do | What they decide or write |
+|---|---|---|---|
+| **Client** | the organisation the product is built for | names the product owner and the data protection contact | — |
+| **Product owner** | client | owns the need; accepts each delivered increment | the production and budget go-aheads |
+| **Data protection contact** | client | — | how personal data may enter the product |
+| **Project lead** (lead developer) | the team | runs the project: sprints, tickets, technical choices, code review; the developers' first contact | the sprints; the design decisions |
+| **Developers** | the team | build the product with Claude Code, each in their own repository ("team member" = the project lead or a developer) | the implementation of their tickets; their own journal entries and pending records |
+| **Project Advisor** | outside the team; the method's author | two hours of meeting and two hours of preparation a week; feedback and advice | nothing in the project — the method and the kits only |
+| **Claude sessions** | in every repository | propose, measure, write, test | nothing; they act on a go-ahead |
 <!-- who-is-who:end -->
 
 ## 1. If you are the project lead
 
-**Read first**: [INSTALL.md §2](INSTALL.md#2-if-you-are-the-project-lead--install-the-kit-in-the-product-repository-once-per-product-repository)
-— what the one command writes, the commit, a protected `main`, the refresh. **You
-install** the kit **once per product repository** — and each team member installs it once
-in their own sandbox — with `gse-light` and `<pm-repo>` cloned next to that repository
-(same parent folder):
+- **Read first**: [INSTALL.md §2](INSTALL.md#2-if-you-are-the-project-lead--install-the-kit-in-the-product-repository-once-per-product-repository) — what the one command writes, the commit, a protected `main`, the refresh.
+- **Install**: the kit, **once per product repository** — and each team member installs it once in their own sandbox — with `gse-light` and `<pm-repo>` cloned next to that repository (same parent folder):
 
-```bash
-cd <product-repo>                                   # inside the product (or sandbox) clone
-../gse-light/claude-kit/install.sh <instance>       # add --pm <pm-repo> when it asks (none or several candidates)
-```
+  ```bash
+  cd <product-repo>                                   # inside the product (or sandbox) clone
+  ../gse-light/claude-kit/install.sh <instance>       # add --pm <pm-repo> when it asks (none or several candidates)
+  ```
 
-then commit and push what it created. Skills, agents, the licence notice and
-`.claude/KIT_VERSION` are overwritten on every run (the kit owns them); `CLAUDE.md`,
-`settings.json`, `gates.sh`, `.gitattributes`, `.env.example` and the CI workflow are
-created only if absent (the product repository owns them after creation). `<instance>` and
-`<pm-repo>` in the new `CLAUDE.md` are replaced by the names found. `KIT_VERSION` is the
-last `gse-light` commit that touched `claude-kit/`. **Refresh** after the kit changes:
-`git pull` in `gse-light`, then the same command; it warns when the `CLAUDE.md` or
-`settings.json` templates changed since the recorded `KIT_VERSION` and prints the exact
-`git diff` command (from that old hash) so you can carry the change over by hand. A product
-made of several repositories: the same command in each. **You write**: the kit's commits,
-the `<…>` fields of `CLAUDE.md` (ask Claude) and, in W1, the twelve `DD` records of the
-design phase (skill `design-phase`, in your sandbox). **You never**: open Claude Code in
-`<pm-repo>` (its sessions are the Project Advisor's); edit the kit's own files in a product
-repository (they are changed in `gse-light`, §4, and overwritten at the next refresh).
+  then commit and push what it created. What the command does:
+  - **overwritten on every run** (the kit owns them): skills, agents, the licence notice and `.claude/KIT_VERSION`;
+  - **created only if absent** (the product repository owns them after creation): `CLAUDE.md`, `settings.json`, `gates.sh`, `.gitattributes`, `.env.example` and the CI workflow;
+  - **names filled**: `<instance>` and `<pm-repo>` in the new `CLAUDE.md` are replaced by the names found;
+  - **`KIT_VERSION`**: the last `gse-light` commit that touched `claude-kit/`;
+  - **refresh** after the kit changes: `git pull` in `gse-light`, then the same command; it warns when the `CLAUDE.md` or `settings.json` templates changed since the recorded `KIT_VERSION` and prints the exact `git diff` command (from that old hash) so you can carry the change over by hand;
+  - **a product made of several repositories**: the same command in each.
+- **Write**: the kit's commits, the `<…>` fields of `CLAUDE.md` (ask Claude) and, in W1, the twelve `DD` records of the design phase (skill `design-phase`, in your sandbox).
+- **Never**: open Claude Code in `<pm-repo>` (its sessions are the Project Advisor's); edit the kit's own files in a product repository (they are changed in `gse-light`, §4, and overwritten at the next refresh).
 
 ## 2. If you are a developer
 
-**Read first**: [INSTALL.md §3](INSTALL.md#3-if-you-are-a-developer--get-the-kit-about-15-minutes)
-(clone, `.env`, `check.sh`, first session), then [ONBOARDING.md](ONBOARDING.md) (the method
-in one page, your first session, the Day-0 checklist). **You install** nothing in a product
-repository: the kit comes with the clone, then three personal steps (`.env`, `check.sh`,
-`claude`). In your sandbox you run the one command of §1 yourself and commit the kit. **You
-write**, through the kit's skills only: your journal entries and your new 🔴 records in
-`<pm-repo>/instances/<instance>/` (`session-close` and `decision-record` commit and push
-those paths, nothing else). **You never**: run `install.sh` in a product repository; open
-Claude Code in `<pm-repo>`; put a secret in a file under git. To rehearse Day 0 on your own
-machine first: [TEST-DAY0.md](TEST-DAY0.md).
+- **Read first**:
+  - [INSTALL.md §3](INSTALL.md#3-if-you-are-a-developer--get-the-kit-about-15-minutes) — clone, `.env`, `check.sh`, first session;
+  - then [ONBOARDING.md](ONBOARDING.md) — the method in one page, your first session, the Day-0 checklist;
+  - to rehearse Day 0 on your own machine first: [TEST-DAY0.md](TEST-DAY0.md).
+- **Install**: nothing in a product repository — the kit comes with the clone, then three personal steps (`.env`, `check.sh`, `claude`). In your sandbox you run the one command of §1 yourself and commit the kit.
+- **Write**, through the kit's skills only: your journal entries and your new 🔴 records in `<pm-repo>/instances/<instance>/` (`session-close` and `decision-record` commit and push those paths, nothing else).
+- **Never**: run `install.sh` in a product repository; open Claude Code in `<pm-repo>`; put a secret in a file under git.
 
 ## 3. If you are the product owner
 
-Nothing to install, nothing to run, no Claude Code licence needed. What the kit guarantees
-you: every change comes with its tests, nothing reaches production and nothing is spent
-without the go-ahead the roles record gives you, and every decision that awaits you is a 🔴
-record in `<pm-repo>`, which you read on GitHub (its instance `README.md` first). The rest of
-this page is for the team.
+- **Install**: nothing — nothing to run, no Claude Code licence needed.
+- **What the kit guarantees you**: every change comes with its tests; nothing reaches production and nothing is spent without the go-ahead the roles record gives you; every decision that awaits you is a 🔴 record in `<pm-repo>`.
+- **Read**: `<pm-repo>` on GitHub, its instance `README.md` first. The rest of this page is for the team.
 
 ## 4. If you are the Project Advisor
 
-You own the kit's content; the project lead installs and refreshes it. **You change it
-here**, by pull request in the `gse-light` repository, then each product repository reruns
-the one command of §1. Two skills (`decision-record`, `session-close`) are also in the
-[pm-kit](../pm-kit/README.md), your own kit for `<pm-repo>`: `scripts/check_docs.py` fails
-if the two copies differ. The entry pages stay in step — [QUICKSTART.md](../QUICKSTART.md),
-[INSTALL.md](INSTALL.md), [ONBOARDING.md](ONBOARDING.md), this page, the `CLAUDE.md`
-template and the Day-0 rehearsals change together — and never carry a client or project
-name: the leak guard (`check_docs.py`) refuses it. After any kit change, replay
-[TEST-DAY0.md](TEST-DAY0.md). Claude Code licences come from you, API keys from the client.
-The documentation checks of `<pm-repo>` run from a product repository as
-`python3 ../gse-light/scripts/check_docs.py ../<pm-repo>` (the repository to check is the
-argument). **You never** install this kit in `<pm-repo>`, nor open Claude Code in a team
-member's sandbox.
+- **Install**: nothing of this kit — you own its content, the project lead installs and refreshes it; your own kit for `<pm-repo>` is the [pm-kit](../pm-kit/README.md).
+- **Write**: the kit, **here**, by pull request in the `gse-light` repository; then each product repository reruns the one command of §1. Two skills (`decision-record`, `session-close`) are also in the pm-kit: `scripts/check_docs.py` fails if the two copies differ. The entry pages stay in step and change together — and never carry a client or project name: the leak guard (`check_docs.py`) refuses it:
+  - [QUICKSTART.md](../QUICKSTART.md);
+  - [INSTALL.md](INSTALL.md);
+  - [ONBOARDING.md](ONBOARDING.md);
+  - this page;
+  - the `CLAUDE.md` template and the Day-0 rehearsals.
+- **Check**: after any kit change, replay [TEST-DAY0.md](TEST-DAY0.md). The documentation checks of `<pm-repo>` run from a product repository as `python3 ../gse-light/scripts/check_docs.py ../<pm-repo>` (the repository to check is the argument).
+- **Provide**: Claude Code licences come from you, API keys from the client.
+- **Never**: install this kit in `<pm-repo>`; open Claude Code in a team member's sandbox.
 
 ## 5. Contents
 

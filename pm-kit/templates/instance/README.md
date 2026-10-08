@@ -8,42 +8,34 @@ where each role starts. **No product code here.** Fields written `<like this>` a
 the Project Advisor when the instance is created; `<instance>` is the folder name under
 `instances/` (`ls instances` shows it).
 
-> **Words used here** — *Instance*: one project run with the method, and its folder
-> `instances/<instance>/` in the project-management repository `<pm-repo>` — the project's
-> shared record (decisions, requirements, plans, minutes, journal), private, one per project;
-> everyone reads it, each person writes their own part in it through the kit's skills; nobody
-> manages the project from it. *Go-ahead*: the written yes of the person who holds that right
-> (roles record), before any state-changing action. *Kit*: the files that make every Claude
-> Code session in a repository follow the method — `CLAUDE.md`, five skills, one agent,
-> permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with
-> the code. *Skill*: a procedure Claude runs when asked (`/name`) or when the situation calls
-> for it; *agent*: a read-only helper Claude launches. *Decision record and badges*: every
-> `PD-NN`, `DEC-NNN` or `DD-NN` in this folder is one numbered decision record in a
-> *register* (project `PD`, requirements `DEC`, design `DD`), with a status badge: 🔴 pending,
-> 🟢 decided, 🟡 provisional; its *decider* is the person the roles record names for it, the
-> only one who turns it 🟢. *Cockpit*: `BRIEFING.md`, the Project Advisor's one-page
-> dashboard — what awaits him, what awaits the team, what changed; written by his sessions
-> only. *Sandbox*: a personal, private, throwaway repository `<project>-sandbox-<firstname>`
-> with the kit, for Day 0 and experiments until the product repositories exist; the project
-> lead's sandbox hosts the design phase. *Design phase*: the step of W1 where the project
-> lead, with Claude, turns the project's facts and constraints into twelve technical decisions
-> (`DD` records). *Day 0*: each person's first hour — clone, kit, `.env`, `check.sh`, first
-> session. Every other term: [glossary](https://github.com/nicolasguelfi/gse-light/blob/main/GLOSSARY.md).
+**Words used here** (every other term: [glossary](https://github.com/nicolasguelfi/gse-light/blob/main/GLOSSARY.md))
+
+| Word | Meaning |
+|---|---|
+| **Instance** | one project run with the method, and its folder `instances/<instance>/` in the project-management repository `<pm-repo>` |
+| **Project-management repository** `<pm-repo>` | the project's shared record (decisions, requirements, plans, minutes, journal), private, one per project; everyone reads it, each person writes their own part in it through the kit's skills; nobody manages the project from it |
+| **Go-ahead** | the written yes of the person who holds that right (roles record), before any state-changing action |
+| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, five skills, one agent, permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with the code |
+| **Skill, agent** | a skill is a procedure Claude runs when asked (`/name`) or when the situation calls for it; an agent is a read-only helper Claude launches |
+| **Decision record and badges** | every `PD-NN`, `DEC-NNN` or `DD-NN` in this folder is one numbered decision record in a *register* (project `PD`, requirements `DEC`, design `DD`), with a status badge: 🔴 pending, 🟢 decided, 🟡 provisional; its *decider* is the person the roles record names for it, the only one who turns it 🟢 |
+| **Cockpit** | `BRIEFING.md`, the Project Advisor's one-page dashboard — what awaits him, what awaits the team, what changed; written by his sessions only |
+| **Sandbox** | a personal, private, throwaway repository `<project>-sandbox-<firstname>` with the kit, for Day 0 and experiments until the product repositories exist; the project lead's sandbox hosts the design phase |
+| **Design phase** | the step of W1 where the project lead, with Claude, turns the project's facts and constraints into twelve technical decisions (`DD` records) |
+| **Day 0** | each person's first hour — clone, kit, `.env`, `check.sh`, first session |
 
 ## People
 
-**Who is who.** The **client** is <client name>; its **product owner**, <product owner>, owns the
-need, accepts each delivered increment and gives the production and budget go-aheads; its
-**data protection contact**, <data protection contact>, decides how personal data may enter
-the product. The **project lead** (lead developer), <project lead>, runs the project inside
-the team: sprints, tickets, technical choices, code review; the developers' first contact.
-The **developers**, <developers>, build the product with Claude Code, each in their own
-repository; "team member" means the project lead or a developer. The **Project Advisor**,
-<Project Advisor>, is outside the team: the method's author, two hours of meeting and two
-hours of preparation a week; gives feedback and advice, decides nothing in the project.
-**Claude sessions** propose, measure, write and test; they decide nothing and act on a
-go-ahead. Who decides what, and who hosts `<pm-repo>`:
-[roles and go-aheads](governance/10-roles-and-go-aheads.md).
+**Who is who** — who decides what, and who hosts `<pm-repo>`: [roles and go-aheads](governance/10-roles-and-go-aheads.md).
+
+| Role | Side | What they do | What they decide or write |
+|---|---|---|---|
+| **Client** — <client name> | the organisation the product is built for | names the product owner and the data protection contact | — |
+| **Product owner** — <product owner> | client | owns the need; accepts each delivered increment | the production and budget go-aheads |
+| **Data protection contact** — <data protection contact> | client | — | how personal data may enter the product |
+| **Project lead** (lead developer) — <project lead> | the team | runs the project: sprints, tickets, technical choices, code review; the developers' first contact | the sprints; the design decisions |
+| **Developers** — <developers> | the team | build the product with Claude Code, each in their own repository ("team member" = the project lead or a developer) | the implementation of their tickets; their own journal entries and pending records |
+| **Project Advisor** — <Project Advisor> | outside the team; the method's author | two hours of meeting and two hours of preparation a week; feedback and advice | nothing in the project — the method and the kits only |
+| **Claude sessions** | in every repository | propose, measure, write, test | nothing; they act on a go-ahead |
 
 **Never open Claude Code in `<pm-repo>`.** A session opened here loads the Project Advisor's
 kit and acts in his name (it writes his cockpit, it closes decisions). Your own kit, with
@@ -87,10 +79,21 @@ Advisor is fixed at each meeting for the next one.
 Framing (W-1), since <YYYY-MM-DD>: examples and data are being gathered; the team is
 <named / being named>; every design choice is 🔴 pending in the
 [design register](design/05-design-decisions.md) until the design phase of W1, which opens
-twelve `DD` records in order — repository layout, hosting, environments and promotion path,
-stack and language, data store, identity, infrastructure as code, continuous integration,
-test tools, secrets, dependency updates, monitoring — recorded by the project lead with the
-kit skill `design-phase`, from his sandbox.
+twelve `DD` records in order, recorded by the project lead with the kit skill `design-phase`,
+from his sandbox:
+
+1. repository layout;
+2. hosting;
+3. environments and promotion path;
+4. stack and language;
+5. data store;
+6. identity;
+7. infrastructure as code;
+8. continuous integration;
+9. test tools;
+10. secrets;
+11. dependency updates;
+12. monitoring.
 
 ## Start here
 
@@ -102,12 +105,11 @@ and the [reference design](https://github.com/nicolasguelfi/gse-light/blob/main/
 
 ### If you are the project lead
 
-- **Read first**: [`QUICKSTART.md`](https://github.com/nicolasguelfi/gse-light/blob/main/QUICKSTART.md)
-  (what gse-light does for you, which repositories you clone, the one install command of the
-  kit, what to use at each moment of the project), reference design chapter 15 (the
-  start-of-project checklist), the [roles record](governance/10-roles-and-go-aheads.md)
-  (what you decide, which go-aheads you give), the
-  [design register](design/05-design-decisions.md) (the twelve decisions you open in W1).
+- **Read first**:
+  - [`QUICKSTART.md`](https://github.com/nicolasguelfi/gse-light/blob/main/QUICKSTART.md) — what gse-light does for you, which repositories you clone, the one install command of the kit, what to use at each moment of the project;
+  - the reference design, chapter 15 — the start-of-project checklist;
+  - the [roles record](governance/10-roles-and-go-aheads.md) — what you decide, which go-aheads you give;
+  - the [design register](design/05-design-decisions.md) — the twelve decisions you open in W1.
 - **Install**: your sandbox `<project>-sandbox-<firstname>` with the kit (created on GitHub
   by you or the Project Advisor; the one command, inside the clone:
   `../gse-light/claude-kit/install.sh <instance>`); in W1, the kit in each product
@@ -123,13 +125,11 @@ and the [reference design](https://github.com/nicolasguelfi/gse-light/blob/main/
 
 ### If you are a developer
 
-- **Read first**: [`QUICKSTART.md`](https://github.com/nicolasguelfi/gse-light/blob/main/QUICKSTART.md)
-  (one page: what gse-light does for you, your sandbox, the one install command),
-  [`claude-kit/INSTALL.md`](https://github.com/nicolasguelfi/gse-light/blob/main/claude-kit/INSTALL.md)
-  (clone the repositories side by side, `.env`, `check.sh`),
-  [`claude-kit/ONBOARDING.md`](https://github.com/nicolasguelfi/gse-light/blob/main/claude-kit/ONBOARDING.md)
-  (who provides what, the method in one page, your first session step by step, the week's
-  rhythm), the [roles record](governance/10-roles-and-go-aheads.md).
+- **Read first**:
+  - [`QUICKSTART.md`](https://github.com/nicolasguelfi/gse-light/blob/main/QUICKSTART.md) — one page: what gse-light does for you, your sandbox, the one install command;
+  - [`claude-kit/INSTALL.md`](https://github.com/nicolasguelfi/gse-light/blob/main/claude-kit/INSTALL.md) — clone the repositories side by side, `.env`, `check.sh`;
+  - [`claude-kit/ONBOARDING.md`](https://github.com/nicolasguelfi/gse-light/blob/main/claude-kit/ONBOARDING.md) — who provides what, the method in one page, your first session step by step, the week's rhythm;
+  - the [roles record](governance/10-roles-and-go-aheads.md).
 - **Install**: your sandbox `<project>-sandbox-<firstname>` with the kit (the one command
   above), then `/upskilling` in your first session; later, clone the product repositories
   (the kit is already in them).
@@ -142,20 +142,20 @@ and the [reference design](https://github.com/nicolasguelfi/gse-light/blob/main/
 
 ### If you are the product owner
 
-- **Read**: the vision `requirements/00-vision.md` (the need in five lines, yours to
-  confirm), the [requirements register](requirements/05-decisions.md) (the `DEC` records
-  awaiting you), the [roles record](governance/10-roles-and-go-aheads.md) §2 (the go-aheads
-  you give: production, cloud resources, the budget); the minutes of each meeting in
-  [`meetings/`](meetings/README.md).
-- **Nothing to install**: you read on GitHub. You write nothing here: your decisions and
-  go-aheads are recorded in your name, with the date, by the project lead's or the Project
-  Advisor's sessions.
+- **Read**:
+  - the vision `requirements/00-vision.md` — the need in five lines, yours to confirm;
+  - the [requirements register](requirements/05-decisions.md) — the `DEC` records awaiting you;
+  - the [roles record](governance/10-roles-and-go-aheads.md) §2 — the go-aheads you give: production, cloud resources, the budget;
+  - the minutes of each meeting in [`meetings/`](meetings/README.md).
+- **Install**: nothing — you read on GitHub.
+- **Write**: nothing here — your decisions and go-aheads are recorded in your name, with the
+  date, by the project lead's or the Project Advisor's sessions.
 
 ### If you are the Project Advisor
 
-- **Read first**: [`BRIEFING.md`](BRIEFING.md), your cockpit (§1 what awaits you, §1b what
-  awaits the team, §2 what changed, §3 the state); [the Project Advisor's page](https://github.com/nicolasguelfi/gse-light/blob/main/method/15-project-advisor.md)
-  (where the Advisor steps in, the weekly meeting, what he does by default and does not).
+- **Read first**:
+  - [`BRIEFING.md`](BRIEFING.md), your cockpit — §1 what awaits you, §1b what awaits the team, §2 what changed, §3 the state;
+  - [the Project Advisor's page](https://github.com/nicolasguelfi/gse-light/blob/main/method/15-project-advisor.md) — where the Advisor steps in, the weekly meeting, what he does by default and does not.
 - **Install**: the pm-kit in `<pm-repo>` ([`pm-kit/README.md`](https://github.com/nicolasguelfi/gse-light/blob/main/pm-kit/README.md))
   — done if you are reading this page in a created instance; the machine for recording and
   transcription ([`scripts/README.md`](https://github.com/nicolasguelfi/gse-light/blob/main/scripts/README.md)).

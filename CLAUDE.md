@@ -33,8 +33,8 @@ project-management repository (`instances/<instance>/`), cloned next to this one
   link to `GLOSSARY.md` may follow, never replace the one line); a new term goes into the
   glossary in the same change.
 - **Entry documents** (README, QUICKSTART, INSTALL, ONBOARDING, instance README): first a
-  part for everyone — what the page is, *Words used here* (≤ 10, one line each), *Who is
-  who*, the repositories (what for, who writes, who reads, why separate) — then one section
+  part for everyone — what the page is, *Words used here* (a table Word · Meaning, ≤ 10 rows), *Who is
+  who* (a table Role · Side · What they do · What they decide or write), the repositories (what for, who writes, who reads, why separate) — then one section
   per role (project lead, developer, product owner, Project Advisor) saying what that role
   reads, installs, writes and never does; then the reference. The *Who is who* block is
   identical in every entry page of `gse-light` (`check_docs` compares the copies between its
@@ -54,6 +54,12 @@ project-management repository (`instances/<instance>/`), cloned next to this one
   name (rule above), never "the twelve decisions of `design-phase` §2"; the reference design's
   chapters are named: 0 (purpose and how to read it), 1 (principles), 2 (how people and AI
   share the decisions), 13 (working with the AI day to day), 15 (the start-of-project checklist).
+- **Readable layout** (NG, 2026-10-08): a reader must locate an item at a glance. Definitions
+  (*Words used here*, *Who is who*) are tables, never a paragraph; any enumeration of three
+  items or more (repositories, steps, rules, files, links) is a list or a table, one item per
+  line, the lead word in bold; no paragraph of more than six lines in an entry page; a
+  definitions box never sits inside a blockquote (it renders small). Length is accepted,
+  density is not.
 - **Measure before asserting**: a claim about the state of a system comes with the command
   that measured it.
 - **Evaluate ≠ execute**: when asked to evaluate or propose, change nothing outside the

@@ -23,6 +23,9 @@ project-management repository (`instances/<name>/`), cloned next to this one.
 - **Kits stay in step**: skills present in both `claude-kit/skills/` and `pm-kit/skills/` are
   identical (`check_docs`). After a change, the project-management repositories refresh with
   `../gse-light/pm-kit/install.sh .`, the product repositories with `claude-kit/install.sh`.
+- **Developer documents stay in step**: `QUICKSTART.md` (one page), `claude-kit/INSTALL.md`,
+  `claude-kit/ONBOARDING.md` and the two Day-0 rehearsals change together — 2026-10-08 —
+  developers had no one-page guide at the root.
 - **Paths in kit files**: skills and agents run from the project-management repository (or a
   product repository); method paths are written `../gse-light/…`, and Markdown links to the
   method use `https://github.com/nicolasguelfi/gse-light/blob/main/…` (checked locally).

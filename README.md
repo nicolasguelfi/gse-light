@@ -15,11 +15,14 @@ private repository, cloned next to this one.
 
 ## Where to start
 
+**Developer?** Start with [QUICKSTART.md](QUICKSTART.md): what gse-light does for you and what to
+use at each moment of the project, in one page.
+
 | You are… | Read first |
 |---|---|
 | A Project Advisor starting a project | [`pm-kit/README.md`](pm-kit/README.md) — create the project-management repository and install the pm-kit |
 | A project lead | [the Project Advisor's page](method/15-project-advisor.md), the [reference design](method/00-reference-design.md), then [`claude-kit/INSTALL.md`](claude-kit/INSTALL.md) §2 |
-| An engineer | [`claude-kit/INSTALL.md`](claude-kit/INSTALL.md) (clone, `.env`, `check.sh`), then [`claude-kit/ONBOARDING.md`](claude-kit/ONBOARDING.md), then the [reference design](method/00-reference-design.md) chapters 0–2 |
+| An engineer | [`QUICKSTART.md`](QUICKSTART.md) (one page), then [`claude-kit/INSTALL.md`](claude-kit/INSTALL.md) (clone, `.env`, `check.sh`), then [`claude-kit/ONBOARDING.md`](claude-kit/ONBOARDING.md), then the [reference design](method/00-reference-design.md) chapters 0–2 |
 
 ## Layout
 

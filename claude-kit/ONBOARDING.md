@@ -12,6 +12,8 @@ Status: v0.4 · 2026-10-07 · generic · for the project lead and the engineers 
 > `<pm-repo>`. Three repositories, side by side: `gse-light` (this method, public),
 > `<pm-repo>` (your project's management, private) and your product repository.
 
+The one-page version, to keep at hand: [QUICKSTART.md](../QUICKSTART.md).
+
 ## 0. Who provides what
 
 | You need | Who gives it | How |

@@ -6,7 +6,8 @@ repository **`<pm-repo>`** in `../<pm-repo>`, whose instance folder holds the re
 journal and sprints. **Project-management zone** (`<pm-zone>` in the kit's skills):
 **`../<pm-repo>/instances/<instance>/`**. **Read `../gse-light/method/00-reference-design.md`
 chapters 1 and 13, and `<pm-zone>/design/00-design-choices.md`, once per session.**
-A person new to the project reads `../gse-light/claude-kit/ONBOARDING.md` first, then runs
+A person new to the project reads `../gse-light/QUICKSTART.md` (one page), then
+`../gse-light/claude-kit/ONBOARDING.md`, then runs
 the skill `upskilling`.
 
 ## Purpose and phase

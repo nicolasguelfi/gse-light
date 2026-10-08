@@ -72,7 +72,8 @@ In the session: type `/` and check that `decision-record`, `session-close`,
 `verify-claim` and `upskilling` appear; then run **`/upskilling`** (where you start, and a
 short personal plan). You never run `install.sh` yourself.
 
-Then continue with the [starting guide](ONBOARDING.md) (§2 the method in one page, §3
+Keep the one-page [quick start](../QUICKSTART.md) at hand for the rest of the project; then
+continue with the [starting guide](ONBOARDING.md) (§2 the method in one page, §3
 your first session).
 
 ## 4. If something is missing

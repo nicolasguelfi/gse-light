@@ -12,11 +12,11 @@ repositories and the tools are chosen in this phase, from the project's own fact
 repository. Until they are decided, the kit's placeholders stay as installed (a `gates.sh`
 that prints "no gates yet: design phase in progress").
 
-**Who**: the project lead runs it with Claude (*Ask Claude*); engineers join for their
+**Who**: the project lead runs it with Claude (*Ask Claude*); developers join for their
 area; the Project Advisor advises on drivers and options and **decides nothing**; the person
 who holds each right decides (`<pm-zone>/governance/10-roles-and-go-aheads.md`).
 **When**: W1, once the examples and data exports are gathered.
-**Where**: in the project lead's personal **sandbox repository** (`<project>-sandbox-<first name>`,
+**Where**: in the project lead's personal **sandbox repository** (`<project>-sandbox-<firstname>`,
 private, throwaway, with the kit installed) — or in the first product repository if it
 already exists. The zone written to is always `<pm-zone>` = `../<pm-repo>/instances/<instance>/`;
 the sandbox holds nothing of the project. Decision 1 (repository layout) names the real
@@ -79,7 +79,7 @@ order — a later decision depends on the earlier ones:
 8. **Continuous integration** — where the gates run, on which events.
 9. **Test tools** — unit, integration, and the end-to-end tool that drives the real user
    interface (the firm rule of §1, last row; for a web interface, Playwright is one example).
-10. **Secrets** — where they live, how CI and engineers reach them.
+10. **Secrets** — where they live, how CI and developers reach them.
 11. **Dependency updates** — how and how often.
 12. **Monitoring** — probe, alerts, logs, who is called.
 
@@ -110,8 +110,9 @@ In **each** product repository listed in the repository-layout record:
   path record says whether `main` and the other branches that deploy are protected, and the
   roles record who enables it.
 
-Then in the project-management repository: list the product repositories in
-`<pm-zone>/README.md` (sandboxes are not product repositories: they are not listed);
+Then in the project-management repository: the product repositories are listed in
+`<pm-zone>/README.md` by the Project Advisor — his page: ask him in the hand-over (§4);
+sandboxes are not product repositories and are not listed — and you
 update `<pm-zone>/governance/30-skills-and-responsibilities.md` with the stack decided
 (the skill `upskilling` reads it); run `python3 ../gse-light/scripts/check_docs.py ../<pm-repo>`
 from the product repository (the argument names the repository to check). Each change is

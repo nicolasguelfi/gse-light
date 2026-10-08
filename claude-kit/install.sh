@@ -11,7 +11,7 @@
 # folders; `--pm <folder>` names it when none or several hold instances/<instance>/.
 # Copies skills and agents into .claude/ (overwriting the kit's own files only), and creates,
 # if absent, CLAUDE.md, .claude/settings.json, .gitattributes, gates.sh, .env.example and the
-# CI workflow from the templates (the repository owns them afterwards). A multi-repository
+# CI workflow from the templates (the product repository owns them afterwards). A multi-repository
 # product runs this once in EACH product repository.
 # Works with bash 3.2 (macOS) and Git Bash.
 set -euo pipefail

@@ -7,7 +7,7 @@ description: Close a working session (method or active instance) - write the dat
 
 The journal lives in the project-management repository, `instances/<instance>/journal/`.
 From a product repository, or from a personal sandbox repository while the product
-repositories do not exist yet, that is the sibling folder named in the repository's
+repositories do not exist yet, that is the sibling folder named in that repository's
 `CLAUDE.md` (`../<pm-repo>`): a sandbox holds no journal and no register of its own. Paths
 below are relative to the project-management repository; the method is `../gse-light`.
 

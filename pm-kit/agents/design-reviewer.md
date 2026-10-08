@@ -25,7 +25,13 @@ You review changes to the project-management repository (and to `../gse-light`, 
 6. **Roles**: any sentence that makes the Project Advisor (Nicolas Guelfi, NG) decide
    sprints, priorities, promotions or budget contradicts the instance's roles record; flag it.
 7. **Style**: plain words first, technical terms defined at first use; the twelve design
-   decisions are named as `design-phase` §2 names them; end-to-end tests go "through the
+   decisions are named by their twelve names, in order (repository layout, hosting,
+   environments and promotion path, stack and language, data store, identity,
+   infrastructure as code, continuous integration, test tools, secrets, dependency updates,
+   monitoring), never "the twelve decisions of `design-phase` §2"; roles are named
+   developer, project lead (lead developer), product owner, data protection contact,
+   Project Advisor (then "the Advisor"), Claude sessions — never "engineer", "tutor" or
+   "mentor"; end-to-end tests go "through the
    real user interface"; the environment before production is "the rehearsal environment".
 8. **Claims about systems**: any statement about a running system or a repository's
    state cites the command that measured it.

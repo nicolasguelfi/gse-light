@@ -34,7 +34,7 @@ Be encouraging and concrete; never grade the person.
    (measured), next to what they declared.
    **While `gates.sh` is still the Day-0 stub** (it prints "no gates yet: design phase in
    progress"), there is no code to check against: use documents and the person's
-   **sandbox repository** instead (`<project>-sandbox-<first name>`, their private,
+   **sandbox repository** instead (`<project>-sandbox-<firstname>`, their private,
    throwaway repository with the kit installed — the one this session most likely runs
    in). For example: "read `<pm-zone>/governance/10-roles-and-go-aheads.md` and tell me
    who gives the go-ahead for a promotion to the rehearsal environment"; "draft, in your

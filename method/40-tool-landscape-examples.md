@@ -1,6 +1,6 @@
 # 40 — Tool landscape: examples seen in past projects
 
-Status: **examples seen in past projects, dated 2026-10 — not recommendations** · v0.2 · 2026-10-08 · author: Nicolas Guelfi, with Claude
+Status: **examples seen in past projects, dated 2026-10 — not recommendations** · v0.3 · 2026-10-08 · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — The [reference design](00-reference-design.md) names no technology:
 > its rules are invariants, and each project chooses its tools in its design phase from
@@ -32,8 +32,10 @@ Status: **examples seen in past projects, dated 2026-10 — not recommendations*
 
 Reference design chapter in the first column; the driver column says what led a project
 to that option — the same driver in another project may lead elsewhere. The category
-maps to one of the twelve decisions of `design-phase` §2 as in the reference design's
-Appendix A.
+maps to one of the twelve design decisions of the design phase (in order: repository
+layout, hosting, environments and promotion path, stack and language, data store,
+identity, infrastructure as code, continuous integration, test tools, secrets, dependency
+updates, monitoring) as in the reference design's Appendix A.
 
 | Chapter · category | Option | The driver that led a project there | Illustration | Seen |
 |---|---|---|---|---|

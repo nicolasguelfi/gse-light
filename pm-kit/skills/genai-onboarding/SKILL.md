@@ -1,6 +1,6 @@
 ---
 name: genai-onboarding
-description: Prepare the arrival of one engineer or the project lead on the active instance - a personal cover note built on ../gse-light/claude-kit/ONBOARDING.md (who provides what, their sandbox repository and the one install command, their role's extras, the Day-0 checklist) and the Project Advisor's own to-do for that arrival (licence invitation, access), then verify the Day-0 checklist from the person's first journal entry. Use when the Project Advisor names a team member, before the kick-off, or when someone joins mid-project.
+description: Prepare the arrival of one developer or the project lead on the active instance - a personal cover note built on ../gse-light/claude-kit/ONBOARDING.md (who provides what, their sandbox repository and the one install command, their role's extras, the Day-0 checklist) and the Project Advisor's own to-do for that arrival (licence invitation, access), then verify the Day-0 checklist from the person's first journal entry. Use when the Project Advisor names a team member, before the kick-off, or when someone joins mid-project.
 ---
 
 # genai-onboarding — one person, one page, one check
@@ -12,11 +12,11 @@ Project Advisor (Nicolas Guelfi, NG) must do for them, and check later that Day 
 ## 1. Before the arrival (10 minutes)
 
 1. **Ask NG once** (one short multiple-choice question, QCM): name, role (project lead /
-   engineer), start date, e-mail for the Claude invitation if he has not sent it, and
+   developer), start date, e-mail for the Claude invitation if he has not sent it, and
    whether the person's **sandbox repository** exists. Until the product repositories
-   exist (repository layout, the first of the twelve decisions of `design-phase` §2, taken
-   in the design phase of W1), every team member works in a personal sandbox:
-   `<project>-sandbox-<first name>`, private, throwaway, created on GitHub by the project
+   exist (repository layout, the first of the twelve decisions of the design phase of
+   W1), every team member works in a personal sandbox:
+   `<project>-sandbox-<firstname>`, private, throwaway, created on GitHub by the project
    lead or by NG, cloned next to `gse-light` and this repository, the kit installed by
    **one command** run inside the clone: `../gse-light/claude-kit/install.sh <instance>`.
    There they do Day 0, `/upskilling` and their experiments; the project lead's sandbox is
@@ -30,12 +30,12 @@ Project Advisor (Nicolas Guelfi, NG) must do for them, and check later that Day 
    - a five-line welcome in the Project Advisor's voice: role, first meeting date, what the first
      week is about — examples and data, then the **design phase**: the stack, hosting and
      tools are chosen from the project's drivers in W1, not before (a project lead is told
-     he runs it with the `design-phase` skill from his sandbox; an engineer that the kit's
+     he runs it with the `design-phase` skill from his sandbox; a developer that the kit's
      gates stay a stub until it is done);
    - "What you receive and from whom" filled for them (licence invitation sent on
      `<date>`, keys via the project lead, **their sandbox repository's URL and the one
      command**, the project-management repository's URL, product repository URLs once decided);
-   - the link to `../gse-light/claude-kit/ONBOARDING.md` and the §5 extras if project lead;
+   - the link to `../gse-light/claude-kit/ONBOARDING.md` and the project lead's section (§2) if project lead;
    - their responsibilities (from `instances/<instance>/governance/30-skills-and-responsibilities.md`
      §2) and the skills they need, and a pointer to the kit skill `upskilling`, which they run
      on Day 0 in their sandbox (../gse-light/method/20-upskilling.md) — never their individual levels;

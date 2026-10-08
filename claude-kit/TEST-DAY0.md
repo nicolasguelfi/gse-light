@@ -7,7 +7,7 @@ and 30 minutes of work
 > **Essentials** — Plays, in a throwaway folder, what [INSTALL.md](INSTALL.md) asks of a
 > project lead (install the kit once in the product repository with one command, commit it)
 > and of a developer (clone, `.env`, `check.sh`, a first session). It clones the `gse-light`
-> repository from GitHub like an engineer would, and simulates the project-management
+> repository from GitHub like a developer would, and simulates the project-management
 > repository and the product repository with local ones. It touches none of your working
 > copies. Run it **outside any synced folder** (here `~/gse-test`).
 
@@ -17,7 +17,7 @@ this page, command by command.
 
 ## The repositories in this test
 
-Three repositories side by side in one parent folder, as on an engineer's machine: the
+Three repositories side by side in one parent folder, as on a developer's machine: the
 product repository, the method `gse-light`, and the private project-management repository.
 
 | Name in the commands | Which repository | Stands for |
@@ -119,7 +119,7 @@ rm -rf ~/.claude/upskilling/"$INST"                    # only if /upskilling wro
 
 ## If something differs
 
-Paste the output of `check.sh` to the session; [INSTALL.md §4](INSTALL.md#4-if-something-is-missing)
+Paste the output of `check.sh` to the session; [INSTALL.md §6](INSTALL.md#6-if-something-is-missing)
 lists what each line means. Not covered by this rehearsal: Windows (use Git Bash for the
 same commands) and the real repositories on GitHub.
 

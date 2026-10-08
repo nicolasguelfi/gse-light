@@ -12,15 +12,17 @@ Exit code 1 on any FAIL line; WARN lines never fail the run.
 Checks:
   1. every relative Markdown link points to an existing file, and its #anchor to an existing heading
      (links to https://github.com/nicolasguelfi/gse-light/blob/main/<path> are checked against ../gse-light);
-  2. in gse-light: skills present both in pm-kit/skills and claude-kit/skills are identical;
+  2. in gse-light: skills present both in pm-kit/skills and claude-kit/skills are identical, and the
+     "Who is who" block (between `<!-- who-is-who:start -->` and `<!-- who-is-who:end -->`) is identical
+     in every page that carries it (one text, copied into each entry page so that each page reads alone);
   3. in a project-management repository:
      - every register record has a status badge and a dashboard row, and every dashboard row a record;
-     - in each instances/<name>/, the pending counts in BRIEFING.md §3 match its registers' dashboards:
+     - in each instances/<instance>/, the pending counts in BRIEFING.md §3 match its registers' dashboards:
        FAIL when the register holds fewer 🔴 than §3 says (a record closed without the cockpit),
        WARN only when it holds more (new 🔴 opened by the team; the Project Advisor's next session
        refreshes the cockpit) — a developer's commit never turns CI red for that;
      - .claude/skills and .claude/agents are identical to gse-light's pm-kit (else: refresh with pm-kit/install.sh);
-     - leak guard: no file tracked in gse-light, and no commit message, matches a line of instances/<name>/private-terms.txt
+     - leak guard: no file tracked in gse-light, and no commit message, matches a line of instances/<instance>/private-terms.txt
        (the terms stay in the private repository; gse-light is public). Limit: the guard knows only the
        terms each instance lists — a built-in generic list of client names would itself name the clients.
 """
@@ -48,7 +50,7 @@ def repo_root(arg: str | None) -> Path:
 
 ROOT = repo_root(sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("-") else None)  # the repository being checked
 IS_PM = (ROOT / "instances").is_dir()
-REGISTERS = {  # relative to each instance folder instances/<name>/
+REGISTERS = {  # relative to each instance folder instances/<instance>/
     "PD": "governance/05-project-decisions.md",
     "DEC": "requirements/05-decisions.md",
     "DD": "design/05-design-decisions.md",
@@ -188,9 +190,40 @@ def same_tree(src: Path, copy: Path, label: str, hint: str, only_common: bool) -
                 errors.append(f"{label}/{item.name}: differs from {src.relative_to(METHOD)}/{item.name} ({f.name}; {hint})")
 
 
+WHO_START, WHO_END = "<!-- who-is-who:start -->", "<!-- who-is-who:end -->"
+
+
+def check_who_is_who() -> None:
+    """The "Who is who" block is one text, copied verbatim into every entry page of gse-light
+    (NG, 2026-10-08, board r5): a page must read alone, so the block is repeated, and this check
+    keeps the copies identical (whitespace folded)."""
+    r = subprocess.run(["git", "-C", str(METHOD), "ls-files", "-co", "--exclude-standard", "*.md"],
+                       capture_output=True, text=True)
+    blocks: dict[str, list[str]] = {}
+    for rel in r.stdout.splitlines():
+        path = METHOD / rel
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        if WHO_START not in text:
+            continue
+        if WHO_END not in text or text.index(WHO_END) < text.index(WHO_START):
+            errors.append(f"gse-light/{rel}: who-is-who block has no end marker")
+            continue
+        body = text[text.index(WHO_START) + len(WHO_START):text.index(WHO_END)]
+        blocks.setdefault(" ".join(body.split()), []).append(rel)
+    if len(blocks) > 1:
+        ref = max(blocks.items(), key=lambda kv: len(kv[1]))[1]
+        for body, files in blocks.items():
+            if files is not ref:
+                errors.append(f"who-is-who block differs in {', '.join(files)} (reference copy: {', '.join(ref)}; "
+                              "one text, copied verbatim — see CLAUDE.md, entry documents)")
+
+
 def check_copies() -> None:
     if ROOT == METHOD:
         same_tree(METHOD / "claude-kit/skills", METHOD / "pm-kit/skills", "pm-kit/skills", "keep both identical", True)
+        check_who_is_who()
     elif IS_PM:
         hint = "refresh: ../gse-light/pm-kit/install.sh ."
         same_tree(METHOD / "pm-kit/skills", ROOT / ".claude/skills", ".claude/skills", hint, False)

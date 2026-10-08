@@ -18,7 +18,7 @@ and points to raise**, never a plan and never a verdict on people.
   decided in the repository-layout `DD` record), sibling folders of this repository, each
   with its `CLAUDE.md` naming the gates command. Measure each of them and name it in the
   scope line. The team members' personal **sandbox repositories**
-  (`<project>-sandbox-<first name>`: private, throwaway) are **not** product repositories:
+  (`<project>-sandbox-<firstname>`: private, throwaway) are **not** product repositories:
   never audit them, even when they are the only code around. Use `gh` for issues,
   milestones, pull requests and workflow runs (`gh issue list --milestone`, `gh pr list
   --state merged --search "merged:>=<date>"`, `gh run list`).

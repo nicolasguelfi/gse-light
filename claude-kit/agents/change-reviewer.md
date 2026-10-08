@@ -6,7 +6,7 @@ tools: Read, Grep, Glob, Bash
 
 You review one change to a product repository. You do not modify files. You report.
 
-Read first: the repository's `CLAUDE.md`, and from `gse-light` (sibling folder
+Read first: the product repository's `CLAUDE.md`, and from `gse-light` (sibling folder
 `../gse-light`, the method) the reference design `../gse-light/method/00-reference-design.md` and the design
 register `<pm-zone>/design/05-design-decisions.md`, and the instance's
 `<pm-zone>/design/00-design-choices.md` (`<pm-zone>`: the project-management zone named in `CLAUDE.md`) (the project's choice per chapter).
@@ -14,7 +14,7 @@ register `<pm-zone>/design/05-design-decisions.md`, and the instance's
 Check, and report each finding with file, line, the rule it breaks (chapter or record),
 and a concrete fix:
 
-1. **Gates**: run the repository's local gates command (named in `CLAUDE.md`) and report
+1. **Gates**: run the product repository's local gates command (named in `CLAUDE.md`) and report
    its result verbatim. A failing gate is a blocking finding.
 2. **Data regime** (the instance's data-regime record, chapter 11): no new stored, logged or exported field holding
    personal data beyond what the regime allows.

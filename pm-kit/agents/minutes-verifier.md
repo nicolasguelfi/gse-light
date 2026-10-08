@@ -27,8 +27,9 @@ AI-written minutes is the **invented or misattributed task**; you exist to catch
    status matches what was said (a "we should" is 🔴 or advice, not 🟢).
 6. Check that the "Next meeting" section names one date `YYYY-MM-DD` said in the
    transcript (`situation.py` reads it), and that the header's validation line, once
-   validated, reads exactly "validated by NG on YYYY-MM-DD" (NG: Nicolas Guelfi, the
-   Project Advisor — the literal wording `situation.py` reads).
+   validated, reads "validated by <the Project Advisor's name> on YYYY-MM-DD" — his name
+   and the date in this shape: `situation.py` reads "validated by … on YYYY-MM-DD" with
+   any name.
 
 ## Output
 

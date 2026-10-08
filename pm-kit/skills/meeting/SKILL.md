@@ -111,8 +111,9 @@ nothing to audit: skip `delivery-auditor`.
    by a transcript excerpt. Fix or remove what it flags; never argue with it in the
    minutes.
 4. **Validate with NG** — one QCM: send as is · change (he says what) · hold. On "send as
-   is", write "validated by NG on YYYY-MM-DD" in the header of `minutes.md`.
-   <!-- keep this exact wording: situation.py reads "validated by NG on YYYY-MM-DD" -->
+   is", write "validated by <the Project Advisor's name> on YYYY-MM-DD" in the header of
+   `minutes.md` (his name, the date).
+   <!-- keep this exact shape: situation.py reads "validated by … on YYYY-MM-DD", with any name -->
    The skill never distributes the minutes itself; NG does, or asks for it explicitly.
 5. The tasks feed the project lead's next sprint file; point him to `minutes.md`.
 

@@ -15,7 +15,7 @@ Usage
 -----
   python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "Summarise this" --file notes.md
   python3 ../gse-light/scripts/llm_call.py --provider openrouter --model openai/gpt-4o-mini --prompt-file p.txt
-  python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "..." --meeting instances/<name>/meetings/2026-10-14 --out minutes-draft.md
+  python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "..." --meeting instances/<instance>/meetings/2026-10-14 --out minutes-draft.md
   python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "..." --dry-run      # no network, no cost
 
 Every real call appends: timestamp, provider, model, input tokens, output tokens,

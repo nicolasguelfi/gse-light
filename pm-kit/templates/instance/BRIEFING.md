@@ -28,7 +28,7 @@
 | | |
 |---|---|
 | Phase | framing (W-1) |
-| Team | <project lead> (project lead) · <engineers> · <product owner> (client side) · <data protection contact> |
+| Team | <project lead> (project lead) · <developers> · <product owner> (client side) · <data protection contact> |
 | Next meeting | <YYYY-MM-DD> (`meetings/schedule.json`) |
 | Registers | 🔴 PD 0 · 🟡 PD 0 · 🔴 DEC 0 · 🔴 DD 0 |
 | Repositories | `gse-light`, `<pm-repo>`; product repositories to decide (repository layout, design phase) |

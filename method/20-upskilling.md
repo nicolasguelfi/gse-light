@@ -1,6 +1,6 @@
 # 20 — Upskilling: starting from the team's real levels
 
-Status: draft · v0.2 · 2026-10-08 · author: Nicolas Guelfi, with Claude
+Status: draft · v0.3 · 2026-10-08 · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — A team's levels in generative AI, coding agents and development are
 > unknown at the start and rarely even. The method does not assume them: it measures
@@ -19,7 +19,7 @@ Advisor notes the aggregated picture, never individual scores in public.
 
 ## 2. What each role needs
 
-| Competence | Engineer | Project lead | Product owner |
+| Competence | Developer | Project lead | Product owner |
 |---|---|---|---|
 | Asking an agent for a task, reading its proposal, saying no | 2 | 2 | 1 |
 | Reviewing AI-written code and tests before merging | 2 | 3 | — |

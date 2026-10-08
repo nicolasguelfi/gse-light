@@ -5,7 +5,7 @@ projects built with generative AI (Claude) as a working partner — reference de
 (`method/`), templates (`templates/`), the Project Advisor's scripts (`scripts/`), the kit for
 **product repositories** (`claude-kit/`) and the kit for **project-management repositories**
 (`pm-kit/`). It holds no project: each project's management lives in its own **private**
-project-management repository (`instances/<name>/`), cloned next to this one.
+project-management repository (`instances/<instance>/`), cloned next to this one.
 
 ## Standing rules
 
@@ -14,20 +14,46 @@ project-management repository (`instances/<name>/`), cloned next to this one.
   fictitious or generic. The author's own projects, Sumvadis (https://sumvadis.ai/) and
   StreamTeX (https://streamtex.org/), may be cited as **illustrations** that a rule can be
   applied — never as defaults or starting points. Each project-management repository lists
-  its private terms in `instances/<name>/private-terms.txt`, and its `check_docs` run fails
+  its private terms in `instances/<instance>/private-terms.txt`, and its `check_docs` run fails
   on any of them found here, in files and in commit messages (leak guard). Run it from such
   a repository before every push of gse-light, and write commit messages without project names.
 - **The method names no technology for the product.** Rules are invariants; choices are the
-  instance's `DD` records — the twelve decisions of `claude-kit/skills/design-phase/SKILL.md`
-  §2, always named by those twelve names, in that order — taken in its design phase from
-  its drivers. Tool names live only in `method/40-tool-landscape-examples.md` (dated,
+  instance's `DD` records — the twelve decisions of the design phase, always named by these
+  twelve names, in this order: repository layout, hosting, environments and promotion path,
+  stack and language, data store, identity, infrastructure as code, continuous integration,
+  test tools, secrets, dependency updates, monitoring (recorded with the kit skill
+  `claude-kit/skills/design-phase/SKILL.md`) — taken in its design phase from its drivers.
+  Never write "the twelve decisions of `design-phase` §2": name them. Tool names live only in `method/40-tool-landscape-examples.md` (dated,
   non-normative), apart from GitHub (prerequisite of the tooling) and Playwright, named as
   the one example of the firm end-to-end rule (end-to-end tests go through the real user
   interface, run by Claude; the tool is the instance's choice). A Claude session never
   proposes an example project's stack as a default. The environment before production is
   "the rehearsal environment".
-- **Plain words first, technical words second**; define each technical term at first use, or
-  link it to `GLOSSARY.md`; a new term goes into the glossary in the same change.
+- **Plain words first, technical words second**; define each technical term at first use (a
+  link to `GLOSSARY.md` may follow, never replace the one line); a new term goes into the
+  glossary in the same change.
+- **Entry documents** (README, QUICKSTART, INSTALL, ONBOARDING, instance README): first a
+  part for everyone — what the page is, *Words used here* (≤ 10, one line each), *Who is
+  who*, the repositories (what for, who writes, who reads, why separate) — then one section
+  per role (project lead, developer, product owner, Project Advisor) saying what that role
+  reads, installs, writes and never does; then the reference. The *Who is who* block is
+  identical in every entry page of `gse-light` (`check_docs` compares the copies between its
+  markers, the HTML comments `who-is-who:start` and `who-is-who:end` — never write those
+  markers outside an actual copy of the block, this page included). Role names: developer,
+  project lead (lead developer), product owner, data protection contact, Project Advisor
+  (then "the Advisor"), Claude sessions. (NG, 2026-10-08, board r5.)
+- **Names, one spelling** (NG, 2026-10-08, board r5): "developer", never "engineer"; "team
+  member" means the project lead or a developer, used only when both are meant, said once per
+  page; "the project lead", never "the lead"; "data protection contact", never "DPO contact";
+  "Project Advisor" in full at its first use on a page, then "the Advisor", never "tutor" or
+  "mentor"; "not the project manager", never "project director". Placeholders:
+  `instances/<instance>/` (never `instances/<name>/`), `~/dev/<project>` (never `<client>`),
+  `<firstname>` (never `<first name>`); "the host of `<pm-repo>` (roles record)", never
+  "whoever hosts it". Minutes are "validated by <the Project Advisor's name> on YYYY-MM-DD":
+  `scripts/situation.py` accepts any name. The twelve design decisions are always listed by
+  name (rule above), never "the twelve decisions of `design-phase` §2"; the reference design's
+  chapters are named: 0 (purpose and how to read it), 1 (principles), 2 (how people and AI
+  share the decisions), 13 (working with the AI day to day), 15 (the start-of-project checklist).
 - **Measure before asserting**: a claim about the state of a system comes with the command
   that measured it.
 - **Evaluate ≠ execute**: when asked to evaluate or propose, change nothing outside the

@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 # Install or refresh the Project Advisor's kit in a project-management repository (the private
-# repository holding instances/<name>/), cloned next to gse-light.
+# repository holding instances/<instance>/), cloned next to gse-light.
 # Usage: ../gse-light/pm-kit/install.sh <path-to-pm-repository> [<instance>]   (e.g. `. loop` from inside it)
 # Overwrites only the kit's own skills and agents; creates CLAUDE.md, settings, .env.example and
 # the CI workflow if absent (yours afterwards). With <instance> (else INSTANCE in .env, else the

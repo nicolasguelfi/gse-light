@@ -18,7 +18,8 @@ them. Your sessions write your journal entries and new 🔴 records into `<pm-zo
 the skills; never open Claude Code in `<pm-repo>` itself (its sessions are the Project
 Advisor's, who opens it with the product repositories added as additional directories for
 the overall view).
-**Read `../gse-light/method/00-reference-design.md` chapters 1 and 13, and
+**Read `../gse-light/method/00-reference-design.md` chapters 1 (principles) and 13 (working
+with the AI day to day), and
 `<pm-zone>/design/00-design-choices.md` and `05-design-decisions.md`, once per session.**
 A person new to the project reads `../gse-light/QUICKSTART.md` (one page), then
 `../gse-light/claude-kit/ONBOARDING.md`, then runs the skill `upskilling`.
@@ -52,8 +53,11 @@ pass" without it.
 
 - **Design phase first**: before any architecture or infrastructure choice, run the skill
   `design-phase` with the project lead; every design decision (`DD` record) cites the
-  project's drivers it answers. Every such choice (the twelve decisions of `design-phase`
-  §2, in order) is an instance `DD` record, never a default.
+  project's drivers it answers. Every such choice — the twelve decisions of the design
+  phase, in order: repository layout, hosting, environments and promotion path, stack and
+  language, data store, identity, infrastructure as code, continuous integration, test
+  tools, secrets, dependency updates, monitoring — is an instance `DD` record, never a
+  default.
 - **Never propose an example project's stack as a default** (Sumvadis, StreamTeX or any
   project the method cites): they are illustrations. Cite one only when a driver of this
   project makes it relevant, and say which.
@@ -62,8 +66,8 @@ pass" without it.
 - **Tests with the code**: every change comes with its unit and integration tests, and
   every user path with its **end-to-end test through the real user interface, driven by you
   to play the use case** — this is how the product is verified and validated, and it is a
-  firm rule. The tool is the instance's choice, in its test tools decision (`design-phase`
-  §2, #9; for a web interface, Playwright is one example). Each test names the requirement
+  firm rule. The tool is the instance's choice, in its test tools decision (the ninth of
+  the twelve; for a web interface, Playwright is one example). Each test names the requirement
   it proves. Coverage is measured on every change; do not lower it.
 - **Green gates to move forward**: `bash ./gates.sh` green locally and in CI; never propose
   a merge with a red gate.
@@ -76,7 +80,7 @@ pass" without it.
   Push, deploy, migrate a shared database, create cloud resources: only with an explicit
   go-ahead (`<pm-zone>/governance/10-roles-and-go-aheads.md`).
 - **Environments and branch model** come from the instance's environments and promotion
-  path decision (`design-phase` §2, #3), named in "Git" below; a branch that deploys is
+  path decision (the third of the twelve), named in "Git" below; a branch that deploys is
   never pushed without the go-ahead for that promotion.
 - **Data regime** (<the instance's data-regime record>): <the regime in force>. Never log or store a field outside it.
 - **Secrets**: never in files. `.env` is git-ignored; never edit it — ask.

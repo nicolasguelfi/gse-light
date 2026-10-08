@@ -1,7 +1,10 @@
 # Meetings
 
 One folder per meeting with the Project Advisor, `YYYY-MM-DD/`, produced by the `meeting`
-skill:
+skill — a procedure Claude runs when asked (`/meeting`) or when the situation calls for it —
+in the Project Advisor's sessions. **Who writes here**: his sessions only. **Who reads**:
+everyone — the team takes its tasks for the next sprint from the minutes, the product owner
+reads the minutes on GitHub.
 
 | File | Written by | In git |
 |---|---|---|
@@ -16,12 +19,15 @@ Minutes carry the tasks each participant took for the next sprint, each with the
 transcript timestamp where it was said. The project lead's sprint file
 (`planning/sprints/`) takes them from here.
 
-The meeting day is variable, fixed at each meeting for the next one. `../gse-light/scripts/situation.py`
-finds the next date in `schedule.json` (`{"next": "YYYY-MM-DD"}`, written by the minutes
-step), else in the "Next meeting" section of the latest minutes, else as the earliest
-future folder; otherwise the session asks the Project Advisor. A meeting's chain is
-complete when `minutes.md` carries "validated by NG on <date>" — this exact wording,
-which `situation.py` reads (NG: the method's author, the Project Advisor).
+A meeting's **chain** is this sequence of files — agenda → recording → transcript → minutes
+→ validation — one link after the other. `../gse-light/scripts/situation.py` (the script the
+start hook runs to say where the week stands) reads which links exist and announces the next
+step. It finds the next meeting date in `schedule.json` (`{"next": "YYYY-MM-DD"}`, written by
+the minutes step), else in the "Next meeting" section of the latest minutes, else as the
+earliest future folder; otherwise the session asks the Project Advisor. The meeting day is
+variable, fixed at each meeting for the next one. A chain is complete when `minutes.md`
+carries "validated by <the Project Advisor's name> on YYYY-MM-DD" — this shape, with any
+name and the date, is what `situation.py` reads.
 
 ## Presentations and review boards
 

@@ -35,7 +35,7 @@ if [ -f CLAUDE.md ]; then
   if [ -n "$inst" ]; then
     ok "CLAUDE.md (instance: $inst, project management in $pmname)"
     [ -d "$repo/../$pmname/instances/$inst" ] && ok "$pmname cloned next to this repository" \
-      || miss "$pmname next to this repository" "clone the project-management repository $pmname into $(dirname "$repo") (ask the project lead for access)"
+      || miss "$pmname next to this repository" "clone the project-management repository $pmname into $(dirname "$repo") (ask the host of $pmname, named in the roles record, for access)"
   else warn "CLAUDE.md" "no project-management zone (../<pm-repo>/instances/<instance>/) named in it"; fi
 else miss "CLAUDE.md" "the kit is not installed here: ask the project lead (INSTALL.md §2)"; fi
 
@@ -65,7 +65,7 @@ else miss "gates.sh" "the gates command is missing: the project lead re-runs ins
 if [ -f .gitattributes ] && grep -qF '*.sh text eol=lf' .gitattributes; then ok ".gitattributes keeps scripts LF"
 else warn ".gitattributes" "'*.sh text eol=lf' missing: scripts may break on Windows — the project lead re-runs install.sh"; fi
 
-if [ -n "$(git ls-files .claude/skills | head -1)" ]; then ok "kit committed in the repository"
+if [ -n "$(git ls-files .claude/skills | head -1)" ]; then ok "kit committed in this product repository"
 else miss "kit committed" "the kit files are not in git: the project lead commits them (INSTALL.md §2)"; fi
 
 # kit version = last commit of gse-light that touched claude-kit/ (not HEAD). Two clones can lag:

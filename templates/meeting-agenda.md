@@ -1,7 +1,7 @@
 <!-- Template of the gse-light method (https://github.com/nicolasguelfi/gse-light), CC BY-NC 4.0. Documents made from this template carry no licence obligation: fill it in and keep the result as your own. -->
 # Meeting — YYYY-MM-DD — week W<n> · agenda (Project Advisor's brief)
 
-- **Participants:** <project lead>, <the engineers>, <the Project Advisor>; <product owner, if present>
+- **Participants:** <project lead>, <the developers>, <the Project Advisor>; <product owner, if present>
 - **Prepared:** YYYY-MM-DD by Claude for the Project Advisor, from `delivery-auditor` (commands cited) — read it the day before
 
 ## Agenda (2 h)

@@ -1,6 +1,6 @@
 # 00 — Reference design: infrastructure, continuous integration and AI practice for a GenAI-directed project
 
-Status: v0.6 · 2026-10-08 · approved by the Project Advisor on 2026-10-08; binding for an instance once its project lead adopts it (rules are invariants; every technology is chosen by each project in its design phase; sandbox repositories before the product repositories) · author: Nicolas Guelfi, with Claude
+Status: v0.7 · 2026-10-08 · approved by the Project Advisor on 2026-10-08; binding for an instance once its project lead adopts it (rules are invariants; every technology is chosen by each project in its design phase; sandbox repositories before the product repositories) · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a product run with this method is built, tested, delivered and
 > run, and how people and AI sessions work together on it. Each technical chapter (3–12)
@@ -26,7 +26,7 @@ Status: v0.6 · 2026-10-08 · approved by the Project Advisor on 2026-10-08; bin
 
 ## 0. Purpose, scope, how to read
 
-**For whom.** The engineers who build the product (the project lead decides the technical
+**For whom.** The developers who build the product (the project lead decides the technical
 design), the Project Advisor who recommends and advises, and the Claude sessions that work
 with them (they load this document through the [Claude kit](../claude-kit/README.md)).
 
@@ -123,11 +123,14 @@ nothing — will find it.
   recommendation, a status badge (🟢 decided, 🔴 pending, 🟡 provisional). Each register
   opens with a dashboard of pending and decided records. Documents state outcomes and
   link to the record; **no document carries its own list of open questions**.
-- **Design phase.** The first week opens the design decisions the product needs (the
-  twelve decisions of `design-phase` §2, in order) from the drivers collected with the
-  team; the project lead decides them, the Project Advisor advises (kit skill
-  `design-phase`, ch. 15). Until they are decided, the gates script of each product
-  repository is a stub that passes and says so.
+- **Design phase.** The first week opens the twelve design decisions the product needs
+  — in order: repository layout, hosting, environments and promotion path, stack and
+  language, data store, identity, infrastructure as code, continuous integration, test
+  tools, secrets, dependency updates, monitoring (`DD` records; their mapping to the
+  chapters in Appendix A) — from the drivers collected with the team; the project lead
+  decides them, the Project Advisor advises (kit skill `design-phase`, ch. 15). Until
+  they are decided, the gates script of each product repository is a stub that passes
+  and says so.
 - **Cockpit.** Each instance's `instances/<instance>/BRIEFING.md` is the Project Advisor's single entry point:
   §1 what awaits him (his decisions, the points where the team expects his advice), with
   links; §1b what awaits the team; §2 what changed since his last acknowledgement; §3
@@ -238,7 +241,7 @@ its load is steady and cost mattered.
 ## 5. Environments and their independence
 
 **In short.** Several copies of the product — at least a **development** copy per
-engineer, **one rehearsal environment** (identical in shape to production) and
+developer, **one rehearsal environment** (identical in shape to production) and
 **production**. A mistake in one must not be able to reach another. How many
 environments, their names and who promotes to each are decided in the design phase
 (`DD` environments and promotion path).
@@ -353,7 +356,7 @@ that fails a gate cannot be merged or promoted.
   personal field outside the allowed list).
 - **Local gates identical to CI**: one command (`./gates.sh`, installed by the kit; a
   stub that passes during the design phase) runs exactly what CI runs (`bash ./gates.sh`).
-  An engineer — or a Claude session — runs it before pushing.
+  A developer — or a Claude session — runs it before pushing.
 - **Generated artefacts are checked**: if a file is generated (API client, schema
   documentation), CI regenerates it and fails when the committed copy differs.
 - **Cross-validation oracle**: a computation that matters (an indicator, an optimisation
@@ -529,9 +532,9 @@ checks (gates and measurements).
   Code session opened on claude.ai (web or cloud) sees one repository only — the one it
   was started on — so the method's cross-repository steps run from a local session.
 - **Sandbox repositories before the product repositories exist.** Until the design
-  phase has decided the repository layout (the first of the twelve decisions of
-  `design-phase` §2) and the product repositories are created, every team member works
-  in a personal, private, throwaway **sandbox repository** (`<project>-sandbox-<firstname>`,
+  phase has decided the repository layout (the first of the twelve design decisions,
+  ch. 2) and the product repositories are created, every team member (the project lead
+  or a developer) works in a personal, private, throwaway **sandbox repository** (`<project>-sandbox-<firstname>`,
   created on GitHub by the project lead or the Project Advisor, cloned next to `gse-light`
   and `<pm-repo>`) with the kit installed by the one command. Day 0, `/upskilling` and
   experiments happen there; the project lead's sandbox is where the design phase runs.
@@ -575,7 +578,7 @@ checks (gates and measurements).
 - **Coding agent**: the kit targets Claude Code; independence from the agent is a goal of
   the method's follow-up.
 - **The Project Advisor's own kit** (`pm-kit/`, installed in each project-management repository's `.claude/`) is separate from the
-  engineers' kit: the skills `advisor` (the entry point), `meeting` (brief, record,
+  developers' kit: the skills `advisor` (the entry point), `meeting` (brief, record,
   transcribe, minutes with the tasks per participant), `slides`, `method-lesson`,
   `decision-record`, `cockpit-update`, `session-close`, `genai-onboarding`, and the
   read-only agents `delivery-auditor`, `minutes-verifier` and `design-reviewer`. It
@@ -621,7 +624,7 @@ done with the choices of the design phase; none of them names a tool here.
 |---|---|---|
 | Day 0 (between the kick-off and W1) | Each member's sandbox repository created and cloned next to `gse-light` and the project-management repository; kit installed by the one command; `/upskilling` run; first journal entry written | Person (project lead or Project Advisor creates; each member installs); Ask Claude (`upskilling`, `session-close`) |
 | Day 0 | Registers and cockpit in place in `instances/<instance>/` | Ask Claude (pm-kit) |
-| **W1 · design phase** | **Drivers collected, `DD` records opened and decided with the team** (the twelve decisions of `design-phase` §2, in order) — skill `design-phase`, run in the project lead's sandbox; the Project Advisor advises, the project lead decides | Person (team, project lead); Ask Claude (`design-phase`) |
+| **W1 · design phase** | **Drivers collected, `DD` records opened and decided with the team** (the twelve design decisions of ch. 2, in order) — skill `design-phase`, run in the project lead's sandbox; the Project Advisor advises, the project lead decides | Person (team, project lead); Ask Claude (`design-phase`) |
 | W1 · once the repository layout is decided | Product repositories created; kit installed in each (`install.sh` from inside the clone); `CLAUDE.md` filled with the instance and the project-management repository; sandboxes may be deleted | Person (project lead); Automatic (`install.sh`) |
 | W1 | Day-0 CI green in each product repository: `./gates.sh` is a stub that prints "no gates yet: design phase in progress" and passes, run on every pull request and on `main` | Automatic (CI) |
 | After the design phase | Gates script filled from the `DD` records (lint, types, tests, migrations, dependency scan, documentation checks); runs locally and in CI, empty test suite green | Ask Claude; Automatic (CI) |

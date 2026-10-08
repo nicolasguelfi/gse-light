@@ -1,14 +1,14 @@
 # 15 — The Project Advisor: the method and where the Advisor steps in
 
-Status: draft · v0.5 · 2026-10-08 · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
+Status: draft · v0.6 · 2026-10-08 · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a project is run in a few weekly sprints with generative AI under
 > this method, who does each action (a person, a person asking Claude, or Claude and the CI
 > on their own), and every point where the Project Advisor (the person named in the
 > instance's roles record) takes part.
-> The team runs the project; the Advisor gives conceptual feedback and advice, owns the AI
-> working method and its kit, and now and then brings a technical proposal prepared with
-> Claude or drawn from his experience. Each instance records its own version of these
+> The team runs the project; the Advisor is not the project manager: he gives conceptual
+> feedback and advice, owns the AI working method and its kit, and now and then brings a
+> technical proposal prepared with Claude or drawn from his experience. Each instance records its own version of these
 > roles in its project register and its presentations in
 > `instances/<instance>/meetings/README.md`.
 > `instances/<instance>/` designates the project's folder in its private project-management
@@ -30,8 +30,8 @@ theirs:
 | Who | Does | Decides |
 |---|---|---|
 | **Product owner** (client side) | says what the product must achieve; gives real examples and data of the need; accepts each delivered piece | the vision; acceptance of increments; production; cloud and client budget |
-| **Project lead** (lead engineer) | runs the weeks: plans each week, reviews code, keeps the sprint record; leads the design phase | sprints, priorities, tickets, the design decisions (`DD`), promotion to the rehearsal environment |
-| **Engineers** | build the product with Claude Code as working partner; collect the examples | implementation within their tickets |
+| **Project lead** (lead developer) | runs the weeks: plans each week, reviews code, keeps the sprint record; leads the design phase | sprints, priorities, tickets, the design decisions (`DD`), promotion to the rehearsal environment |
+| **Developers** | build the product with Claude Code as working partner; collect the examples | implementation within their tickets |
 | **Data protection contact** (client side) | guards personal data | any new flow of personal data |
 | **Project Advisor** (named in the roles record) | conceptual feedback and advice; owns the AI method and the kit; may propose tickets and priorities — the project lead decides | the method and the kit |
 | **Claude sessions** | propose, measure, write, test; act only on a go-ahead | nothing on their own |
@@ -61,8 +61,8 @@ any requirement is written (principle 1).
 Claude is fast, tireless, has no memory between sessions and tends to sound sure. The
 method gives it **memory** (files), **rules** (instructions) and **checks** (tests,
 gates and measurements). Today's detail: [reference design ch. 1, 2, 8, 9, 13](00-reference-design.md#1-guiding-principles);
-for engineers, the [starting guide](../claude-kit/ONBOARDING.md). The seven principles below
-are those of the reference design ch. 1 and of the engineers' kit.
+for developers, the [starting guide](../claude-kit/ONBOARDING.md). The seven principles below
+are those of the reference design ch. 1 and of the developers' kit.
 
 | # | Principle | In practice | Who |
 |---|---|---|---|
@@ -98,7 +98,7 @@ when the team is full time.
 | **W-1 · framing** | names, vision draft, licences; presents the method: its rules ([reference design §0](00-reference-design.md#0-purpose-scope-how-to-read)) are adopted by the project lead at the kick-off; no technology is in them — the team chooses it in W1; recommends where the project-management repository lives | — | Ask Claude: prepares the kick-off supports |
 | **W-1 · kick-off** | presents the method, its principles and the kit; leads the round table "where do we start" on the skills grid ([upskilling](20-upskilling.md)) | the project lead adopts the reference design's rules; plans the design phase of W1; asks the client for the examples | Ask Claude: kick-off slides (`slides`) |
 | **W-1 · between the kick-off and W1** | advises asynchronously through 🔴 records flagged "advice asked" | each member works in a personal, private, throwaway **sandbox repository** with the kit installed (`<project>-sandbox-<firstname>`, created on GitHub by the project lead or the Advisor, cloned next to `gse-light` and the project-management repository): Day 0, `/upskilling`, experiments, needs analysis; the product repositories do not exist yet | Ask Claude (in the sandbox): `upskilling`; journal entries and new 🔴 records go to the project-management repository through the skills |
-| **W1 · design phase** | advises on the drivers and the options; decides nothing | the team with the project lead collects the drivers (facts and constraints) and decides the `DD` records (the twelve decisions of `design-phase` §2, in order); the first, repository layout, names the real product repositories, which then receive the kit; the phase runs in the project lead's sandbox until then | Ask Claude: `design-phase` skill (opens the records with their options; never proposes a stack as default) |
+| **W1 · design phase** | advises on the drivers and the options; decides nothing | the team with the project lead collects the drivers (facts and constraints) and decides the twelve `DD` records, in order: repository layout, hosting, environments and promotion path, stack and language, data store, identity, infrastructure as code, continuous integration, test tools, secrets, dependency updates, monitoring; the first, repository layout, names the real product repositories, which then receive the kit; the phase runs in the project lead's sandbox until then | Ask Claude: `design-phase` skill (opens the records with their options; never proposes a stack as default) |
 | **Each week · day before the meeting** | reads a one-page brief | keeps sprint file, linked tickets, journal | Ask Claude (Advisor's session): measures and writes the brief |
 | **Each week · meeting (2 h)** | conceptual feedback on conduct and deliverables; may propose tickets and priorities (the project lead decides) | shows what was delivered; the project lead presents the next sprint | — |
 | **Each week · same evening** | validates and sends the minutes | takes its tasks into the next sprint | Ask Claude: transcript, draft minutes, checked against the recording |
@@ -106,9 +106,10 @@ when the team is full time.
 | **Last week · hand-over** | final retrospective; lessons kept in the method | runbooks, hand-over document | Ask Claude: hand-over document, last journal entry |
 | **At any time** | decides changes to the method and the kit | proposes a lesson when something did not fit | Automatic: records the lesson, dated, once agreed |
 
-Team members never open Claude Code in the project-management repository: the sessions
-opened there are the Project Advisor's (pm-kit). Their journal entries and new 🔴
-records reach it through the kit's skills, from a sandbox or a product repository.
+Team members (the project lead or a developer) never open Claude Code in the
+project-management repository: the sessions opened there are the Project Advisor's
+(pm-kit). Their journal entries and new 🔴 records reach it through the kit's skills,
+from a sandbox or a product repository.
 
 ## 5. The weekly meeting
 

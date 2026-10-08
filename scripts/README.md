@@ -1,6 +1,6 @@
 # scripts/ — the method's scripts, and how to prepare a machine
 
-Status: v0.1 · 2026-10-08 · for the Project Advisor first; §2 also holds for every team member
+Status: v0.2 · 2026-10-08 · for the Project Advisor first; §2 also holds for every team member (the project lead or a developer)
 
 These scripts are run **from a project-management repository** `<pm-repo>` (the private
 repository that holds the project's decisions, requirements, plans, minutes and journal, with

@@ -6,7 +6,7 @@
 # was committed without the executable bit (a Git Bash clone on Windows does that).
 # Day 0: gates.sh is a stub that prints "no gates yet" and exits 0, so this workflow is green
 # on an empty repository. Services, toolchain and extra branches: fill after the design phase
-# from its design decisions (DD records — the twelve decisions of `design-phase` §2, in order:
+# from its design decisions (DD records — the twelve design decisions of the kit skill `design-phase`, in order:
 # environments and promotion path, stack and language, data store, continuous integration) —
 # in the same commit as gates.sh.
 name: gates

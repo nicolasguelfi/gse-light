@@ -1,7 +1,7 @@
 # <pm-repo> — instructions for Claude
 
 This **private** repository holds the project management of the project(s) run with the
-method **gse-light**: one folder per project in `instances/<name>/` (cockpit, registers,
+method **gse-light**: one folder per project in `instances/<instance>/` (cockpit, registers,
 requirements, planning, meetings, journal). **No product code here.** The method itself —
 reference design, templates, scripts, the kits — lives in the **public** repository
 `gse-light`, cloned next to this one (`../gse-light`); its Claude artefacts are copied into
@@ -11,8 +11,10 @@ reference design, templates, scripts, the kits — lives in the **public** repos
 agents and documents, `instances/<instance>/` means the active instance's folder. At the start
 of a session, read the active instance's `README.md` for its project, phase, people **and the
 list of its repositories**. **This repository is the project's overall view**: a product may
-span several repositories (repository layout, the first of the twelve decisions of
-`design-phase` §2, taken in the design phase); the product kit is installed in each, and each
+span several repositories (repository layout, the first of the twelve decisions of the
+design phase — repository layout, hosting, environments and promotion path, stack and
+language, data store, identity, infrastructure as code, continuous integration, test tools,
+secrets, dependency updates, monitoring); the product kit is installed in each, and each
 one's sessions write their decisions and journal here. For cross-repository work, Claude Code
 is opened here with the product repositories added (`claude --add-dir ../<repo>`, or
 `permissions.additionalDirectories` in `.claude/settings.json`).
@@ -24,17 +26,23 @@ Nicolas Guelfi (NG), author of gse-light, is the **Project Advisor** of each ins
 its project manager: he gives feedback and advice on project conduct and deliverables, owns
 the generative-AI method and the Claude kits, and takes part in requirements choices — two
 hours of meeting and two hours of preparation per week. **Sessions opened here are his.**
-Team members work from their sandbox or product repository, whose kit writes their journal
-entries and new 🔴 records here (the product kit's `session-close` and `decision-record`
-commit and push those paths only); the **project lead** also writes `planning/sprints/`.
-Until the product repositories exist, every team member works in a personal, private,
-throwaway **sandbox repository** (`<project>-sandbox-<firstname>`, created on GitHub by the
-project lead or the Project Advisor, cloned next to `gse-light` and this repository, the
-product kit installed by its one command): Day 0, `/upskilling` and experiments happen there.
-The project lead's sandbox is also where the **design phase runs in W1** (skill
-`design-phase`: drivers → `DD` records here; its first decision, repository layout, names the
-product repositories, which then receive the kit; gates, CI and `CLAUDE.md` filled there).
-Roles per instance in `instances/<instance>/governance/10-roles-and-go-aheads.md`.
+**Who is who** — the client, its product owner and data protection contact, the project
+lead (lead developer), the developers ("team member" means the project lead or a
+developer), the Project Advisor, the Claude sessions — is written once per instance, with
+the names, in `instances/<instance>/README.md` (People) and in the roles record
+`instances/<instance>/governance/10-roles-and-go-aheads.md` (who decides what, who gives
+which go-ahead, who hosts this repository); use those names, never "engineer", "tutor" or
+"mentor". Team members work from their sandbox or product repository, whose kit writes
+their journal entries and new 🔴 records here (the product kit's `session-close` and
+`decision-record` commit and push those paths only); the **project lead** also writes
+`planning/sprints/`. Until the product repositories exist, every team member works in a
+personal, private, throwaway **sandbox repository** (`<project>-sandbox-<firstname>`,
+created on GitHub by the project lead or the Project Advisor, cloned next to `gse-light` and
+this repository, the product kit installed by its one command): Day 0, `/upskilling` and
+experiments happen there. The project lead's sandbox is also where the **design phase runs
+in W1** (skill `design-phase`: drivers → `DD` records here; its first decision, repository
+layout, names the product repositories, which then receive the kit; gates, CI and
+`CLAUDE.md` filled there).
 
 ## Standing rules
 
@@ -107,7 +115,7 @@ Roles per instance in `instances/<instance>/governance/10-roles-and-go-aheads.md
   AI-assisted engineering). Use the `session-close` skill.
 - **Secrets**: never write a secret, token or key in any repository. Point to where it
   lives (vault name, never its value).
-- **Language**: documents are in English (engineers' working language). NG may write
+- **Language**: documents are in English (the developers' working language). NG may write
   to you in French; answer him in French.
 
 ## Lessons learned here
@@ -132,7 +140,7 @@ this repository's own sessions join them. Keep each to two lines; move a rule up
   2026-10-07 — it blocked a session until stopped by hand.
 - Name who does each action — person, ask Claude, automatic — in every plan or support;
   presentations: dark, slides numbered n/N, proposal tone (`meeting` §1b) — 2026-10-07 — NG.
-- Lessons that hold for engineers are also copied into the kit template's "Lessons
+- Lessons that hold for developers are also copied into the kit template's "Lessons
   learned here" — 2026-10-07 — NG asked to carry the project's lessons into the kit.
 - Interact by QCM for simple questions and by review board (an artifact) for complex
   ones; always restate the problem and each option's advantages, drawbacks and
@@ -148,7 +156,7 @@ Run `python3 ../gse-light/scripts/check_docs.py` before committing, here and aft
 in `../gse-light` (from a product or sandbox repository, the repository to check is the
 argument: `python3 ../gse-light/scripts/check_docs.py ../<pm-repo>`): it checks internal
 links (including links to the method), the registers and the cockpit counts, that `.claude/`
-matches the pm-kit, and the **leak guard** — no term of `instances/<name>/private-terms.txt`
+matches the pm-kit, and the **leak guard** — no term of `instances/<instance>/private-terms.txt`
 in `gse-light`. CI runs the same script (`.github/workflows/docs.yml`).
 
 ## Git
@@ -157,7 +165,7 @@ Branch `main`, in this repository and in `../gse-light`. Commit coherent units o
 in its own repository; a method change is committed in `gse-light` first, then
 `../gse-light/pm-kit/install.sh .` refreshes `.claude/` here (commit that too). A session working for NG pushes only on
 his go-ahead (or when he asked for the push in the same request); a session working for
-the project lead or a developer pushes only that person's own commits (sprints for the lead;
+the project lead or a developer pushes only that person's own commits (sprints for the project lead;
 journal entries and new 🔴 records for anyone, through `session-close` and
 `decision-record`) and only on their go-ahead.
 

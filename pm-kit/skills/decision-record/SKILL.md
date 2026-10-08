@@ -9,7 +9,7 @@ Each instance keeps every decision and open question in one of three registers, 
 project-management repository — the private repository that holds `instances/<instance>/`
 (this repository if it has an `instances/` folder; from a product repository, the sibling
 folder named in its `CLAUDE.md`, `../<pm-repo>`; if absent, draft the record in your answer
-and ask the engineer to open a pull request there). The same holds from a personal
+and ask the developer to open a pull request there). The same holds from a personal
 **sandbox repository**, used while the product repositories do not exist yet: a sandbox
 holds no register — its records go to `../<pm-repo>` like any other. Paths below are
 relative to the project-management repository; the method is `../gse-light`:

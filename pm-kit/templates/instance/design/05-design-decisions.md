@@ -6,7 +6,7 @@ Status: living · v0.1 · <YYYY-MM-DD>
 > question awaiting an answer, lives here. Records use the `DD-NN` prefix. The method
 > names no technology: the options of each record are **derived from the project's
 > drivers** (`10-design-drivers.md`, written in the design phase of W1 by the project lead
-> with the kit skill `design-phase`), and the twelve decisions of `design-phase` §2 are
+> with the kit skill `design-phase`), and the twelve decisions of the design phase are
 > opened in order — repository layout, hosting, environments and promotion path, stack and
 > language, data store, identity, infrastructure as code, continuous integration, test
 > tools, secrets, dependency updates, monitoring. The

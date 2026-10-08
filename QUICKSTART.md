@@ -170,7 +170,7 @@ GitHub branch protection on `main`.
   - then [the Project Advisor's page](method/15-project-advisor.md) — your week: the brief, the meeting, the minutes;
   - your machine: [`scripts/README.md`](scripts/README.md).
 - **Install**: the pm-kit in `<pm-repo>`; your sessions run there, the only ones that do.
-- **Write**: the cockpit `BRIEFING.md`, the meeting briefs and minutes, your journal, the method in `gse-light`.
+- **Write**: the cockpit `BRIEFING.md`, the meeting briefs and the draft minutes with your feedback section (the project lead validates and sends them), your journal, the method in `gse-light`.
 - **Never**: decide in the project; write a client or project name in `gse-light` (the leak guard — `check_docs.py` — refuses it); write in a team member's name.
 
 ## All project long — when, what

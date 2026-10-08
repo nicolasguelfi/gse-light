@@ -89,7 +89,7 @@ pass" without it.
   (`<VENDOR>_API_KEY`, optional `<VENDOR>_BASE_URL` when a provider such as OpenRouter
   is in front). Code reads them through the project's single model helper, never
   directly. These rules hold whatever coding agent you use.
-- **Roles** (the instance's `governance/10-roles-and-go-aheads.md`): the project lead decides sprints, tickets and technical choices;
+- **Roles** (the instance's `governance/10-roles-and-go-aheads.md`): the project lead decides sprints, tickets and technical choices, and validates and sends the meeting minutes (his session writes the validation line in `../<pm-repo>/instances/<instance>/meetings/<date>/minutes.md` and pushes that file);
   the Project Advisor (named in that record) gives feedback and advice and owns this kit. Do
   not wait for the Project Advisor on a project decision — ask the project lead.
 - **Documentation with the code**: behaviour changed ⇒ document changed in the same commit.

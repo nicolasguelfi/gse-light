@@ -87,7 +87,7 @@ One reading path for everyone: the [reference design](method/00-reference-design
   - then [the Project Advisor's page](method/15-project-advisor.md) — your week: the brief, the meeting, the minutes, what you do by default and do not;
   - your machine: [`scripts/README.md`](scripts/README.md).
 - **Install**: the pm-kit in `<pm-repo>`; your sessions run there, with the product repositories as additional directories for the overall view.
-- **Write**: the cockpit `BRIEFING.md` (your one-page dashboard in the instance — what awaits you, what awaits the team, what changed; written by your sessions only), the meeting briefs and minutes, your journal, the method in `gse-light`.
+- **Write**: the cockpit `BRIEFING.md` (your one-page dashboard in the instance — what awaits you, what awaits the team, what changed; written by your sessions only), the meeting briefs and the draft minutes with your feedback section (the project lead validates and sends them), your journal, the method in `gse-light`.
 - **Never**: decide in the project (you give feedback and advice; the deciders are in the roles record); write a client or project name in `gse-light` (the leak guard refuses it); write in a team member's name.
 
 ## Layout

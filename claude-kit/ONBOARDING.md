@@ -135,6 +135,11 @@ then in the product repositories. In addition, you:
 - **write in `<pm-repo>`** directly: `instances/<instance>/planning/sprints/`, your journal entries, new 🔴
   records in the registers — never `instances/<instance>/BRIEFING.md` (the cockpit) nor
   the instance `README.md`: the Project Advisor's pages;
+- **validate and send the minutes** of each meeting with the Project Advisor, with Claude: your
+  session reads `../<pm-repo>/instances/<instance>/meetings/<date>/minutes.md` (the Advisor's
+  draft, with his feedback section), you correct what you must, it writes "validated by <your
+  name> on YYYY-MM-DD" in the header, commits and pushes that one file (it asks first); you send
+  the minutes to the participants (roles record §2);
 - **create the sandboxes** on GitHub, one per team member (`<project>-sandbox-<firstname>`,
   private), or ask the Project Advisor to;
 - **run the design phase in W1 (the first sprint), in your own sandbox** (skill
@@ -258,7 +263,7 @@ every pull request was reviewed by the agent and by you; no decision lives only 
 
 - **Read first**: the cockpit (your page), the journal entries and the weekly brief.
 - **Install**: the [pm-kit](../pm-kit/README.md) in `<pm-repo>`, never this kit; your sessions open there.
-- **Write**: the cockpit, the minutes, the instance `README.md` and the governance pages; push only on your own go-ahead.
+- **Write**: the cockpit, the draft minutes and your feedback section (the project lead validates and sends them), the instance `README.md` and the governance pages; push only on your own go-ahead.
 - **Never**: decide in the project (your advice is 🟡 at most); write a client or project name in `gse-light` (the leak guard refuses it); work in a team member's sandbox or product repository.
 
 ## 6. Checklists

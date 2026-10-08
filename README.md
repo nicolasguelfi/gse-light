@@ -7,7 +7,7 @@ a week. It is for everyone on such a project: read the common part below, then t
 of your role — what you read first, what you install, what you write, what you never do.
 The `gse-light` repository holds the method and its tools, **no project**: each project
 keeps its own management in a private repository cloned next to it. Author: Nicolas Guelfi,
-for [right-on-skill](https://rightonskill.odoo.com/). New to generative software engineering? Keep [GLOSSARY.md](GLOSSARY.md) open.
+for [right-on-skill](https://rightonskill.odoo.com/). New to generative software engineering? Keep [GLOSSARY.md](GLOSSARY.md) open. Looking for what exists? [ARTEFACTS.md](ARTEFACTS.md) is the catalogue: every artefact by type, what it does, who uses it, where it lives.
 
 **Words used here** (every other term: [GLOSSARY.md](GLOSSARY.md))
 
@@ -96,6 +96,7 @@ One reading path for everyone: the [reference design](method/00-reference-design
 |---|---|
 | [`method/`](method/) | [Reference design](method/00-reference-design.md) (rules as invariants, "how to choose" drivers), [the Project Advisor's page](method/15-project-advisor.md), [upskilling](method/20-upskilling.md), [tool landscape — examples](method/40-tool-landscape-examples.md) (dated, non-normative) |
 | [`GLOSSARY.md`](GLOSSARY.md) | Every term and acronym of the method in plain words, grouped by theme, for newcomers |
+| [`ARTEFACTS.md`](ARTEFACTS.md) | The catalogue: every artefact by type — method pages, templates, scripts, the two kits (skills, agents, installed files, tests), the claude.ai artefacts — with what it does, who uses it, where it lives and where it is installed; `check_docs` keeps it complete |
 | [`templates/`](templates/) | Decision record, design drivers, example record, requirement record, journal entry, meeting agenda and minutes, skills grid, slide deck, artifact shortcut |
 | [`scripts/`](scripts/) | `check_docs.py` (links, registers, kit copies, leak guard), `situation.py` and the session-start hook, `llm_call.py` (paid models, costs logged), `meeting/` (record, transcribe) — run from a project-management repository; preparing a machine (environment outside synced folders, ffmpeg, transcription): [`scripts/README.md`](scripts/README.md) |
 | [`pm-kit/`](pm-kit/README.md) | The Project Advisor's Claude artefacts for a project-management repository: skills `advisor` (single entry point), `meeting`, `slides`, `method-lesson`, `decision-record`, `cockpit-update`, `session-close`, `genai-onboarding`; agents `delivery-auditor`, `minutes-verifier`, `design-reviewer` |

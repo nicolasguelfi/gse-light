@@ -14,7 +14,8 @@ Checks:
      (links to https://github.com/nicolasguelfi/gse-light/blob/main/<path> are checked against ../gse-light);
   2. in gse-light: skills present both in pm-kit/skills and claude-kit/skills are identical, and the
      "Who is who" block (between `<!-- who-is-who:start -->` and `<!-- who-is-who:end -->`) is identical
-     in every page that carries it (one text, copied into each entry page so that each page reads alone);
+     in every page that carries it (one text, copied into each entry page so that each page reads alone),
+     and every skill, agent, template and script has a row in ARTEFACTS.md (the catalogue);
   3. in a project-management repository:
      - every register record has a status badge and a dashboard row, and every dashboard row a record;
      - in each instances/<instance>/, the pending counts in BRIEFING.md §3 match its registers' dashboards:
@@ -220,10 +221,38 @@ def check_who_is_who() -> None:
                               "one text, copied verbatim — see CLAUDE.md, entry documents)")
 
 
+def check_catalogue() -> None:
+    """Every skill, agent, template and script of gse-light has a row in ARTEFACTS.md (the
+    catalogue, NG 2026-10-08): its name between backticks or as a link text."""
+    cat = METHOD / "ARTEFACTS.md"
+    if not cat.exists():
+        errors.append("ARTEFACTS.md: missing (the catalogue of every artefact, by type)")
+        return
+    text = cat.read_text(encoding="utf-8")
+    expected: list[tuple[str, str]] = []
+    for kit in ("claude-kit", "pm-kit"):
+        for d in sorted((METHOD / kit / "skills").iterdir()):
+            if d.is_dir():
+                expected.append((f"{kit}/skills/{d.name}", d.name))
+        for f in sorted((METHOD / kit / "agents").glob("*.md")):
+            expected.append((f"{kit}/agents/{f.name}", f.stem))
+        for f in sorted((METHOD / kit / "templates").iterdir()):
+            expected.append((f"{kit}/templates/{f.name}", f.name))
+    for f in sorted((METHOD / "templates").iterdir()):
+        expected.append((f"templates/{f.name}", f.name))
+    for f in sorted((METHOD / "scripts").rglob("*")):
+        if f.is_file() and f.suffix in (".py", ".sh") and "__pycache__" not in f.parts:
+            expected.append((str(f.relative_to(METHOD)), f.name))
+    for path, name in expected:
+        if not any(s in text for s in (f"`{name}`", f"`{name}/`", f"[`{name}`]", f"/{name})", f"/{name}/)")):
+            errors.append(f"ARTEFACTS.md: no row for {path} (the catalogue lists every artefact)")
+
+
 def check_copies() -> None:
     if ROOT == METHOD:
         same_tree(METHOD / "claude-kit/skills", METHOD / "pm-kit/skills", "pm-kit/skills", "keep both identical", True)
         check_who_is_who()
+        check_catalogue()
     elif IS_PM:
         hint = "refresh: ../gse-light/pm-kit/install.sh ."
         same_tree(METHOD / "pm-kit/skills", ROOT / ".claude/skills", ".claude/skills", hint, False)

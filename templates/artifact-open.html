@@ -1,15 +1,18 @@
 <!doctype html>
 <!-- Template of the gse-light method (https://github.com/nicolasguelfi/gse-light), CC BY-NC 4.0. Documents made from this template carry no licence obligation: fill it in and keep the result as your own.
      Shortcut to a claude.ai artifact: double-click in the file explorer to open it.
-     Copy as `open.html` into the artifact's folder and replace {{TITLE}} and {{URL}} (both places). -->
+     Copy as `open.html` into the artifact's folder and replace {{TITLE}}, {{URL}} (both places) and {{VERSION}}
+     (the artifact's version and the date of its last publish, e.g. "v22 · 2026-10-08 22:07"); rewrite it at every publish:
+     the file's date in the explorer is then the artifact's. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>{{TITLE}}</title>
+<title>{{TITLE}} — {{VERSION}}</title>
 <meta http-equiv="refresh" content="0; url={{URL}}">
 </head>
 <body style="font-family: sans-serif; padding: 2rem">
 <p>Opening <a href="{{URL}}">{{TITLE}}</a> on claude.ai…</p>
+<p>Version: {{VERSION}} (rewritten at every publish; the file's date is the artifact's).</p>
 <p>If nothing happens, click the link. The artifact is private until its owner shares it.</p>
 </body>
 </html>

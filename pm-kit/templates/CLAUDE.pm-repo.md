@@ -77,7 +77,9 @@ layout, names the product repositories, which then receive the kit; gates, CI an
 - **Read the register before calling something a defect**: a measured deviation may be
   a decision already taken.
 - **Propagation**: after any change to a fact, grep the whole repository for the old
-  claim, not only the edited file.
+  claim, not only the edited file. The deck in force is part of it: `check_docs` warns when a file
+  named in a slide's "Source:" footer was committed after the slide; read those slides, republish
+  or confirm (NG, 2026-10-08, board r7).
 - **Cockpit discipline**: at the end of every session, refresh `instances/<instance>/BRIEFING.md` §1 (what
   awaits NG: his decisions and the points where the team expects his advice), §1b (what
   awaits the team), and add the session's dated bullets to §2 (the delta since the last

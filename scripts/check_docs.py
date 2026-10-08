@@ -23,6 +23,8 @@ Checks:
        WARN only when it holds more (new 🔴 opened by the team; the Project Advisor's next session
        refreshes the cockpit) — a developer's commit never turns CI red for that;
      - .claude/skills and .claude/agents are identical to gse-light's pm-kit (else: refresh with pm-kit/install.sh);
+     - deck freshness: for every slide of a deck in force (instances/<name>/meetings/<date>/slides/project/slides/),
+       WARN when a file named in its "Source:" footer was committed after the slide, or when the footer is missing;
      - leak guard: no file tracked in gse-light, and no commit message, matches a line of instances/<instance>/private-terms.txt
        (the terms stay in the private repository; gse-light is public). Limit: the guard knows only the
        terms each instance lists — a built-in generic list of client names would itself name the clients.
@@ -259,6 +261,70 @@ def check_copies() -> None:
         same_tree(METHOD / "pm-kit/agents", ROOT / ".claude/agents", ".claude/agents", hint, False)
 
 
+SOURCE_RE = re.compile(r"Source:\s*([^<]*)", re.I)
+FILE_EXT = (".md", ".json", ".py", ".sh", ".html", ".txt", ".csv", ".yml")
+
+
+def _git_time(repo: Path, rel: Path) -> int | None:
+    """Unix time of the last commit touching rel in repo; None when untracked."""
+    r = subprocess.run(["git", "-C", str(repo), "log", "-1", "--format=%ct", "--", str(rel)],
+                       capture_output=True, text=True)
+    out = r.stdout.strip()
+    return int(out) if out.isdigit() else None
+
+
+def _resolve_source(token: str, meeting_rel: Path) -> tuple[Path, Path] | None:
+    """One token of a slide's "Source:" footer → (repository, path), or None when it names no file
+    (a record id, a date, a sentence)."""
+    low = token.lower()
+    if "reference design" in low:
+        return METHOD, Path("method/00-reference-design.md")
+    first = token.strip().strip(".,;:()").split(" ")[0].strip("`*")
+    if not first or ("/" not in first and not first.endswith(FILE_EXT)):
+        return None
+    instance_rel = meeting_rel.parents[1]  # instances/<name>
+    candidates: list[tuple[Path, Path]] = []
+    if first.startswith("gse-light/"):
+        candidates.append((METHOD, Path(first[len("gse-light/"):])))
+    elif first.startswith(ROOT.name + "/"):
+        candidates.append((ROOT, Path(first[len(ROOT.name) + 1:])))
+    else:
+        candidates += [(ROOT, Path(first)), (ROOT, meeting_rel / first), (ROOT, instance_rel / first),
+                       (METHOD, Path(first)), (METHOD, Path("claude-kit") / first),
+                       (METHOD, Path("method") / first), (METHOD, Path("pm-kit") / first)]
+    for repo, rel in candidates:
+        if (repo / rel).exists():
+            return repo, rel
+    return None
+
+
+def check_deck_freshness() -> None:
+    """A deck in force (instances/<name>/meetings/<date>/slides/project/slides/*.html) states its
+    sources in each slide's "Source:" footer. When a source file was committed after the slide,
+    the slide may be stale: WARN (never FAIL) — read it, then republish or date it (NG,
+    2026-10-08, board r7). Uncommitted changes are not seen: commit, then check."""
+    for slide in sorted(ROOT.glob("instances/*/meetings/*/slides/project/slides/*.html")):
+        rel = slide.relative_to(ROOT)
+        meeting_rel = rel.parents[3]  # instances/<name>/meetings/<date>
+        text = slide.read_text(encoding="utf-8", errors="ignore")
+        m = SOURCE_RE.search(text)
+        if not m:
+            warnings.append(f"{rel}: no 'Source:' footer (every slide names the files it rests on)")
+            continue
+        slide_time = _git_time(ROOT, rel)
+        if slide_time is None:
+            continue  # new slide, not committed yet
+        for token in re.split(r"\s·\s|·", m.group(1)):
+            found = _resolve_source(token, meeting_rel)
+            if not found:
+                continue
+            repo, src = found
+            src_time = _git_time(repo, src)
+            if src_time and src_time > slide_time:
+                warnings.append(f"{rel}: its source {repo.name}/{src} changed after the slide "
+                                "(read the slide; republish it, or confirm it still holds)")
+
+
 def check_leaks() -> None:
     """No private term of an instance in the public method."""
     if not IS_PM or ROOT == METHOD:
@@ -298,6 +364,7 @@ def main() -> int:
     check_links()
     if IS_PM:
         check_registers()
+        check_deck_freshness()
     check_copies()
     check_leaks()
     for w in warnings:

@@ -12,7 +12,7 @@ Status: living · v0.1 · <YYYY-MM-DD>
 | Role | Holder | Decides | Does not decide |
 |---|---|---|---|
 | Project Advisor | <name> | the generative-AI method and the Claude kits; approval of the reference design as the project's recommended practice; spending on his own AI keys and the Claude Code licences he provides; his advice counts in requirements choices; he may propose tickets and priorities (the project lead decides) | sprints, priorities, tickets, promotions, cloud resources, the client's budget |
-| Project lead (lead developer) | <project lead> | sprint goals and plans, priorities inside the vision, tickets, the design phase (W1) and the technical choices inside a decided `DD`, code review, promotion to the rehearsal environment (environments and promotion path record), the team's sandbox repositories | acceptance of increments; production; new flows of personal data |
+| Project lead (lead developer) | <project lead> | sprint goals and plans, priorities inside the vision, tickets, the design phase (W1) and the technical choices inside a decided `DD`, code review, the validation and sending of the meeting minutes (with Claude), promotion to the rehearsal environment (environments and promotion path record), the team's sandbox repositories | acceptance of increments; production; new flows of personal data |
 | Product owner (client side) | <product owner> | what the product must do; acceptance of increments; promotion to production; cloud resources and the client's budget | technical design |
 | Developers | <developers> | implementation within their tickets | — |
 | Data protection contact | <data protection contact> | any new flow of personal data | — |
@@ -39,6 +39,7 @@ covers **one** action, not the next ones of the same kind.
 
 | Action | Go-ahead from |
 |---|---|
+| Validating and sending the meeting minutes (the validation line "validated by <name> on YYYY-MM-DD") | the project lead, with his Claude session; the Project Advisor's feedback section stays the Advisor's |
 | Promote to the rehearsal environment (environments and promotion path record) | project lead |
 | Promote to production | product owner, once the project lead confirms the gates are green |
 | Create, resize or delete cloud resources | product owner (the client's budget) |

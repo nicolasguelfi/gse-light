@@ -12,7 +12,7 @@ reads the minutes on GitHub.
 | `audio.m4a` (or imported audio) | `meeting record` / `meeting import` | **no** (git-ignored; stays in the Advisor's private storage, outside git) |
 | `meta.json`, `imports.jsonl` | the recording script | yes |
 | `transcript.md` (+ `.srt`, `.json`) | `meeting transcribe` | yes |
-| `minutes.md` | `meeting minutes`, verified by `minutes-verifier`, validated by the Project Advisor | yes |
+| `minutes.md` | `meeting minutes` (the Advisor's session: draft and his feedback section), verified by `minutes-verifier`, **validated and sent by the project lead** with his own session (roles record §2) | yes |
 | `cost.json` | `../gse-light/scripts/llm_call.py` when a paid model was used | yes |
 
 Minutes carry the tasks each participant took for the next sprint, each with the
@@ -26,7 +26,7 @@ step. It finds the next meeting date in `schedule.json` (`{"next": "YYYY-MM-DD"}
 the minutes step), else in the "Next meeting" section of the latest minutes, else as the
 earliest future folder; otherwise the session asks the Project Advisor. The meeting day is
 variable, fixed at each meeting for the next one. A chain is complete when `minutes.md`
-carries "validated by <the Project Advisor's name> on YYYY-MM-DD" — this shape, with any
+carries "validated by <the project lead's name> on YYYY-MM-DD" — this shape, with any
 name and the date, is what `situation.py` reads.
 
 ## Presentations and review boards

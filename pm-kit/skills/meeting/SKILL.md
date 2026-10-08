@@ -110,12 +110,16 @@ nothing to audit: skip `delivery-auditor`.
 3. **Verify.** Run the `minutes-verifier` agent: every task and decision must be backed
    by a transcript excerpt. Fix or remove what it flags; never argue with it in the
    minutes.
-4. **Validate with NG** — one QCM: send as is · change (he says what) · hold. On "send as
-   is", write "validated by <the Project Advisor's name> on YYYY-MM-DD" in the header of
-   `minutes.md` (his name, the date).
+4. **The Advisor's feedback section** — one QCM to the Project Advisor: as is · change (he says
+   what). Then commit and push the draft `minutes.md` (without a validation line) and tell him
+   the project lead is up.
+5. **Validation and sending — the project lead, with Claude** (NG, 2026-10-09; roles record §2).
+   From his own repository, his session reads `../<pm-repo>/instances/<instance>/meetings/<date>/minutes.md`,
+   he corrects what he must, and his session writes "validated by <the project lead's name> on
+   YYYY-MM-DD" in the header, commits and pushes that one file; he sends the minutes to the
+   participants himself. The Advisor's session never distributes them.
    <!-- keep this exact shape: situation.py reads "validated by … on YYYY-MM-DD", with any name -->
-   The skill never distributes the minutes itself; NG does, or asks for it explicitly.
-5. The tasks feed the project lead's next sprint file; point him to `minutes.md`.
+6. The tasks feed the project lead's next sprint file.
 
 ## Rules
 

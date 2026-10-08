@@ -84,7 +84,7 @@ called the product kit: the kit of the product and sandbox repositories.
   - `meeting brief` the day before — facts measured by the `delivery-auditor` agent, decisions awaiting, a timed agenda;
   - `record` or `import` on the day;
   - `transcribe`;
-  - `minutes` — checked by `minutes-verifier`, then validated by you: "validated by <your name> on YYYY-MM-DD" in the header;
+  - `minutes` — the draft and your feedback section, checked by `minutes-verifier`; then **the project lead validates and sends them** with his own session ("validated by <his name> on YYYY-MM-DD" in the header);
   - `decision-record` for what was decided;
   - `session-close` — journal entry, metrics row, cockpit.
 

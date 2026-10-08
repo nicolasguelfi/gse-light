@@ -2,7 +2,7 @@
 # Meeting — YYYY-MM-DD — week W<n> · minutes
 
 - **Participants:** <names and roles>
-- **Recording:** `audio.m4a` (<duration>), transcript by <engine>; minutes written by Claude, verified by `minutes-verifier`, validated by <the Project Advisor's name> on YYYY-MM-DD <!-- keep this shape, "validated by <name> on YYYY-MM-DD" (his name, the date): scripts/situation.py reads "validated by … on YYYY-MM-DD", with any name, to know the minutes are validated -->
+- **Recording:** `audio.m4a` (<duration>), transcript by <engine>; minutes written by Claude, verified by `minutes-verifier`, the Project Advisor's feedback section written by him; validated by <the project lead's name> on YYYY-MM-DD <!-- keep this shape, "validated by <name> on YYYY-MM-DD" (the validator named in the roles record — by default the project lead — and the date): scripts/situation.py reads "validated by … on YYYY-MM-DD", with any name, to know the minutes are validated -->
 
 - **Previous:** `instances/<instance>/meetings/YYYY-MM-DD/minutes.md`
 

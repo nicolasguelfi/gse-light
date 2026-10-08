@@ -91,8 +91,8 @@ Advisor who maintains it: read your section (§1–§4), then the contents table
 | Path | What it is | Installed as |
 |---|---|---|
 | [`INSTALL.md`](INSTALL.md) | **How to install**: the project lead with one command from inside the product clone (and commit), developers by cloning; shared vs personal files; prerequisites macOS / Windows; what `check.sh` says | read, not installed |
-| [`TEST-DAY0.md`](TEST-DAY0.md) | Rehearse a developer's Day 0 on your own machine, in a throwaway folder: 15 minutes for the install and checks; the first session adds 15 minutes of `/upskilling` and 30 minutes of work | read, not installed |
-| [`TEST-DAY0-fast.txt`](TEST-DAY0-fast.txt) | The same rehearsal as three blocks to copy and paste (reset, project lead, developer) | read, not installed |
+| [`TEST-DAY0.md`](TEST-DAY0.md) | Rehearse Day 0 on your own machine, by role, in a throwaway folder: the Project Advisor's own Day 0 (pm-kit scaffold, checks, meeting chain), every team member's sandbox, then the product repository for the project lead and for a developer; about 20 minutes for the commands, plus the interactive sessions | read, not installed |
+| [`TEST-DAY0-fast.txt`](TEST-DAY0-fast.txt) | The same rehearsal as five blocks to copy and paste (reset, Project Advisor, sandbox for every team member, project lead, developer) | read, not installed |
 | [`install.sh`](install.sh) | Installs or refreshes the kit; run from inside the product (or sandbox) repository: `../gse-light/claude-kit/install.sh <instance> [--pm <folder>]` | run from the product repository |
 | [`check.sh`](check.sh) | Day-0 check a developer runs from inside the product repository (read-only); compares `KIT_VERSION` with the last `gse-light` commit that touched `claude-kit/` and says whether the kit in `gse-light` is newer or your clone of `gse-light` is behind | run from the product repository |
 | [`ONBOARDING.md`](ONBOARDING.md) | **Starting guide for the team** (the project lead and the developers): who provides what, the method in one page, Day-0 install, first session step by step, the week's rhythm, one section per role, checklists | read, not installed |

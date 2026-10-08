@@ -90,6 +90,7 @@ called the product kit: the kit of the product and sandbox repositories.
 
   Your sessions write the cockpit `BRIEFING.md`, the minutes, the instance `README.md`, your journal entries, and the 🟢 of the records you decide (the method, the kits, your own spending); a lesson learned goes through `method-lesson`.
 - **Cross-repository work**: open Claude Code in `<pm-repo>` with the product repositories added — `claude --add-dir ../<repo-a> --add-dir ../<repo-b>`, or list them in `permissions.additionalDirectories` of `.claude/settings.json` — to read code, pull requests and gates of every repository of the project from the overall view. A Claude Code session on claude.ai (web or cloud) sees one repository only; the overall view is a local session.
+- **Check**: after any change to the pm-kit or to the scripts, replay your block of the Day-0 rehearsal — [`claude-kit/TEST-DAY0.md`](../claude-kit/TEST-DAY0.md) §1 (the pm-kit scaffold in a throwaway folder, `check_docs`, the situation, one dry-run model call, the meeting chain on a ten-second recording).
 - **Never**: write a sprint, a ticket or code; decide in the project (sprints, priorities, promotions, the client's budget: the roles record names who does); turn 🟢 a record whose decider is someone else; push without having run `check_docs`; write a client's or project's name in `gse-light` (the leak guard refuses it).
 
 ## If you are the project lead or a developer

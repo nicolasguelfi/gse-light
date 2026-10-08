@@ -192,7 +192,7 @@ GitHub repository into an isolated container and sees neither `../gse-light` nor
 
 ## 6. If something is missing
 
-To rehearse §2 and §3 on your own machine first: [TEST-DAY0.md](TEST-DAY0.md).
+To rehearse your role's Day 0 on your own machine first (by role — Project Advisor, project lead, developer): [TEST-DAY0.md](TEST-DAY0.md).
 
 | `check.sh` says | Do |
 |---|---|

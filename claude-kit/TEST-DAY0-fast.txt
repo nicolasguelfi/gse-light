@@ -1,10 +1,12 @@
-# TEST-DAY0 in one paste — v0.5 · 2026-10-08 · same steps as TEST-DAY0.md §0–§2 and §4
+# TEST-DAY0 in one paste — v0.6 · 2026-10-08 · same steps as TEST-DAY0.md §0–§4, by role
 # Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light) · CC BY-NC 4.0 (LICENSE.md)
-# Needs: git, python3, a bash terminal (Git Bash on Windows). About 15 minutes for the three blocks.
+# Needs: git, python3, a bash terminal (Git Bash on Windows); block 1 also ffmpeg (macOS) for a ten-second recording.
 # Copy ONE block at a time into a bash or zsh terminal, in order. Run outside any synced folder.
-# The repositories, three side by side per person: gse-light (cloned from GitHub); remote-pm.git and
-# remote-product.git (local: stand for the project-management repository and the product — or sandbox —
-# repository); lead/… and dev/… (their clones).
+# Who runs what: Project Advisor = 0, 1 ; project lead = 0, 1, 2, 3 ; developer = 0, 1, 2, 4.
+# Block 1 first whatever your role: it creates remote-pm.git, the project-management repository of the test.
+# The repositories, side by side per person: gse-light (cloned from GitHub); remote-pm.git, remote-sandbox-<name>.git,
+# remote-product.git (local: stand for the project-management, sandbox and product repositories on GitHub);
+# advisor/…, <name>/…, lead/…, dev/… (their clones).
 # check.sh exits 1 when a line is MISSING: it is followed by ";" (not "&&") so the
 # block goes on — a "&&" there stopped the project-lead block before the commit (found in a rehearsal, 2026-10-07).
 
@@ -12,20 +14,66 @@
 # 0. RESET — deletes ~/gse-test only (the throwaway folder of this test), then the settings
 INST=demo
 TEST=~/gse-test
+NAME=alex                      # block 2: your first name in lower case
 rm -rf "$TEST"
 
 
-# 1. PROJECT LEAD — instance folder in lead/pm; kit installed in lead/product with ONE command, committed, pushed
-# expected: two "cloned an empty repository" warnings; install.sh finds ../gse-light and lead/pm by itself
-# (else: install.sh "$INST" --pm pm); MISSING kit committed + WARN .env, exit 1; bash ./gates.sh says "no gates yet"
-mkdir -p "$TEST/lead" && \
+# 1. PROJECT ADVISOR — remote-pm.git; advisor/pm with the pm-kit and the instance scaffold, checked, pushed; .env; dry run; ten-second recording; transcription
+# expected: one "cloned an empty repository" warning; pm-kit/install.sh lists 8 skills and 3 agents and copies the scaffold;
+# check_docs ok; situation.py "next meeting unknown" + "No .env yet"; llm_call dry run shows "python" and "key_present": false;
+# meeting.sh devices lists your audio inputs (macOS); the recording writes audio.m4a + meta.json; transcribe.py writes transcript.md
+# or says "no local engine" with the install line (then: scripts/README.md §1)
+mkdir -p "$TEST/advisor" && \
 cd "$TEST" && \
 git init -q --bare remote-pm.git && \
-git init -q --bare remote-product.git && \
-cd lead && \
+cd advisor && \
 git clone -q https://github.com/nicolasguelfi/gse-light.git && \
 git clone -q ../remote-pm.git pm && \
-(cd pm && mkdir -p "instances/$INST" && echo "# $INST" > "instances/$INST/README.md" && git add . && git commit -q -m "Instance $INST" && git push -q origin HEAD) && \
+cd pm && \
+../gse-light/pm-kit/install.sh . "$INST" && \
+printf 'client-%s\nproject-%s\n' "$INST" "$INST" > "instances/$INST/private-terms.txt" && \
+python3 ../gse-light/scripts/check_docs.py && \
+git add -A && git commit -q -m "Instance $INST: pm-kit and scaffold" && git push -q origin HEAD && \
+python3 ../gse-light/scripts/situation.py && \
+cp .env.example .env && \
+python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt test --dry-run && \
+../gse-light/scripts/meeting/meeting.sh devices && \
+../gse-light/scripts/meeting/meeting.sh start 2026-01-01 && sleep 10 && ../gse-light/scripts/meeting/meeting.sh stop && \
+{ python3 ../gse-light/scripts/meeting/transcribe.py "instances/$INST/meetings/2026-01-01"; echo "transcribe exit $? (0 with a local engine; 1 and the install line without)"; } && \
+echo "PROJECT ADVISOR done: advisor/pm checked and pushed to remote-pm.git"
+
+
+# 2. EVERY TEAM MEMBER (project lead too) — remote-sandbox-$NAME.git; $NAME/{gse-light,pm,sandbox}; the kit installed by YOU in the sandbox, committed, pushed; .env; check; gates stub
+# expected: one "cloned an empty repository" warning; install.sh finds ../gse-light and pm by itself (else: install.sh "$INST" --pm pm);
+# check.sh only OK lines, exit 0; bash ./gates.sh says "no gates yet"
+mkdir -p "$TEST/$NAME" && \
+cd "$TEST" && \
+git init -q --bare "remote-sandbox-$NAME.git" && \
+cd "$NAME" && \
+{ [ -d gse-light ] || git clone -q https://github.com/nicolasguelfi/gse-light.git; } && \
+{ [ -d pm ] || git clone -q ../remote-pm.git pm; } && \
+git clone -q "../remote-sandbox-$NAME.git" sandbox && \
+cd sandbox && \
+git commit -q --allow-empty -m init && \
+git push -q origin HEAD && \
+../gse-light/claude-kit/install.sh "$INST" && \
+git add CLAUDE.md .claude .gitattributes gates.sh .env.example .gitignore .github && \
+git commit -q -m "Install the Claude kit ($INST)" && \
+git push -q origin HEAD && \
+cp .env.example .env && \
+{ ../gse-light/claude-kit/check.sh; echo "exit $? (0 expected)"; } && \
+bash ./gates.sh && \
+echo "SANDBOX done for $NAME: kit committed and pushed to remote-sandbox-$NAME.git"
+
+
+# 3. PROJECT LEAD — W1: remote-product.git; the kit installed ONCE in lead/product, committed, pushed
+# expected: one "cloned an empty repository" warning; MISSING kit committed + WARN .env, exit 1 before the commit; bash ./gates.sh says "no gates yet"
+mkdir -p "$TEST/lead" && \
+cd "$TEST" && \
+git init -q --bare remote-product.git && \
+cd lead && \
+{ [ -d gse-light ] || git clone -q https://github.com/nicolasguelfi/gse-light.git; } && \
+{ [ -d pm ] || git clone -q ../remote-pm.git pm; } && \
 git clone -q ../remote-product.git product && \
 cd product && \
 git commit -q --allow-empty -m init && \
@@ -39,15 +87,15 @@ git push -q origin HEAD && \
 echo "PROJECT LEAD done: kit committed and pushed to remote-product.git"
 
 
-# 2. DEV — clone gse-light, remote-pm.git and remote-product.git into dev/, .env, check
+# 4. DEVELOPER — W1: clone remote-product.git into dev/ (the kit comes with it), .env, check
 # expected: only OK lines (settings, gates.sh, .gitattributes, kit version current), exit 0;
 # then git status shows nothing (.env ignored). Outside this rehearsal, "kit version" can WARN:
 # "the kit in gse-light is newer" (the project lead refreshes with install.sh) or "your clone of
 # gse-light is behind" (git pull in your gse-light).
 mkdir -p "$TEST/dev" && \
 cd "$TEST/dev" && \
-git clone -q https://github.com/nicolasguelfi/gse-light.git && \
-git clone -q ../remote-pm.git pm && \
+{ [ -d gse-light ] || git clone -q https://github.com/nicolasguelfi/gse-light.git; } && \
+{ [ -d pm ] || git clone -q ../remote-pm.git pm; } && \
 git clone -q ../remote-product.git product && \
 cd product && \
 cp .env.example .env && \
@@ -56,6 +104,7 @@ echo "--- git status of dev/product (must be empty):" && \
 git status --short
 
 
-# 3. DEV — first session (interactive, not part of the paste; 15 minutes of /upskilling, 30 minutes of work): in dev/product run
-#    claude     then type /  and  /upskilling ; ask "what is in ../pm/instances/demo/?" (read-only access; any git push is asked first)
-# 4. CLEAN UP afterwards:  rm -rf ~/gse-test   (and ~/.claude/upskilling/demo if /upskilling wrote one)
+# 5. FIRST SESSION (interactive, not part of the paste): Project Advisor — claude in advisor/pm, say "go";
+#    project lead and developer — claude in $NAME/sandbox (or lead/product, dev/product): type /  then  /upskilling ;
+#    ask "what is in ../pm/instances/demo/?" (read-only access; any git push is asked first)
+# 6. CLEAN UP afterwards:  rm -rf ~/gse-test   (and ~/.claude/upskilling/demo if /upskilling wrote one)

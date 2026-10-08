@@ -26,7 +26,10 @@ fills, and a CI workflow that runs it (`bash ./gates.sh`).
 **Prerequisites**: Git, a bash terminal (Git Bash on Windows; the scripts keep Unix line
 endings there), `python3`, Claude Code signed in with the invited account, access on GitHub
 to `<pm-repo>` (from whoever hosts it) and to `<product-repo>` or your sandbox (from the
-project lead).
+project lead). The method needs no Python environment on your machine; the product's own
+environments follow one rule on a machine with a synced folder (Dropbox, OneDrive…): the
+environment lives in `~/.venvs/<name>`, the repository holds a link — commands in
+[`scripts/README.md`](scripts/README.md) §0.
 
 ## Day 0 — three lanes
 

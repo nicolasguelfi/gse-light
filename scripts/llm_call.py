@@ -53,6 +53,32 @@ def pm_root() -> Path:
 
 
 PM = pm_root()
+
+
+def prefer_pm_venv() -> None:
+    """Re-run the current script with the project-management repository's own Python when it
+    has one: `<pm-repo>/.venv`, a link to an environment kept outside any synced folder
+    (set-up in scripts/README.md). Nothing happens without that link, or when already inside
+    it. Only the scripts that need third-party packages or tools call this (llm_call,
+    meeting/transcribe); check_docs, situation and session_start use the standard library."""
+    if os.environ.get("GSE_PM_VENV") == "1":
+        return
+    venv = PM / ".venv"
+    candidates = (venv / "bin" / "python3", venv / "Scripts" / "python.exe")
+    venv_py = next((p for p in candidates if p.exists()), None)
+    if venv_py is None:
+        return
+    try:
+        # Inside an environment, sys.prefix is that environment's folder (the interpreter file
+        # itself is usually a link to the base Python, so it is not what to compare).
+        if Path(sys.prefix).resolve() == venv.resolve():
+            return
+    except OSError:
+        return
+    os.environ["GSE_PM_VENV"] = "1"
+    os.execv(str(venv_py), [str(venv_py), *sys.argv])
+
+
 COST_LOG: Path  # set after load_env(): the active instance's journal (see instance_dir)
 COST_COLUMNS = ["timestamp", "provider", "model", "input_tokens", "output_tokens",
                 "est_cost_eur", "purpose", "output"]
@@ -192,6 +218,7 @@ DEFAULT_MODEL_VAR = {"gemini": "GEMINI_MODEL", "openrouter": "OPENROUTER_MODEL"}
 
 
 def main() -> int:
+    prefer_pm_venv()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--provider", required=True, choices=sorted(PROVIDERS))
     ap.add_argument("--model", help="defaults to GEMINI_MODEL / OPENROUTER_MODEL from .env")
@@ -219,6 +246,7 @@ def main() -> int:
     if a.dry_run:
         print(json.dumps({"provider": a.provider, "model": model, "prompt_chars": len(prompt),
                           "files": [str(f) for f in a.file], "system": bool(a.system),
+                          "python": sys.executable,
                           "key_present": bool(env.get("GOOGLE_API_KEY" if a.provider == "gemini" else "OPENROUTER_API_KEY")),
                           "cost_log": str(COST_LOG.relative_to(PM))}, indent=2))
         return 0

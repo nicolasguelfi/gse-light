@@ -26,6 +26,9 @@ Advisor of an instance is named in its roles record); the method itself needs on
 
 ## Start a project
 
+The machine first, once: [`scripts/README.md`](../scripts/README.md) (ffmpeg, `uv`, the
+Python environment in `~/.venvs/<pm-repo>` linked as `.venv`, `.env`). Then:
+
 ```bash
 cd ~/dev/<client>                                          # parent folder
 git clone https://github.com/nicolasguelfi/gse-light.git   # the gse-light repository (this method)

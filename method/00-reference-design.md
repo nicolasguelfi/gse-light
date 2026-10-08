@@ -1,6 +1,6 @@
 # 00 — Reference design: infrastructure, continuous integration and AI practice for a GenAI-directed project
 
-Status: v0.7 · 2026-10-08 · approved by the Project Advisor on 2026-10-08; binding for an instance once its project lead adopts it (rules are invariants; every technology is chosen by each project in its design phase; sandbox repositories before the product repositories) · author: Nicolas Guelfi, with Claude
+Status: v0.8 · 2026-10-09 · approved by the Project Advisor on 2026-10-08, amended on 2026-10-09 (review of a change: evidence, not lines — ch. 8); binding for an instance once its project lead adopts it (rules are invariants; every technology is chosen by each project in its design phase; sandbox repositories before the product repositories) · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a product run with this method is built, tested, delivered and
 > run, and how people and AI sessions work together on it. Each technical chapter (3–12)
@@ -365,6 +365,24 @@ that fails a gate cannot be merged or promoted.
   vulnerability scan, image signature, digest pinned in the deployment manifest.
 - **Dependency updates arrive automatically** and pass the same gates; the tool that
   opens them is the instance's choice ([landscape](40-tool-landscape-examples.md)).
+- **Review of a change — evidence, not lines** (Project Advisor, 2026-10-09, board r8). A
+  coding agent writes in a day more code, with more techniques, than a person can read line by
+  line; so the reviewer judges **evidence**. Every pull request carries: (1) the use case
+  replayed by the end-to-end test through the real user interface, with its trace; (2) the
+  delta of the verified map (principle 4: what this change adds to the covered behaviours and
+  qualities); (3) a summary for humans written by the agent — intent, what changed, risks,
+  how it is verified, what is not; (4) the decisions it respects (`DD` records cited); (5) a
+  "Techniques used" section — every unusual technique, pattern or library explained in three
+  lines with a pointer; (6) the reports of two AI reviewers — the author's `change-reviewer`
+  and an **independent adversarial reviewer** run in another session, which tries to break
+  the change (edge cases, hostile input, the data regime, performance, what the tests do not
+  cover) and says what it tried, what broke, what it could not test. The code is read only
+  where a risk is flagged (data, secrets, migrations, security, declared uncertainty). **The
+  project lead approves when the evidence is complete** (a checklist in the pull request); a
+  change that touches personal data, security, a migration or production needs two people,
+  each confirming the evidence. **One pull request = one ticket and one use case**; beyond
+  the size threshold the project lead sets in W1, the agent splits the change. Twenty minutes
+  of each October meeting are a review clinic: one pull request read together with the Advisor.
 
 ### Illustration — Sumvadis
 

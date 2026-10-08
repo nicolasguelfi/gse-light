@@ -80,7 +80,7 @@ are those of the reference design ch. 1 and of the developers' kit.
 |---|---|
 | A choice appears → a pending record in a register (a numbered list of decisions: `PD` project, `DEC` requirements, `DD` design) | Automatic (Claude opens it); Person (the one in charge decides) |
 | Each working session ends with a journal entry: what was done, with its commands, and a hand-over | Ask Claude ("close the session"); never rewritten — also research data |
-| Before a pull request: gates and the `change-reviewer` agent, then a human reading of the diff | Automatic (Claude and CI); Person (reads, approves) |
+| Before a pull request: gates, the `change-reviewer` agent and an independent adversarial reviewer; then a person reviews the **evidence** — the use case replayed through the real interface, the verified map, the agent's summary, the techniques explained, the two reports — and reads the code only where a risk is flagged; the project lead approves when the evidence is complete (reference design ch. 8, 2026-10-09) | Automatic (Claude and CI); Person (reviews the evidence, approves) |
 | The kit — same `CLAUDE.md`, skills (packaged procedures) and agents (read-only reviewers) in every repository | Automatic (loaded in every session); Advisor maintains it |
 
 ## 4. The weeks: where the Advisor steps in

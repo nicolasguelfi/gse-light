@@ -78,8 +78,7 @@ Protected `main`: `git switch -c kit && git push -u origin kit`, then open the p
 (`gh pr create`); the Day-0 CI runs the stub and is green. Tell the team once the kit is in.
 
 **Week 1 — the design phase** (*ask Claude*, with you): the skill `design-phase` turns the
-project's drivers into `DD` records (architecture, repository layout, environments, branch
-model, test tools) and fills `gates.sh`, the CI and the `<…>` fields of `CLAUDE.md` from them.
+project's drivers into `DD` records (the twelve decisions of `design-phase` §2, in order) and fills `gates.sh`, the CI and the `<…>` fields of `CLAUDE.md` from them.
 Until then the gates are the stub.
 
 **Refresh** after the kit changes in the `gse-light` repository: `git pull` in `gse-light`,

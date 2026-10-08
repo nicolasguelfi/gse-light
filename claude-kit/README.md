@@ -20,7 +20,7 @@ so a fix is made once and propagated everywhere.
 | [`templates/ci-gates.yml`](templates/ci-gates.yml) | CI workflow that runs `./gates.sh` on every pull request and on every push to `main` | `.github/workflows/gates.yml` (created once) |
 | [`templates/gitattributes`](templates/gitattributes) | `*.sh text eol=lf`: shell scripts keep Unix line endings on a Windows clone | `.gitattributes` (created once) |
 | [`templates/KIT_LICENSE.md`](templates/KIT_LICENSE.md) | Licence notice that travels with the kit | `.claude/KIT_LICENSE.md` (refreshed) |
-| [`skills/design-phase/`](skills/design-phase/SKILL.md) | Week 1: the project's drivers → `DD` records (architecture, repository layout, environments, branch model, test tools) → `gates.sh`, CI and `CLAUDE.md` placeholders filled | `.claude/skills/design-phase/` (refreshed) |
+| [`skills/design-phase/`](skills/design-phase/SKILL.md) | Week 1: the project's drivers → `DD` records (the twelve decisions of `design-phase` §2, in order) → `gates.sh`, CI and `CLAUDE.md` placeholders filled | `.claude/skills/design-phase/` (refreshed) |
 | [`skills/decision-record/`](skills/decision-record/SKILL.md) | Record a decision in the right register; commits and pushes that record only | `.claude/skills/decision-record/` (refreshed) |
 | [`skills/session-close/`](skills/session-close/SKILL.md) | Journal entry, metrics, hand-over; commits and pushes those paths only | `.claude/skills/session-close/` (refreshed) |
 | [`skills/verify-claim/`](skills/verify-claim/SKILL.md) | Measure before asserting | `.claude/skills/verify-claim/` (refreshed) |

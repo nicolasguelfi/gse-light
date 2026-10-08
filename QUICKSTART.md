@@ -71,7 +71,7 @@ Who does it: *you*, *ask Claude* (say it in the session), *automatic*.
 | When | What | Who |
 |---|---|---|
 | Start of a session | `claude` in the product repository; it reads `CLAUDE.md` (rules, commands, the project's zone) | automatic |
-| Week 1 — design phase | *"Run design-phase"* with the project lead: the project's drivers → `DD` records (architecture, repository layout, environments, branch model, test tools) → `gates.sh`, the CI and the `<…>` fields of `CLAUDE.md` filled from them | ask Claude + project lead |
+| Week 1 — design phase | *"Run design-phase"* with the project lead: the project's drivers → `DD` records (the twelve decisions of `design-phase` §2, in order) → `gates.sh`, the CI and the `<…>` fields of `CLAUDE.md` filled from them | ask Claude + project lead |
 | Taking a ticket | *"Read ticket #N, its requirement and its example; restate what is asked"* | ask Claude |
 | A choice with consequences | *"Record it with decision-record"* — a 🔴 record in `<pm-repo>`, pushed by the skill; the person who holds the right decides | ask Claude |
 | Before stating a fact (version, count, test result, cause) | `verify-claim`: the command and its output, never a guess | ask Claude |

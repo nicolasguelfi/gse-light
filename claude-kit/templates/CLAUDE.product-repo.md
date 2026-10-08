@@ -38,8 +38,8 @@ pass" without it.
 
 - **Design phase first**: before any architecture or infrastructure choice, run the skill
   `design-phase` with the project lead; every `DD` record cites the project's drivers it
-  answers. Architecture, repository layout, environments, branch model and test tools are
-  the instance's `DD` records, not defaults.
+  answers. Every such choice (the twelve decisions of `design-phase` §2, in order) is
+  an instance `DD` record, never a default.
 - **Never propose an example project's stack as a default** (Sumvadis, StreamTeX or any
   project the method cites): they are illustrations. Cite one only when a driver of this
   project makes it relevant, and say which.

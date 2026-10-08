@@ -572,7 +572,7 @@ done with the choices of the design phase; none of them names a tool here.
 
 | When | Item | Who |
 |---|---|---|
-| **W1 · design phase** | **Drivers collected, `DD` records opened and decided with the team** (architecture, hosting, repository layout, environments, data, tests, delivery, identity, residency) — skill `design-phase`; the Project Advisor advises, the project lead decides | Person (team, project lead); Ask Claude (`design-phase`) |
+| **W1 · design phase** | **Drivers collected, `DD` records opened and decided with the team** (the twelve decisions of `design-phase` §2, in order) — skill `design-phase`; the Project Advisor advises, the project lead decides | Person (team, project lead); Ask Claude (`design-phase`) |
 | Day 0 (W1, in parallel) | Kit installed in each product repository (`install.sh` from inside the clone); `CLAUDE.md` filled with the instance and the project-management repository | Person (project lead); Automatic (`install.sh`) |
 | Day 0 | Registers and cockpit in place in `instances/<instance>/` | Ask Claude (pm-kit) |
 | Day 0 | Day-0 CI green: `./gates.sh` is a stub that prints "no gates yet: design phase in progress" and passes, run on every pull request and on `main` | Automatic (CI) |

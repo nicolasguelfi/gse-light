@@ -170,8 +170,7 @@ In addition to the above, you:
   ask Claude to fill the `<…>` fields of `CLAUDE.md` (purpose, commands), and keep "Lessons
   learned here" alive: a rule learned from an incident is added the same day, dated;
 - **run the design phase in week 1** (skill `design-phase`, with Claude): the project's
-  drivers → `DD` records (architecture, repository layout, environments, branch model, test
-  tools) → fill `gates.sh`, the CI and the `<…>` fields of `CLAUDE.md` from its decisions;
+  drivers → `DD` records (the twelve decisions of `design-phase` §2, in order) → fill `gates.sh`, the CI and the `<…>` fields of `CLAUDE.md` from its decisions;
   list the project's repositories in `<pm-repo>/instances/<instance>/README.md`;
 - run the **kick-off checklist** ([reference design ch. 15](../method/00-reference-design.md#15-starting-a-new-project)):
   kit installed in each product repository, gates green on an empty suite (the Day-0 stub,

@@ -101,7 +101,7 @@ elif ! grep -qF '*.sh text eol=lf' .gitattributes; then
 fi
 if [ ! -f gates.sh ]; then
   cp "$kit/templates/gates.sh" gates.sh
-  echo "created gates.sh — a stub until the design phase fixes the stack (then fill it from the stack DD)"
+  echo "created gates.sh — a stub until the design phase decides the test tools and the CI (then fill it from those DD records)"
 fi
 chmod +x gates.sh 2>/dev/null || true
 if [ ! -f .env.example ]; then

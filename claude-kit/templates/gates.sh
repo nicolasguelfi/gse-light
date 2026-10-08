@@ -6,5 +6,5 @@
 # script, nothing else; developers run it before every commit: ./gates.sh
 # Day-0 stub: fill it from the stack decision (DD record) once the design phase is over.
 set -euo pipefail
-echo "no gates yet: design phase in progress (fill this script from the stack DD)"
+echo "no gates yet: design phase in progress (fill it from the test-tools and CI DD records of the design phase)"
 exit 0

@@ -60,7 +60,10 @@ No row: it is a new deck (§1). A row: reopen it (§2).
    version in `slides/README.md` and in the registry row.
 6. **Freshness**: `python3 ../gse-light/scripts/check_docs.py` warns when a file named in a slide's
    "Source:" footer was committed after the slide (every slide carries one). Read those slides before
-   presenting; republish them, or confirm they still hold. Commit first: the check reads git.
+   presenting; republish them, or confirm they still hold by writing the line
+   "Sources checked: YYYY-MM-DD HH:MM" (local time, with one line on what was checked) in
+   `slides/README.md` and committing — the check then compares the sources with that time.
+   Commit first: the check reads git.
 
 ## 3. After the meeting
 

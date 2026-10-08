@@ -24,13 +24,15 @@ Checks:
        refreshes the cockpit) — a developer's commit never turns CI red for that;
      - .claude/skills and .claude/agents are identical to gse-light's pm-kit (else: refresh with pm-kit/install.sh);
      - deck freshness: for every slide of a deck in force (instances/<name>/meetings/<date>/slides/project/slides/),
-       WARN when a file named in its "Source:" footer was committed after the slide, or when the footer is missing;
+       WARN when a file named in its "Source:" footer was committed after the slide (or after the deck's last
+       "Sources checked: YYYY-MM-DD HH:MM" line in slides/README.md), or when the footer is missing;
      - leak guard: no file tracked in gse-light, and no commit message, matches a line of instances/<instance>/private-terms.txt
        (the terms stay in the private repository; gse-light is public). Limit: the guard knows only the
        terms each instance lists — a built-in generic list of client names would itself name the clients.
 """
 from __future__ import annotations
 
+import datetime
 import re
 import subprocess
 import sys
@@ -314,6 +316,14 @@ def check_deck_freshness() -> None:
         slide_time = _git_time(ROOT, rel)
         if slide_time is None:
             continue  # new slide, not committed yet
+        # "Sources checked: YYYY-MM-DD HH:MM" in the deck's slides/README.md records a review of
+        # every slide against its sources without republishing them (slides skill, step 6)
+        readme = slide.parents[2] / "README.md"
+        if readme.exists():
+            mc = re.search(r"Sources checked:\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2})", readme.read_text(encoding="utf-8"))
+            if mc:
+                checked = int(datetime.datetime.strptime(mc.group(1), "%Y-%m-%d %H:%M").timestamp())
+                slide_time = max(slide_time, checked)
         for token in re.split(r"\s·\s|·", m.group(1)):
             found = _resolve_source(token, meeting_rel)
             if not found:

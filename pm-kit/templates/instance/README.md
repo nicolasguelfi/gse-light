@@ -3,7 +3,8 @@
 The project-management folder of <Project name>, run with the method
 [`gse-light`](https://github.com/nicolasguelfi/gse-light/blob/main/README.md), cloned next to
 this repository ([reference design](https://github.com/nicolasguelfi/gse-light/blob/main/method/00-reference-design.md),
-[the Project Advisor's page](https://github.com/nicolasguelfi/gse-light/blob/main/method/15-project-advisor.md)).
+[the Project Advisor's page](https://github.com/nicolasguelfi/gse-light/blob/main/method/15-project-advisor.md),
+[glossary](https://github.com/nicolasguelfi/gse-light/blob/main/GLOSSARY.md)).
 **No product code here.** Fields written `<like this>` are filled when the instance is created.
 
 ## Repositories

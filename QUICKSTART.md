@@ -146,7 +146,8 @@ records get there through the skills).
 [ONBOARDING.md](claude-kit/ONBOARDING.md) — the words used, the method in one page, your
 first session step by step, the Day-0 and first-sprint checklists ·
 [reference design](method/00-reference-design.md) chapters 0–2 and 13 (the project lead
-adds 15).
+adds 15) · [GLOSSARY.md](GLOSSARY.md) — every word and acronym above (`DD`, gate, go-ahead,
+sandbox…) in plain words.
 
 ---
 

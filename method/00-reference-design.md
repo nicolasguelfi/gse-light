@@ -691,8 +691,10 @@ of `design-phase` §2, by its number and its name.
 
 ## Appendix D — Glossary
 
-Each instance keeps its glossary in `instances/<instance>/requirements/01-glossary.md`. Technical terms used
-here: *container* (a packaged application with everything it needs to run), *image*
+The method's full glossary — people, documents, weeks, building and testing, generative
+software engineering, acronyms — is [`GLOSSARY.md`](../GLOSSARY.md) at the root of the repository.
+Each instance keeps its own terms in `instances/<instance>/requirements/01-glossary.md`. Technical
+terms used on this page: *container* (a packaged application with everything it needs to run), *image*
 (the file a container starts from), *digest* (the fingerprint that identifies one exact
 image or artefact), *migration* (a numbered script that changes the database structure),
 *OIDC* (a way for CI to obtain short-lived cloud rights without a stored password), *gate*

@@ -16,7 +16,9 @@ private repository, cloned next to this one.
 ## Where to start
 
 **Developer?** Start with [QUICKSTART.md](QUICKSTART.md): what gse-light does for you and what to
-use at each moment of the project, in one page.
+use at each moment of the project, in one page. **New to generative software engineering?**
+Keep [GLOSSARY.md](GLOSSARY.md) open: every term and acronym of these pages (`PD`, `DEC`, `DD`,
+gate, go-ahead, rehearsal environment…) in plain words.
 
 One reading path for everyone: the [reference design](method/00-reference-design.md)
 chapters 0–2 and 13; the project lead adds chapter 15 (the start-of-project checklist).
@@ -32,6 +34,7 @@ chapters 0–2 and 13; the project lead adds chapter 15 (the start-of-project ch
 | Folder | What it holds |
 |---|---|
 | [`method/`](method/) | [Reference design](method/00-reference-design.md) (rules as invariants, "how to choose" drivers), [the Project Advisor's page](method/15-project-advisor.md), [upskilling](method/20-upskilling.md), [tool landscape — examples](method/40-tool-landscape-examples.md) (dated, non-normative) |
+| [`GLOSSARY.md`](GLOSSARY.md) | Every term and acronym of the method in plain words, grouped by theme, for newcomers |
 | [`templates/`](templates/) | Decision record, design drivers, example record, requirement record, journal entry, meeting agenda and minutes, skills grid, slide deck, artifact shortcut |
 | [`scripts/`](scripts/) | `check_docs.py` (links, registers, kit copies, leak guard), `situation.py` and the session-start hook, `llm_call.py` (paid models, costs logged), `meeting/` (record, transcribe) — run from a project-management repository |
 | [`pm-kit/`](pm-kit/README.md) | The Project Advisor's Claude artefacts for a project-management repository: skills `advisor` (single entry point), `meeting`, `slides`, `method-lesson`, `decision-record`, `cockpit-update`, `session-close`, `genai-onboarding`; agents `delivery-auditor`, `minutes-verifier`, `design-reviewer` |

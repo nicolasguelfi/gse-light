@@ -26,7 +26,8 @@ project-management repository (`instances/<name>/`), cloned next to this one.
   interface, run by Claude; the tool is the instance's choice). A Claude session never
   proposes an example project's stack as a default. The environment before production is
   "the rehearsal environment".
-- **Plain words first, technical words second**; define each technical term at first use.
+- **Plain words first, technical words second**; define each technical term at first use, or
+  link it to `GLOSSARY.md`; a new term goes into the glossary in the same change.
 - **Measure before asserting**: a claim about the state of a system comes with the command
   that measured it.
 - **Evaluate ≠ execute**: when asked to evaluate or propose, change nothing outside the

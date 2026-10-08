@@ -141,7 +141,8 @@ sandbox is also where the design phase runs. You never open Claude Code in `<pm-
 sessions opened there are the Project Advisor's.
 
 Time: about 15 minutes to install, 15 for `/upskilling`, 30 for your first session
-([starting guide §3](ONBOARDING.md)). Keep the one-page [quick start](../QUICKSTART.md) at
+([starting guide §3](ONBOARDING.md)); words you do not know are in the [glossary](../GLOSSARY.md).
+Keep the one-page [quick start](../QUICKSTART.md) at
 hand for the rest of the project.
 
 **Known limit**: a Claude Code session started on claude.ai (web or cloud) clones **one**

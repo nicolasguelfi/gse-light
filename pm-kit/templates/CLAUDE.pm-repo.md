@@ -38,6 +38,10 @@ Roles per instance in `instances/<instance>/governance/10-roles-and-go-aheads.md
 
 ## Standing rules
 
+- **Words**: the method's terms and acronyms are defined in `../gse-light/GLOSSARY.md`; the
+  instance's own terms in `instances/<instance>/requirements/01-glossary.md`. Define a new
+  term where it first appears, or add it there.
+
 - **Sessions opened here are the Project Advisor's.** Team members work from their sandbox
   or product repository, whose kit writes journal entries and new 🔴 records here; a record
   turns 🟢 in a session of its decider (roles record); `BRIEFING.md` is the Advisor's.

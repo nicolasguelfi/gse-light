@@ -23,6 +23,12 @@ the overall view).
 A person new to the project reads `../gse-light/QUICKSTART.md` (one page), then
 `../gse-light/claude-kit/ONBOARDING.md`, then runs the skill `upskilling`.
 
+## Words
+
+The method's terms and acronyms (`PD`, `DEC`, `DD`, gate, go-ahead, rehearsal environment…)
+are defined in `../gse-light/GLOSSARY.md`; the project's own terms in
+`<pm-zone>/requirements/01-glossary.md`.
+
 ## Purpose and phase
 
 <What this repository delivers, in two lines. Current phase and increment.>

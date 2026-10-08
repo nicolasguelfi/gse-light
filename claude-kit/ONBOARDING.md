@@ -26,7 +26,7 @@ Status: v0.6 · 2026-10-08 · generic · for the project lead and the engineers 
 > the thinnest end-to-end slice of the product — one path from the user interface to the
 > data store, deployed and tested — built first. *Sandbox*: your personal, private,
 > throwaway repository, where Day 0 and your experiments happen until the product
-> repositories exist. More terms: [reference design, Appendix D](../method/00-reference-design.md#appendix-d--glossary).
+> repositories exist. Every other term and acronym: the [glossary](../GLOSSARY.md).
 
 The one-page version, to keep at hand: [QUICKSTART.md](../QUICKSTART.md).
 

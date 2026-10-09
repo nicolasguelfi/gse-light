@@ -366,6 +366,31 @@ def check_leaks() -> None:
                 errors.append(f"LEAK gse-light commit message: /{t.pattern}/ in {line[:60]!r}")
 
 
+def check_template_pairs() -> None:
+    """The generic and the sprint templates share fixed lines that scripts read or that must not
+    drift (the method's owner, 2026-10-09): in the minutes, the Recording line with its
+    "validated by … on" comment and the "Next meeting" section; in the agendas, the heading of
+    the topics table."""
+    t = METHOD / "templates"
+    pairs = [("meeting-minutes.md", "sprint-minutes.md",
+              [lambda x: next((l for l in x.splitlines() if l.startswith("- **Recording:**")), None),
+               lambda x: x.split("## Next meeting", 1)[1].strip() if "## Next meeting" in x else None]),
+             ("meeting-agenda.md", "sprint-agenda.md",
+              [lambda x: next((l for l in x.splitlines() if l.startswith("## Agenda")), None)])]
+    for a, b, parts in pairs:
+        if not (t / a).exists() or not (t / b).exists():
+            errors.append(f"templates/{a} and templates/{b}: both must exist (generic and sprint)")
+            continue
+        ta, tb = (t / a).read_text(encoding="utf-8"), (t / b).read_text(encoding="utf-8")
+        for get in parts:
+            va, vb = get(ta), get(tb)
+            if va is None or vb is None:
+                errors.append(f"templates/{a} / {b}: a shared line is missing in one of them")
+            elif va != vb:
+                errors.append(f"templates/{a} / {b}: shared line differs — {va[:60]!r} vs {vb[:60]!r} "
+                              "(keep the lines scripts read identical in both)")
+
+
 def main() -> int:
     if len(sys.argv) > 1 and sys.argv[1] in ("-h", "--help"):
         print(__doc__)
@@ -375,6 +400,7 @@ def main() -> int:
         check_registers()
         check_deck_freshness()
     check_copies()
+    check_template_pairs()
     check_leaks()
     for w in warnings:
         print(f"WARN {w}")

@@ -184,6 +184,12 @@ Carried over from the method's sessions (rule — date — why), newest first; t
 this repository's own sessions join them. Keep each to two lines; move a rule up into
 "Standing rules" when it holds everywhere.
 
+- A question with options goes to the person as a QCM or a review board (skill `review`), even
+  when it was asked as an "analysis" — never as prose with options — 2026-10-09 — twice in one
+  session the options came back as paragraphs the person could not tick.
+- `.env` holds each variable once: a later empty `KEY=` line overrides the filled one above it
+  (the scripts keep the last value); check with `llm_call.py --dry-run` (`key_present`) —
+  2026-10-09 — a pasted key stayed invisible for three tries.
 - Every artifact published from this repository (deck, review board, page) gets a folder
   under `project/meetings/<date>/` with its sources and an `open.html` from
   `../gse-light/templates/artifact-open.html`, plus a row in `project/meetings/README.md` —
@@ -225,6 +231,16 @@ push; GitHub branch protection on `main` when the project has enabled it). A ses
 only on the go-ahead of the person it works for (or when they asked for the push in the same
 request), and only that person's own commits. A method change is committed in `gse-light`
 first, then `../gse-light/kit/install.sh` refreshes `.claude/` here (commit that too).
+
+**Who writes where** (the method's owner, 2026-10-09). `gse-light` belongs to the Project
+Advisor: he alone can push to it (GitHub collaborators: him only); his session works on its
+`main`, commits and pushes there without asking. Everyone else proposes a method change by an
+issue or a pull request from a fork. In this repository, every role works through pull
+requests, the Project Advisor too: on a branch of his own (`<initials>/<topic>`, never `main`),
+a pull request to the project lead, only when a change is justified. After each change of the
+kit, his session refreshes it here on such a branch and opens a pull request that holds the kit
+only (`.claude/`, `CLAUDE.md`, `.env.example`, the CI files); the project's own files (minutes,
+boards, journal) go in a separate pull request.
 
 ---
 

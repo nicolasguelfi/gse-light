@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 """Transcribe a meeting recording: locally by default, with Gemini on request.
 
-  python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date>            # engine from .env (default local)
+  python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date>            # engine from .env (TRANSCRIBE_ENGINE; else openrouter when its key is set; else local)
   python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date> --engine gemini
   python3 ../gse-light/scripts/meeting/transcribe.py path/to/audio.m4a --language fr
   python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date> --engine openrouter \
@@ -109,7 +109,11 @@ def transcribe_local(mdir: Path, audio: Path, language: str, env: dict) -> Path:
     out_md = mdir / "transcript.md"
     if name == "mlx_whisper":
         model = env.get("WHISPER_MODEL", "mlx-community/whisper-large-v3-turbo")
-        cmd = [exe, str(audio), "--model", model, "--output-dir", str(mdir), "--output-format", "all"]
+        # Without these two, whisper can loop on one phrase for an hour (measured 2026-10-09:
+        # 157 of 229 lines); with them, 1 of 1 249.
+        cmd = [exe, str(audio), "--model", model, "--output-dir", str(mdir), "--output-format", "all",
+               "--condition-on-previous-text", "False", "--word-timestamps", "True",
+               "--hallucination-silence-threshold", "2"]
         if language:
             cmd += ["--language", language]
         print("[transcribe] " + " ".join(cmd), file=sys.stderr)
@@ -241,13 +245,13 @@ def main() -> int:
     prefer_pm_venv()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("target", type=Path, help="meeting folder or audio file")
-    ap.add_argument("--engine", choices=["local", "gemini", "openrouter"], help="default: TRANSCRIBE_ENGINE in .env, else local")
+    ap.add_argument("--engine", choices=["local", "gemini", "openrouter"], help="default: TRANSCRIBE_ENGINE in .env, else openrouter when OPENROUTER_API_KEY is set, else local")
     ap.add_argument("--language", help="e.g. fr, en; default: TRANSCRIBE_LANGUAGE in .env, else auto")
     ap.add_argument("--speakers", default="", help="openrouter: the people present, names and roles, for the speaker labels")
     ap.add_argument("--chunk-minutes", type=int, default=20, help="openrouter: length of each audio part (default 20)")
     a = ap.parse_args()
     env = load_env()
-    engine = a.engine or env.get("TRANSCRIBE_ENGINE") or "local"
+    engine = a.engine or env.get("TRANSCRIBE_ENGINE") or ("openrouter" if env.get("OPENROUTER_API_KEY") else "local")
     language = a.language if a.language is not None else env.get("TRANSCRIBE_LANGUAGE", "")
     mdir, audio = find_audio(a.target)
     if engine == "openrouter":

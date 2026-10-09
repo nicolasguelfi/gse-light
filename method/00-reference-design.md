@@ -693,7 +693,7 @@ of `design-phase` §2, by its number and its name.
 - Example record (`project/requirements/40-examples/`): [`templates/example-record.md`](../templates/example-record.md)
 - Requirement record (`FR-`/`NFR-`, with acceptance criteria and the test that proves it): [`templates/requirement-record.md`](../templates/requirement-record.md)
 - Session journal entry: [`templates/session-journal.md`](../templates/session-journal.md)
-- Meeting agenda and minutes: [`templates/meeting-agenda.md`](../templates/meeting-agenda.md), [`templates/meeting-minutes.md`](../templates/meeting-minutes.md)
+- Meeting agenda and minutes — any meeting: [`templates/meeting-agenda.md`](../templates/meeting-agenda.md), [`templates/meeting-minutes.md`](../templates/meeting-minutes.md); the weekly sprint meeting: [`templates/sprint-agenda.md`](../templates/sprint-agenda.md), [`templates/sprint-minutes.md`](../templates/sprint-minutes.md)
 - Skills grid for the kick-off round table: [`templates/skills-grid.md`](../templates/skills-grid.md)
 - Product repository instructions: [`kit/templates/CLAUDE.md`](../kit/templates/CLAUDE.md)
 - CI pipeline and gates script: installed by the kit as a stub, filled after the design

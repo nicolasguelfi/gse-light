@@ -17,9 +17,9 @@ raise it.
 
 | Step | When | Produces |
 |---|---|---|
-| `meeting brief [date]` | the day before | `agenda.md` (milestone meeting: §1b) |
+| `meeting brief [date]` | the day before | `agenda.md` (sprint: §1; any other meeting: §1b) |
 | `meeting record start\|stop\|status` · `meeting import <file>` | on the day | `audio.m4a`, `meta.json` |
-| `meeting transcribe [--engine local\|gemini]` | after the meeting | `transcript.md` (+ `.srt`, `.json` locally) |
+| `meeting transcribe [--engine local\|gemini\|openrouter]` | after the meeting | `transcript.md` (+ `.srt`, `.json` locally) |
 | `meeting minutes` | the same evening | `minutes.md`, checked by `minutes-verifier` |
 
 Scripts: `../gse-light/scripts/meeting/meeting.sh`, `../gse-light/scripts/meeting/transcribe.py`,
@@ -39,7 +39,8 @@ never read `.env` yourself — the scripts do).
    measured when possible), open questions, decisions promised.
 4. **Decisions awaiting.** The 🔴 and 🟡 rows of the three registers whose decider is in
    the room, and `project/BRIEFING.md` §1b.
-5. **Write `agenda.md`** from `../gse-light/templates/meeting-agenda.md`: the topics in a proposed order with
+5. **Write `agenda.md`** from `../gse-light/templates/sprint-agenda.md` (a sprint meeting; any other
+   meeting: §1b): the topics in a proposed order with
    indicative durations — the project lead chairs the meeting and keeps time, the Advisor proposes
    the topics — (facts first, then the team's demo or deliverables, then the Project Advisor's feedback, then
    decisions, then next sprint — which the project lead presents, not NG), the
@@ -48,17 +49,20 @@ never read `.env` yourself — the scripts do).
 6. Tell NG in five lines what the brief says and what he should look at before the
    meeting. Do not refresh the cockpit for this (session-close does).
 
-## 1b. `brief` for a milestone meeting — kick-off, Wn hand-over
+## 1b. `brief` for any other meeting — kick-off, Wn hand-over, ad hoc
 
 Not every meeting is a sprint meeting (2026-10-07, a kick-off once done by hand).
-For a milestone meeting — the kick-off, the hand-over of the last week Wn — there is
-nothing to audit: skip `delivery-auditor`.
+Two templates each (2026-10-09): `sprint-agenda.md` / `sprint-minutes.md` for the weekly
+sprint meeting, `meeting-agenda.md` / `meeting-minutes.md` for every other kind (kick-off,
+hand-over of the last week Wn, ad hoc). For those there is nothing to audit: skip
+`delivery-auditor`.
 
 1. One QCM with three questions: audience (the client, the team, both), support (document +
    slides, slides only, document only), scope (the whole project, or this meeting only) —
    each with its advantages, drawbacks and consequences.
-2. Write `agenda.md` (participants, topics in a proposed order, decisions awaiting someone in the
-   room, points the Project Advisor intends to raise, material) from
+2. Write `agenda.md` from `../gse-light/templates/meeting-agenda.md`, the generic agenda
+   (kind and purpose, participants, topics in a proposed order, decisions awaiting someone in
+   the room, points the Project Advisor intends to raise, material); its content comes from
    [`../gse-light/method/15-project-advisor.md`](https://github.com/nicolasguelfi/gse-light/blob/main/method/15-project-advisor.md), which is the
    source of the support; update that document rather than writing a second one.
 3. Slides, when asked: the [`slides`](../slides/SKILL.md) skill (template, sync,
@@ -80,10 +84,13 @@ nothing to audit: skip `delivery-auditor`.
 
 ## 3. `transcribe`
 
-- `python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date>` — engine from `.env`
-  (`TRANSCRIBE_ENGINE`, default `local`). Local = mlx-whisper or whisper.cpp, nothing
-  leaves the machine, no speaker labels; if no engine is installed the script prints the
-  one-line install command — pass it to NG, do not install it yourself.
+- `python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date>` — engine from `.env`:
+  `TRANSCRIBE_ENGINE` when set; otherwise `openrouter` when `OPENROUTER_API_KEY` is set, else
+  `local` (2026-10-09). Local = mlx-whisper or whisper.cpp, nothing leaves the machine, no
+  speaker labels; it runs without conditioning on the previous text and skips hallucinated
+  silences (a meeting once came back looping on one sentence from minute 6); if no engine is
+  installed the script prints the one-line install command — pass it to NG, do not install it
+  yourself.
 - `--engine gemini` when speaker labels matter: the audio is uploaded to Google AI
   Studio with NG's key; the cost line is written to `project/journal/llm-costs.csv` and
   `project/meetings/<date>/cost.json`. Say the estimated cost before running it.
@@ -97,8 +104,13 @@ nothing to audit: skip `delivery-auditor`.
 ## 4. `minutes` — the same evening
 
 1. **Inputs.** `transcript.md` (or the imported transcript), `agenda.md`, the list of
-   participants (in `agenda.md`; ask NG once if missing), the sprint file.
-2. **Write `minutes.md`** from `../gse-light/templates/meeting-minutes.md`:
+   participants (in `agenda.md`; ask NG once if missing), the sprint file (sprint meeting).
+   **Speakers first**: when the transcript has speaker labels, propose the table label →
+   person from what is said, and have NG confirm it (one QCM or a review board) before drafting.
+2. **Write `minutes.md`** from `../gse-light/templates/sprint-minutes.md` for a sprint meeting,
+   `../gse-light/templates/meeting-minutes.md` for any other (actions until the next meeting
+   instead of the sprint tasks; the Advisor's feedback optional, written to be read by every
+   participant, the client included). Sprint minutes:
    - *Executive summary*: ten lines at most, what was shown, what was decided, what is at
      risk;
    - *Decisions*: each one recorded with the `decision-record` skill (new 🔴 or 🟢 by the
@@ -106,7 +118,9 @@ nothing to audit: skip `delivery-auditor`.
      link to the record;
    - *Tasks for the next sprint, per participant*: who · what · by when · ticket or link
      · `[hh:mm:ss]` of the transcript where it was said. A task without a timestamp
-     does not go in. Tasks NG took himself are listed too;
+     does not go in — except when there is no recording: then it cites `[notes <name>]`,
+     and the minutes say which items are not verified against a transcript. Tasks NG took
+     himself are listed too;
    - *Project Advisor's feedback*: project conduct (does the week show an iterative, incremental
      cycle? were the gates and go-aheads respected?) and deliverables (what is good, what
      to change, one priority) — written in NG's name, from what he said in the meeting

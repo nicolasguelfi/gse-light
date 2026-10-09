@@ -1,7 +1,6 @@
 <!-- Template of the gse-light method (https://github.com/nicolasguelfi/gse-light), CC BY-NC 4.0. Documents made from this template carry no licence obligation: fill it in and keep the result as your own. -->
-# Meeting — YYYY-MM-DD — <kind: kick-off · hand-over · ad hoc · …> · minutes
+# Meeting — YYYY-MM-DD — week W<n> · sprint minutes
 
-- **Kind and purpose:** <kind>; <why this meeting, in one sentence>
 - **Participants:** <names and roles>
 - **Recording:** `<file>` (<duration>, recorded here | imported), transcript by <engine> — or none: written from the notes of <name>; minutes written by Claude, verified by `minutes-verifier`, the Project Advisor's feedback section written by him; validated by <the project lead's name> on YYYY-MM-DD <!-- keep this shape, "validated by <name> on YYYY-MM-DD" (the validator named in the roles record — by default the project lead — and the date): scripts/situation.py reads "validated by … on YYYY-MM-DD", with any name, to know the minutes are validated -->
 - **Previous:** `project/meetings/YYMMDD/minutes.md`
@@ -16,7 +15,15 @@
 
 ## Executive summary
 
-<Ten lines at most: what was presented, what was decided, what is at risk, what happens next.>
+<Ten lines at most: what was shown, what was decided, what is at risk, what changes next week.>
+
+## Sprint review
+
+| Planned | Delivered? | Evidence (pull request, demo, gate) |
+|---|---|---|
+| … | yes / partly / no | … |
+
+**Demo.** <What was shown, by whom, on which environment.>
 
 ## Decisions
 
@@ -24,15 +31,18 @@
 |---|---|---|---|
 | PD/DEC/DD-NN (link to the register record) | … | … | 🟢 / 🔴 opened |
 
-## Actions until the next meeting
+## Tasks for the next sprint, per participant
 
-| Who | What | By when | Link | Said at |
+| Participant | Task | By when | Ticket / link | Said at |
 |---|---|---|---|---|
-| <name> | … | YYYY-MM-DD | #NN / page | [hh:mm:ss] or [notes <name>] |
+| <name> | … | YYYY-MM-DD | #NN | [hh:mm:ss] or [notes <name>] |
+| <the Project Advisor> | … | | | [hh:mm:ss] |
 
-## Project Advisor's feedback (optional)
+## Project Advisor's feedback
 
-<!-- Written to be read by every participant, the client included: facts, what is good, one priority; nothing about a person. -->
+**Project conduct.** <Iterative and incremental cycle this week? Gates and go-aheads respected? One sentence of appreciation, one priority.>
+
+**Deliverables.** <What is good, what to change, one priority for next week.>
 
 ## Open questions
 

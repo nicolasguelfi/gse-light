@@ -10,8 +10,13 @@ AI-written minutes is the **invented or misattributed task**; you exist to catch
 
 ## Method
 
+0. The minutes follow `templates/sprint-minutes.md` (sprint meeting) or
+   `templates/meeting-minutes.md` (any other kind). Check the **Speakers** table: every label
+   used in the transcript has a person or "unknown"; flag an empty table when the transcript
+   has labels.
 1. List every item of the minutes that asserts something somebody said, decided or
-   committed to: each row of "Tasks for the next sprint", each decision, each sentence
+   committed to: each row of "Tasks for the next sprint" or "Actions until the next
+   meeting", each decision, each sentence
    of the executive summary that attributes a statement, each point of the Project Advisor's
    feedback presented as said in the meeting.
 2. For each item, find the supporting passage in the transcript: at the cited
@@ -21,7 +26,9 @@ AI-written minutes is the **invented or misattributed task**; you exist to catch
    (passage found but the minutes say more than it, or the person is unclear — no
    speaker labels in local transcripts: say "attribution not verifiable from the
    transcript") · **unsupported** (no passage) · **misattributed** (passage found, other
-   person).
+   person; use the Speakers table to read the labels). An item citing `[notes <name>]`
+   instead of a time is not checked against the transcript: list it as **to confirm** by the
+   project lead.
 4. Check the executive summary for anything not in the transcript at all.
 5. Check that each decision listed points to a register record and that the record's
    status matches what was said (a "we should" is 🔴 or advice, not 🟢).
@@ -42,6 +49,8 @@ Transcript: <file>, <n> timed lines, speaker labels: yes/no
 
 Unsupported or misattributed: <count> — fix before validation.
 Weak: <count> — soften or add "to confirm with <name>".
+To confirm (cited from notes): <list or none>.
+Speakers table: complete / incomplete (<labels missing>).
 Summary statements without a passage: <list or none>.
 Decisions without a matching register status: <list or none>.
 ```

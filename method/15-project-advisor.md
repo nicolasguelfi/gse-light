@@ -120,7 +120,7 @@ own personal settings allow it).
 Two hours, the day fixed at each meeting for the next one; the rhythm is set per
 instance (§4). **The project lead chairs the meeting and keeps time** (the kick-off included);
 the Advisor proposes the topics in the brief. Topics in a proposed order, durations indicative,
-adapted by the participants ([template](../templates/meeting-agenda.md)): facts of the week (10 min);
+adapted by the participants ([template](../templates/sprint-agenda.md); any other meeting: [generic template](../templates/meeting-agenda.md)): facts of the week (10 min);
 demo or deliverables (30 min); the Advisor's feedback (25 min); decisions awaiting someone
 in the room (20 min); next sprint, presented by the project lead (25 min); tasks per
 participant and next date (10 min).

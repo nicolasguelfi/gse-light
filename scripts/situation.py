@@ -11,7 +11,7 @@ Read-only. Printed by the session-start hook and read as JSON by the `advisor` s
 
 The week is a chain per meeting folder project/meetings/<date>/, <date> written YYMMDD (261009 for 2026-10-09):
   agenda.md  →  audio* / transcript-imported.*  →  transcript.md  →  minutes.md  →  "validated by <who> on <date>"
-(the last link is the validation line of templates/meeting-minutes.md: "validated by … on YYYY-MM-DD").
+(the last link is the validation line of templates/meeting-minutes.md and sprint-minutes.md: "validated by … on YYYY-MM-DD").
 The meeting day is variable, fixed at each meeting for the next one (Project Advisor's rule,
 2026-10-07). The next date is read, in this order: project/meetings/schedule.json
 {"next": "YYYY-MM-DD"} (a full date, written by the minutes step or by the Project Advisor), the "Next meeting"

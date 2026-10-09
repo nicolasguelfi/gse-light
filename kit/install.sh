@@ -104,7 +104,7 @@ fi
 # itself, not CLAUDE.local.md (kit/INSTALL.md, "Shared and personal"); .env.* covers .env.local and
 # the like, .env.example stays tracked; meeting audio is never committed
 touch .gitignore
-for p in CLAUDE.local.md .claude/settings.local.json .env '.env.*' '!.env.example' '**/meetings/**/audio*' '**/meetings/**/*.wav' '**/meetings/**/.record.pid' '**/meetings/**/record.log'; do
+for p in CLAUDE.local.md .claude/settings.local.json .env '.env.*' '!.env.example' .venv '**/meetings/**/audio*' '**/meetings/**/*.wav' '**/meetings/**/.record.pid' '**/meetings/**/record.log'; do
   grep -qxF -- "$p" .gitignore || { echo "$p" >> .gitignore; echo "added $p to .gitignore"; }
 done
 

@@ -65,8 +65,8 @@ python3 ../gse-light/scripts/situation.py              # expected: "next meeting
 cp .env.example .env                                   # the Project Advisor's settings and keys, never committed
 python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt test --dry-run   # expected: a JSON with "python" (the interpreter used) and "key_present": false
 ../gse-light/scripts/meeting/meeting.sh devices        # macOS: your audio inputs with their index (the .env has MEETING_AUDIO_DEVICE=0)
-../gse-light/scripts/meeting/meeting.sh start 2026-01-01 && sleep 10 && ../gse-light/scripts/meeting/meeting.sh stop   # a ten-second recording — expected: audio.m4a and meta.json in project/meetings/2026-01-01/
-python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/2026-01-01   # expected: transcript.md, or the message "no local engine" with the install line (then: scripts/README.md §1)
+../gse-light/scripts/meeting/meeting.sh start 260101 && sleep 10 && ../gse-light/scripts/meeting/meeting.sh stop   # a ten-second recording — expected: audio.m4a and meta.json in project/meetings/260101/
+python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/260101   # expected: transcript.md, or the message "no local engine" with the install line (then: scripts/README.md §1)
 ```
 
 **Expected**: `kit/install.sh` prints `project repository project · method ../gse-light ·

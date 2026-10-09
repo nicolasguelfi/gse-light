@@ -5,7 +5,7 @@
 # Part of the Project Advisor's `meeting` skill. macOS only (avfoundation).
 #
 #   ../gse-light/scripts/meeting/meeting.sh devices                 # list audio inputs with their index
-#   ../gse-light/scripts/meeting/meeting.sh start [DATE] [DEVICE]   # start recording, detached; DATE=YYYY-MM-DD (default today)
+#   ../gse-light/scripts/meeting/meeting.sh start [DATE] [DEVICE]   # start recording, detached; DATE=YYMMDD, the meeting folder's name (default today)
 #   ../gse-light/scripts/meeting/meeting.sh status                  # is a recording running? for how long?
 #   ../gse-light/scripts/meeting/meeting.sh stop                    # stop cleanly (ffmpeg finalises the file)
 #   ../gse-light/scripts/meeting/meeting.sh import FILE [DATE]      # copy an audio/transcript file into the day folder
@@ -47,7 +47,7 @@ device="${MEETING_AUDIO_DEVICE:-0}"
 
 need() { command -v "$1" >/dev/null 2>&1 || { echo "missing: $1 (brew install $1)" >&2; exit 1; }; }
 
-day_dir() { echo "$base/${1:-$(date +%F)}"; }
+day_dir() { echo "$base/${1:-$(date +%y%m%d)}"; }
 
 cmd="${1:-help}"; shift || true
 case "$cmd" in
@@ -61,7 +61,7 @@ case "$cmd" in
 
   start)
     need ffmpeg
-    date_arg="${1:-$(date +%F)}"; dev="${2:-$device}"
+    date_arg="${1:-$(date +%y%m%d)}"; dev="${2:-$device}"
     d="$(day_dir "$date_arg")"; mkdir -p "$d"
     pidfile="$d/.record.pid"
     if [ -f "$pidfile" ] && kill -0 "$(cat "$pidfile")" 2>/dev/null; then
@@ -124,7 +124,7 @@ PY
     ;;
 
   import)
-    src="${1:?usage: $0 import FILE [DATE]}"; date_arg="${2:-$(date +%F)}"
+    src="${1:?usage: $0 import FILE [DATE]}"; date_arg="${2:-$(date +%y%m%d)}"
     [ -f "$src" ] || { echo "not a file: $src" >&2; exit 1; }
     d="$(day_dir "$date_arg")"; mkdir -p "$d"
     ext="${src##*.}"; lower="$(echo "$ext" | tr '[:upper:]' '[:lower:]')"

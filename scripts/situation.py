@@ -9,12 +9,12 @@ Read-only. Printed by the session-start hook and read as JSON by the `advisor` s
   python3 ../gse-light/scripts/situation.py --json     # machine-readable
   python3 ../gse-light/scripts/situation.py --today 2026-10-14   # simulate a date (tests)
 
-The week is a chain per meeting folder meetings/<date>/:
+The week is a chain per meeting folder project/meetings/<date>/, <date> written YYMMDD (261009 for 2026-10-09):
   agenda.md  →  audio* / transcript-imported.*  →  transcript.md  →  minutes.md  →  "validated by <who> on <date>"
 (the last link is the validation line of templates/meeting-minutes.md: "validated by … on YYYY-MM-DD").
 The meeting day is variable, fixed at each meeting for the next one (Project Advisor's rule,
 2026-10-07). The next date is read, in this order: project/meetings/schedule.json
-{"next": "YYYY-MM-DD"} (written by the minutes step or by the Project Advisor), the "Next meeting"
+{"next": "YYYY-MM-DD"} (a full date, written by the minutes step or by the Project Advisor), the "Next meeting"
 section of the latest minutes.md, the earliest future meeting folder, or a fixed
 {"weekday": "..."} in schedule.json if ever set. A past date in schedule.json is reported, not used.
 """
@@ -36,7 +36,17 @@ _mdir = os.environ.get("MEETINGS_DIR") or load_env().get("MEETINGS_DIR")
 MEET = (Path(_mdir) if Path(_mdir).is_absolute() else REPO / _mdir) if _mdir else project_dir() / "meetings"
 SCHEDULE = MEET / "schedule.json"
 WEEKDAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
-DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+DATE = re.compile(r"^\d{6}$")  # meeting folders are named YYMMDD (the method's owner, 2026-10-09)
+
+
+def folder_date(name: str) -> dt.date:
+    """261009 -> 2026-10-09."""
+    return dt.datetime.strptime(name, "%y%m%d").date()
+
+
+def folder_name(day: dt.date) -> str:
+    """2026-10-09 -> 261009."""
+    return day.strftime("%y%m%d")
 
 
 def folders() -> list[Path]:
@@ -101,7 +111,7 @@ def next_meeting(today: dt.date) -> tuple[dt.date | None, str]:
     nxt = next_from_minutes(today)
     if nxt:
         return nxt, "minutes"
-    future = [dt.date.fromisoformat(p.name) for p in folders() if dt.date.fromisoformat(p.name) >= today]
+    future = [folder_date(p.name) for p in folders() if folder_date(p.name) >= today]
     if future:
         return min(future), "folder"
     wd = str(sched.get("weekday", "")).lower()
@@ -137,7 +147,7 @@ def situation(today: dt.date) -> dict:
 
     # 1. finish what a past meeting left open
     for d in folders():
-        day = dt.date.fromisoformat(d.name)
+        day = folder_date(d.name)
         if day < today:
             s = unfinished_step(d, chain(d), past=True)
             if s:
@@ -149,7 +159,7 @@ def situation(today: dt.date) -> dict:
         steps.append({"kind": "schedule", "meeting": None,
                       "text": "No next meeting date known: ask the Project Advisor the date (it is fixed at each meeting for the next one) and write project/meetings/schedule.json {\"next\": \"YYYY-MM-DD\"}."})
     else:
-        d = MEET / nxt.isoformat()
+        d = MEET / folder_name(nxt)
         c = chain(d) if d.exists() else {k: False for k in ("agenda", "recording", "audio", "transcript", "minutes", "validated")}
         days = (nxt - today).days
         if days > 0:

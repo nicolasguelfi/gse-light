@@ -1,6 +1,6 @@
 # Meetings
 
-One folder per meeting with the Project Advisor, `YYYY-MM-DD/`, produced by the `meeting`
+One folder per meeting with the Project Advisor, named `YYMMDD/` (`261009/` for 2026-10-09), produced by the `meeting`
 skill — a procedure Claude runs when asked (`/meeting`) or when the situation calls for it —
 in the Project Advisor's sessions. **Who writes here**: his sessions only. **Who reads**:
 everyone — the team takes its tasks for the next sprint from the minutes, the product owner

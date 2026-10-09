@@ -29,7 +29,7 @@ never read `.env` yourself — the scripts do).
 ## 1. `brief` — the day before
 
 1. **Date.** Next meeting date from NG (ask in one short multiple-choice question, QCM,
-   if unknown); create `project/meetings/<date>/`.
+   if unknown); create `project/meetings/<date>/` — `<date>` is the meeting day written `YYMMDD` (`261024` for 2026-10-24; the method's owner, 2026-10-09), the form `situation.py` and `meeting.sh` read.
 2. **Facts.** Run the `delivery-auditor` agent (read-only). It measures what the team
    delivered since the last meeting — sprint file in `project/planning/sprints/`, GitHub
    milestone, pull requests, gates, journal entries, registers — and returns facts with

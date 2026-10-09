@@ -37,8 +37,8 @@ python3 ../gse-light/scripts/situation.py && \
 cp .env.example .env && \
 python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt test --dry-run && \
 ../gse-light/scripts/meeting/meeting.sh devices && \
-../gse-light/scripts/meeting/meeting.sh start 2026-01-01 && sleep 10 && ../gse-light/scripts/meeting/meeting.sh stop && \
-{ python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/2026-01-01; echo "transcribe exit $? (0 with a local engine; 1 and the install line without)"; } && \
+../gse-light/scripts/meeting/meeting.sh start 260101 && sleep 10 && ../gse-light/scripts/meeting/meeting.sh stop && \
+{ python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/260101; echo "transcribe exit $? (0 with a local engine; 1 and the install line without)"; } && \
 echo "PROJECT ADVISOR done: advisor/project checked and pushed to remote-project.git"
 
 

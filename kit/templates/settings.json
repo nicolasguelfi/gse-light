@@ -1,0 +1,47 @@
+{
+  "permissions": {
+    "additionalDirectories": ["../gse-light"],
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh issue view:*)",
+      "Bash(bash ./gates.sh:*)",
+      "Bash(./gates.sh:*)",
+      "Bash(../gse-light/kit/check.sh:*)",
+      "Bash(python3 ../gse-light/scripts/check_docs.py:*)",
+      "Bash(python3 ../gse-light/scripts/situation.py:*)",
+      "Bash(python3 ../gse-light/scripts/session_start.py:*)",
+      "Bash(../gse-light/scripts/meeting/meeting.sh devices:*)",
+      "Bash(../gse-light/scripts/meeting/meeting.sh status:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.*.local)",
+      "Edit(../gse-light/**)",
+      "Edit(./project/BRIEFING.md)",
+      "Bash(git push --force:*)",
+      "Bash(git push origin main:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && if [ -f ../gse-light/scripts/session_start.py ]; then python3 ../gse-light/scripts/session_start.py; else echo 'gse-light (the method) is not cloned next to this repository: git clone https://github.com/nicolasguelfi/gse-light.git ../gse-light'; fi",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -21,12 +21,12 @@ Status: **examples seen in past projects, dated 2026-10 — not recommendations*
 ## How to use this page
 
 1. *Person (team, project lead)* — collect the drivers first
-   (`instances/<instance>/design/10-design-drivers.md`, skill `design-phase`).
+   (`project/design/10-design-drivers.md`, skill `design-phase`).
 2. *Ask Claude* — for each category, open the `DD` record with at least two options; the
    rows below are candidates to score against the drivers, beside any option the team or
    the client organisation brings.
 3. *Person (project lead)* — decide; the choice goes to
-   `instances/<instance>/design/00-design-choices.md`, not here.
+   `project/design/00-design-choices.md`, not here.
 
 ## Options by category
 
@@ -67,7 +67,7 @@ updates, monitoring) as in the reference design's Appendix A.
 | 7 · Migrations | Alembic (SQLAlchemy), Django migrations | Python applications | — | 2026-10 |
 | 7 · Backups | `pg_dump` on a schedule, point-in-time recovery | acceptable loss of a day versus minutes (ch. 7) | — | 2026-10 |
 | 8 · Dependency updates | Dependabot | GitHub-hosted repositories, no extra service | Sumvadis | 2026-10 |
-| 8 · Dependency updates | Renovate | grouped updates, finer rules, monorepositories | — | 2026-10 |
+| 8 · Dependency updates | Renovate | grouped updates, finer rules, a repository with several components | — | 2026-10 |
 | 9 · Unit tests | Vitest | TypeScript | Sumvadis | 2026-10 |
 | 9 · Unit tests | pytest | Python | — | 2026-10 |
 | 9 · Database integration | Testcontainers (a disposable database started by the test run) | integration tests on the real engine, in CI | — | 2026-10 |

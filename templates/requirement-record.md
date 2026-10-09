@@ -1,6 +1,6 @@
 <!-- Template of the gse-light method (https://github.com/nicolasguelfi/gse-light), CC BY-NC 4.0. Documents made from this template carry no licence obligation: fill it in and keep the result as your own. -->
 <!-- One record per requirement. FR-<AREA>-NNN: a functional requirement (what the product does), in
-     instances/<instance>/requirements/20-functional/ (one file per capability, several records in it).
+     project/requirements/20-functional/ (one file per capability, several records in it).
      NFR-<AREA>-NNN: a quality (speed, availability, security, usability…), in requirements/30-non-functional.md.
      <AREA>: the short code of the product area (two to four capital letters, the same codes as the examples).
      NNN: three digits, in order of creation; an id is never reused. Keep the heading format: the traceability

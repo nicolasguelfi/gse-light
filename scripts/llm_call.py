@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 """One door to the paid models, with a cost line for every call.
 
-Reads the keys from `.env` at the root of the project-management repository (never from the environment of a
+Reads the keys from `.env` at the root of the project's repository (never from the environment of a
 Claude session, which is denied that file), calls one provider, prints the answer, and
 appends one row to a cost log. Two providers today:
 
@@ -15,11 +15,11 @@ Usage
 -----
   python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "Summarise this" --file notes.md
   python3 ../gse-light/scripts/llm_call.py --provider openrouter --model openai/gpt-4o-mini --prompt-file p.txt
-  python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "..." --meeting instances/<instance>/meetings/2026-10-14 --out minutes-draft.md
+  python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "..." --meeting project/meetings/2026-10-14 --out minutes-draft.md
   python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "..." --dry-run      # no network, no cost
 
 Every real call appends: timestamp, provider, model, input tokens, output tokens,
-estimated cost (EUR), purpose, output path to `instances/<INSTANCE>/journal/llm-costs.csv`, and, when
+estimated cost (EUR), purpose, output path to `project/journal/llm-costs.csv`, and, when
 `--meeting DIR` is given, one entry to `DIR/cost.json`. Costs are **estimates** from a
 small price table (`LLM_PRICES_JSON` in `.env` overrides it); the invoice is the truth.
 """
@@ -39,31 +39,40 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent  # the method (gse-light)
 
 
-def pm_root() -> Path:
-    """The project-management repository: GSE_PM_ROOT, else the nearest folder above the
-    current directory that holds `instances/` (run the scripts from that repository)."""
-    env = os.environ.get("GSE_PM_ROOT")
+def project_root() -> Path:
+    """The project's repository: GSE_PROJECT_ROOT, else the nearest folder above the
+    current directory that holds `project/` (run the scripts from that repository)."""
+    env = os.environ.get("GSE_PROJECT_ROOT")
     if env:
         return Path(env).resolve()
     for d in (Path.cwd().resolve(), *Path.cwd().resolve().parents):
-        if (d / "instances").is_dir():
+        if (d / "project").is_dir():
             return d
-    sys.exit("no project-management repository found: run this from a folder holding instances/ "
-             "(for example ../<project>-pm), or set GSE_PM_ROOT")
+    sys.exit("no project repository found: run this from the project's repository (the folder holding project/), "
+             "or set GSE_PROJECT_ROOT")
 
 
-PM = pm_root()
+REPO = project_root()
+PM = REPO  # former name, kept for callers
+
+
+def project_dir() -> Path:
+    """The project's shared record: project/ of the project's repository."""
+    return REPO / "project"
+
+
+instance_dir = project_dir  # former name, kept for callers
 
 
 def prefer_pm_venv() -> None:
-    """Re-run the current script with the project-management repository's own Python when it
-    has one: `<pm-repo>/.venv`, a link to an environment kept outside any synced folder
+    """Re-run the current script with the project repository's own Python when it
+    has one: `<project-repo>/.venv`, a link to an environment kept outside any synced folder
     (set-up in scripts/README.md). Nothing happens without that link, or when already inside
     it. Only the scripts that need third-party packages or tools call this (llm_call,
     meeting/transcribe); check_docs, situation and session_start use the standard library."""
     if os.environ.get("GSE_PM_VENV") == "1":
         return
-    venv = PM / ".venv"
+    venv = REPO / ".venv"
     candidates = (venv / "bin" / "python3", venv / "Scripts" / "python.exe")
     venv_py = next((p for p in candidates if p.exists()), None)
     if venv_py is None:
@@ -79,7 +88,7 @@ def prefer_pm_venv() -> None:
     os.execv(str(venv_py), [str(venv_py), *sys.argv])
 
 
-COST_LOG: Path  # set after load_env(): the active instance's journal (see instance_dir)
+COST_LOG: Path  # set after load_env(): the project's journal (see project_dir)
 COST_COLUMNS = ["timestamp", "provider", "model", "input_tokens", "output_tokens",
                 "est_cost_eur", "purpose", "output"]
 
@@ -91,7 +100,7 @@ DEFAULT_PRICES = {
 }
 
 
-def load_env(path: Path = PM / ".env") -> dict[str, str]:
+def load_env(path: Path = REPO / ".env") -> dict[str, str]:
     """Parse KEY=VALUE lines; ignore comments and blanks; strip quotes and inline comments."""
     env: dict[str, str] = {}
     if not path.exists():
@@ -106,22 +115,7 @@ def load_env(path: Path = PM / ".env") -> dict[str, str]:
     return env
 
 
-def instance_dir() -> Path:
-    """The active instance's folder: instances/<INSTANCE> of the project-management repository;
-    INSTANCE from the environment or .env, else the only folder in instances/."""
-    name = os.environ.get("INSTANCE") or load_env().get("INSTANCE")
-    if not name:
-        found = sorted(p.name for p in (PM / "instances").iterdir() if p.is_dir())
-        if len(found) != 1:
-            sys.exit(f"set INSTANCE in {PM / '.env'}: instances/ holds {found or 'nothing'}")
-        name = found[0]
-    path = PM / "instances" / name
-    if not path.is_dir():
-        sys.exit(f"unknown instance {name!r}: no folder {path.relative_to(PM)} (set INSTANCE in .env)")
-    return path
-
-
-COST_LOG = instance_dir() / "journal" / "llm-costs.csv"
+COST_LOG = project_dir() / "journal" / "llm-costs.csv"
 
 
 def prices(env: dict[str, str]) -> dict[str, tuple[float, float]]:

@@ -1,34 +1,33 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
-"""Documentation gates, for the method (gse-light) and for a project-management repository.
+"""Documentation gates, for the method (gse-light) and for a project's repository (the one that holds project/).
 Exit code 1 on any FAIL line; WARN lines never fail the run.
 
   python3 scripts/check_docs.py                           # in gse-light: the method
-  python3 ../gse-light/scripts/check_docs.py              # in a project-management repository (holds instances/)
-  python3 ../gse-light/scripts/check_docs.py ../<pm-repo> # from a product repository: the root argument names
-                                                          # the repository to check (default: the git toplevel of the current folder)
+  python3 ../gse-light/scripts/check_docs.py              # in the project's repository (holds project/)
+  python3 ../gse-light/scripts/check_docs.py <folder>     # the root argument names the repository to check
+                                                          # (default: the git toplevel of the current folder)
 
 Checks:
   1. every relative Markdown link points to an existing file, and its #anchor to an existing heading
      (links to https://github.com/nicolasguelfi/gse-light/blob/main/<path> are checked against ../gse-light);
-  2. in gse-light: skills present both in pm-kit/skills and claude-kit/skills are identical, and the
-     "Who is who" block (between `<!-- who-is-who:start -->` and `<!-- who-is-who:end -->`) is identical
-     in every page that carries it (one text, copied into each entry page so that each page reads alone),
-     and every skill, agent, template and script has a row in ARTEFACTS.md (the catalogue);
-  3. in a project-management repository:
+  2. in gse-light: the "Who is who" block (between `<!-- who-is-who:start -->` and `<!-- who-is-who:end -->`)
+     is identical in every page that carries it (one text, copied into each entry page so that each page
+     reads alone), and every skill, agent, template and script has a row in ARTEFACTS.md (the catalogue);
+  3. in a project's repository:
      - every register record has a status badge and a dashboard row, and every dashboard row a record;
-     - in each instances/<instance>/, the pending counts in BRIEFING.md §3 match its registers' dashboards:
+     - the pending counts in project/BRIEFING.md §3 match the registers' dashboards:
        FAIL when the register holds fewer 🔴 than §3 says (a record closed without the cockpit),
        WARN only when it holds more (new 🔴 opened by the team; the Project Advisor's next session
        refreshes the cockpit) — a developer's commit never turns CI red for that;
-     - .claude/skills and .claude/agents are identical to gse-light's pm-kit (else: refresh with pm-kit/install.sh);
-     - deck freshness: for every slide of a deck in force (instances/<name>/meetings/<date>/slides/project/slides/),
+     - .claude/skills and .claude/agents are identical to gse-light's kit (else: refresh with kit/install.sh);
+     - deck freshness: for every slide of a deck in force (project/meetings/<date>/slides/project/slides/),
        WARN when a file named in its "Source:" footer was committed after the slide (or after the deck's last
        "Sources checked: YYYY-MM-DD HH:MM" line in slides/README.md), or when the footer is missing;
-     - leak guard: no file tracked in gse-light, and no commit message, matches a line of instances/<instance>/private-terms.txt
+     - leak guard: no file tracked in gse-light, and no commit message, matches a line of project/private-terms.txt
        (the terms stay in the private repository; gse-light is public). Limit: the guard knows only the
-       terms each instance lists — a built-in generic list of client names would itself name the clients.
+       terms the project lists — a built-in generic list of client names would itself name the clients.
 """
 from __future__ import annotations
 
@@ -54,8 +53,9 @@ def repo_root(arg: str | None) -> Path:
 
 
 ROOT = repo_root(sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("-") else None)  # the repository being checked
-IS_PM = (ROOT / "instances").is_dir()
-REGISTERS = {  # relative to each instance folder instances/<instance>/
+PROJECT = ROOT / "project"  # the project's shared record, in the project's repository
+IS_PROJECT = PROJECT.is_dir()
+REGISTERS = {  # relative to project/
     "PD": "governance/05-project-decisions.md",
     "DEC": "requirements/05-decisions.md",
     "DD": "design/05-design-decisions.md",
@@ -157,7 +157,7 @@ def register_state(prefix: str, path: Path) -> dict[str, str]:
 
 
 def check_registers() -> None:
-    for inst in sorted(p for p in (ROOT / "instances").iterdir() if (p / "BRIEFING.md").exists()):
+    for inst in ([PROJECT] if (PROJECT / "BRIEFING.md").exists() else []):
         name = inst.relative_to(ROOT)
         briefing = (inst / "BRIEFING.md").read_text(encoding="utf-8")
         for prefix, rel in REGISTERS.items():
@@ -234,7 +234,7 @@ def check_catalogue() -> None:
         return
     text = cat.read_text(encoding="utf-8")
     expected: list[tuple[str, str]] = []
-    for kit in ("claude-kit", "pm-kit"):
+    for kit in ("kit",):
         for d in sorted((METHOD / kit / "skills").iterdir()):
             if d.is_dir():
                 expected.append((f"{kit}/skills/{d.name}", d.name))
@@ -254,13 +254,12 @@ def check_catalogue() -> None:
 
 def check_copies() -> None:
     if ROOT == METHOD:
-        same_tree(METHOD / "claude-kit/skills", METHOD / "pm-kit/skills", "pm-kit/skills", "keep both identical", True)
         check_who_is_who()
         check_catalogue()
-    elif IS_PM:
-        hint = "refresh: ../gse-light/pm-kit/install.sh ."
-        same_tree(METHOD / "pm-kit/skills", ROOT / ".claude/skills", ".claude/skills", hint, False)
-        same_tree(METHOD / "pm-kit/agents", ROOT / ".claude/agents", ".claude/agents", hint, False)
+    elif IS_PROJECT:
+        hint = "refresh: ../gse-light/kit/install.sh"
+        same_tree(METHOD / "kit/skills", ROOT / ".claude/skills", ".claude/skills", hint, False)
+        same_tree(METHOD / "kit/agents", ROOT / ".claude/agents", ".claude/agents", hint, False)
 
 
 SOURCE_RE = re.compile(r"Source:\s*([^<]*)", re.I)
@@ -284,16 +283,16 @@ def _resolve_source(token: str, meeting_rel: Path) -> tuple[Path, Path] | None:
     first = token.strip().strip(".,;:()").split(" ")[0].strip("`*")
     if not first or ("/" not in first and not first.endswith(FILE_EXT)):
         return None
-    instance_rel = meeting_rel.parents[1]  # instances/<name>
+    project_rel = meeting_rel.parents[1]  # project/
     candidates: list[tuple[Path, Path]] = []
     if first.startswith("gse-light/"):
         candidates.append((METHOD, Path(first[len("gse-light/"):])))
     elif first.startswith(ROOT.name + "/"):
         candidates.append((ROOT, Path(first[len(ROOT.name) + 1:])))
     else:
-        candidates += [(ROOT, Path(first)), (ROOT, meeting_rel / first), (ROOT, instance_rel / first),
-                       (METHOD, Path(first)), (METHOD, Path("claude-kit") / first),
-                       (METHOD, Path("method") / first), (METHOD, Path("pm-kit") / first)]
+        candidates += [(ROOT, Path(first)), (ROOT, meeting_rel / first), (ROOT, project_rel / first),
+                       (METHOD, Path(first)), (METHOD, Path("kit") / first),
+                       (METHOD, Path("method") / first)]
     for repo, rel in candidates:
         if (repo / rel).exists():
             return repo, rel
@@ -301,13 +300,13 @@ def _resolve_source(token: str, meeting_rel: Path) -> tuple[Path, Path] | None:
 
 
 def check_deck_freshness() -> None:
-    """A deck in force (instances/<name>/meetings/<date>/slides/project/slides/*.html) states its
+    """A deck in force (project/meetings/<date>/slides/project/slides/*.html) states its
     sources in each slide's "Source:" footer. When a source file was committed after the slide,
     the slide may be stale: WARN (never FAIL) — read it, then republish or date it (NG,
     2026-10-08, board r7). Uncommitted changes are not seen: commit, then check."""
-    for slide in sorted(ROOT.glob("instances/*/meetings/*/slides/project/slides/*.html")):
+    for slide in sorted(ROOT.glob("project/meetings/*/slides/project/slides/*.html")):
         rel = slide.relative_to(ROOT)
-        meeting_rel = rel.parents[3]  # instances/<name>/meetings/<date>
+        meeting_rel = rel.parents[3]  # project/meetings/<date>
         text = slide.read_text(encoding="utf-8", errors="ignore")
         m = SOURCE_RE.search(text)
         if not m:
@@ -336,11 +335,11 @@ def check_deck_freshness() -> None:
 
 
 def check_leaks() -> None:
-    """No private term of an instance in the public method."""
-    if not IS_PM or ROOT == METHOD:
+    """No private term of the project in the public method."""
+    if not IS_PROJECT or ROOT == METHOD:
         return
     terms = []
-    for f in sorted((ROOT / "instances").glob("*/private-terms.txt")):
+    for f in [p for p in [PROJECT / "private-terms.txt"] if p.exists()]:
         for line in f.read_text(encoding="utf-8").splitlines():
             if line.strip() and not line.startswith("#"):
                 terms.append(re.compile(line.strip()))
@@ -372,7 +371,7 @@ def main() -> int:
         print(__doc__)
         return 0
     check_links()
-    if IS_PM:
+    if IS_PROJECT:
         check_registers()
         check_deck_freshness()
     check_copies()

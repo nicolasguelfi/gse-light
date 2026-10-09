@@ -13,7 +13,7 @@ The week is a chain per meeting folder meetings/<date>/:
   agenda.md  →  audio* / transcript-imported.*  →  transcript.md  →  minutes.md  →  "validated by <who> on <date>"
 (the last link is the validation line of templates/meeting-minutes.md: "validated by … on YYYY-MM-DD").
 The meeting day is variable, fixed at each meeting for the next one (Project Advisor's rule,
-2026-10-07). The next date is read, in this order: instances/<instance>/meetings/schedule.json
+2026-10-07). The next date is read, in this order: project/meetings/schedule.json
 {"next": "YYYY-MM-DD"} (written by the minutes step or by the Project Advisor), the "Next meeting"
 section of the latest minutes.md, the earliest future meeting folder, or a fixed
 {"weekday": "..."} in schedule.json if ever set. A past date in schedule.json is reported, not used.
@@ -30,10 +30,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
-from llm_call import PM, instance_dir, load_env  # noqa: E402  (same .env convention as the other scripts)
+from llm_call import REPO, project_dir, load_env  # noqa: E402  (same .env convention as the other scripts)
 
 _mdir = os.environ.get("MEETINGS_DIR") or load_env().get("MEETINGS_DIR")
-MEET = (Path(_mdir) if Path(_mdir).is_absolute() else PM / _mdir) if _mdir else instance_dir() / "meetings"
+MEET = (Path(_mdir) if Path(_mdir).is_absolute() else REPO / _mdir) if _mdir else project_dir() / "meetings"
 SCHEDULE = MEET / "schedule.json"
 WEEKDAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -132,7 +132,7 @@ def situation(today: dt.date) -> dict:
     steps: list[dict] = []
     notes: list[str] = []
 
-    if not (PM / ".env").exists():
+    if not (REPO / ".env").exists():
         notes.append("No .env yet: copy .env.example to .env and fill the keys. Local steps still work.")
 
     # 1. finish what a past meeting left open
@@ -147,7 +147,7 @@ def situation(today: dt.date) -> dict:
     nxt, source = next_meeting(today)
     if nxt is None:
         steps.append({"kind": "schedule", "meeting": None,
-                      "text": "No next meeting date known: ask the Project Advisor the date (it is fixed at each meeting for the next one) and write instances/<instance>/meetings/schedule.json {\"next\": \"YYYY-MM-DD\"}."})
+                      "text": "No next meeting date known: ask the Project Advisor the date (it is fixed at each meeting for the next one) and write project/meetings/schedule.json {\"next\": \"YYYY-MM-DD\"}."})
     else:
         d = MEET / nxt.isoformat()
         c = chain(d) if d.exists() else {k: False for k in ("agenda", "recording", "audio", "transcript", "minutes", "validated")}

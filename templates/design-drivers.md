@@ -1,5 +1,5 @@
 <!-- Template of the gse-light method (https://github.com/nicolasguelfi/gse-light), CC BY-NC 4.0. Documents made from this template carry no licence obligation: fill it in and keep the result as your own. -->
-# Design drivers — <instance>
+# Design drivers — <project>
 
 - **Written:** YYYY-MM-DD by <project lead> with Claude (skill `design-phase`); amended <dates>
 - **Status:** 🔴 collecting · 🟡 complete, decisions open · 🟢 decisions taken
@@ -73,7 +73,7 @@ this project's choice (record in §10).
 
 | # | Decision | DD record | Status |
 |---|---|---|---|
-| 1 | Repository layout (one or several product repositories; their names) | DD-<NN> | 🔴 |
+| 1 | Repository layout (components inside the project's repository, or further repositories; their names) | DD-<NN> | 🔴 |
 | 2 | Hosting | DD-<NN> | 🔴 |
 | 3 | Environments and promotion path | DD-<NN> | 🔴 |
 | 4 | Stack and language | DD-<NN> | 🔴 |

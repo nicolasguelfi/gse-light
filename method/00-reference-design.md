@@ -1,6 +1,6 @@
 # 00 — Reference design: infrastructure, continuous integration and AI practice for a GenAI-directed project
 
-Status: v0.8 · 2026-10-09 · approved by the Project Advisor on 2026-10-08, amended on 2026-10-09 (review of a change: evidence, not lines — ch. 8); binding for an instance once its project lead adopts it (rules are invariants; every technology is chosen by each project in its design phase; sandbox repositories before the product repositories) · author: Nicolas Guelfi, with Claude
+Status: v0.9 · 2026-10-09 · approved by the Project Advisor on 2026-10-08, amended on 2026-10-09 (review of a change: evidence, not lines — ch. 8; one repository per project, with the shared record in `project/` — ch. 13, 15) · binding for an instance once its project lead adopts it (rules are invariants; every technology is chosen by each project in its design phase) · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a product run with this method is built, tested, delivered and
 > run, and how people and AI sessions work together on it. Each technical chapter (3–12)
@@ -9,11 +9,12 @@ Status: v0.8 · 2026-10-09 · approved by the Project Advisor on 2026-10-08, ame
 > choose**: the decision drivers (the facts and constraints of the project) to collect
 > with the team and Claude; (3) the project's **choices**, recorded as design decisions
 > (`DD-NN`) in its instance, taken in the **design phase** (first week, kit skill
-> `design-phase`): the register `instances/<instance>/design/05-design-decisions.md`, the
-> drivers in `instances/<instance>/design/10-design-drivers.md`, and the resulting
-> choice per chapter in `instances/<instance>/design/00-design-choices.md`.
-> `instances/<instance>/` designates the project's folder in its private project-management
-> repository, cloned next to `gse-light` ([pm-kit](https://github.com/nicolasguelfi/gse-light/blob/main/pm-kit/README.md)).
+> `design-phase`): the register `project/design/05-design-decisions.md`, the
+> drivers in `project/design/10-design-drivers.md`, and the resulting
+> choice per chapter in `project/design/00-design-choices.md`.
+> `project/` designates the project's shared record — cockpit, registers, requirements,
+> planning, meetings, journal — a folder at the root of the project's own repository, next
+> to the code; `gse-light` is cloned beside that repository ([the kit](https://github.com/nicolasguelfi/gse-light/blob/main/kit/README.md)).
 > Examples come from two projects the author led: [Sumvadis](https://sumvadis.ai/) and
 > [StreamTeX](https://streamtex.org/). They show that a rule can be applied; they are not
 > a starting point: each project chooses its architecture and infrastructure in its design
@@ -28,13 +29,13 @@ Status: v0.8 · 2026-10-09 · approved by the Project Advisor on 2026-10-08, ame
 
 **For whom.** The developers who build the product (the project lead decides the technical
 design), the Project Advisor who recommends and advises, and the Claude sessions that work
-with them (they load this document through the [Claude kit](../claude-kit/README.md)).
+with them (they load this document through the [Claude kit](../kit/README.md)).
 
 **What it covers.** Everything between "the code is written" and "the service runs well
 for its users": repositories, environments, infrastructure, data evolution, continuous
 integration, tests, delivery, security, operations, and the practices specific to
 working with generative AI. It does **not** cover what the product does for its users; that is
-in the instance's `instances/<instance>/requirements/`.
+in the instance's `project/requirements/`.
 
 **How to read.** Chapters 0–2 are for everyone. Chapters 3–12 are the technical body;
 read the chapter you are about to work on. Chapter 13 is the AI working method. Chapter
@@ -102,7 +103,7 @@ who carries it: a **person**, a person **asking Claude**, or Claude and the CI
 7. **Evaluate is not execute.** Asking someone, human or AI, to assess a situation
    authorises reading and writing a report, nothing else. Changing a shared system
    requires an explicit go-ahead for that action (the instance's roles and go-aheads,
-   `instances/<instance>/governance/10-roles-and-go-aheads.md`).
+   `project/governance/10-roles-and-go-aheads.md`).
    *Who: automatic (Claude stops and asks); person gives the go-ahead.*
 
 ---
@@ -115,7 +116,7 @@ nothing — will find it.
 
 ### Rules
 
-- **Roles and go-aheads** are listed in each instance's `instances/<instance>/governance/10-roles-and-go-aheads.md`.
+- **Roles and go-aheads** are listed in each instance's `project/governance/10-roles-and-go-aheads.md`.
   A go-ahead covers one action; the next action of the same kind needs a new one.
 - **Registers.** Three registers, one format: project (`PD-NN`), requirements
   (`DEC-NNN`), design (`DD-NN`). Each record: the problem in plain words, what to
@@ -129,19 +130,19 @@ nothing — will find it.
   tools, secrets, dependency updates, monitoring (`DD` records; their mapping to the
   chapters in Appendix A) — from the drivers collected with the team; the project lead
   decides them, the Project Advisor advises (kit skill `design-phase`, ch. 15). Until
-  they are decided, the gates script of each product repository is a stub that passes
+  they are decided, the gates script of the project's repository is a stub that passes
   and says so.
-- **Cockpit.** Each instance's `instances/<instance>/BRIEFING.md` is the Project Advisor's single entry point:
+- **Cockpit.** Each instance's `project/BRIEFING.md` is the Project Advisor's single entry point:
   §1 what awaits him (his decisions, the points where the team expects his advice), with
   links; §1b what awaits the team; §2 what changed since his last acknowledgement; §3
   state. It is refreshed at the end of every session. A stale §1 is a defect.
-- **Sprints.** Weekly sprints; one file per sprint in `instances/<instance>/planning/sprints/` and one
+- **Sprints.** Weekly sprints; one file per sprint in `project/planning/sprints/` and one
   GitHub milestone, both kept by the project lead. The Project Advisor's weekly
   brief reads them; the Project Advisor writes no sprint.
-- **Journal.** One file per working session in the instance's `instances/<instance>/journal/`, plus
+- **Journal.** One file per working session in the instance's `project/journal/`, plus
   one row in `metrics.csv`. Entries are dated and never rewritten: they are both the
   project's memory and research data on AI-assisted engineering.
-- **Tickets.** Work items are GitHub issues in the product repository (several
+- **Tickets.** Work items are GitHub issues in the project's repository (several
   repositories: in the one the ticket changes); each ticket names the requirement or
   decision it serves.
 
@@ -176,10 +177,11 @@ with the boundaries between its modules).
   redeploy; files go to a store meant for them.
 - **Computation is reproducible**: an indicator or a proposal records the snapshot date
   and the code version that produced it.
-- **Repository layout is a decision.** One repository or several (for example one per
-  deployable unit) is decided in the design phase (`DD` repository layout); the kit is
-  installed in each product repository and the instance's `README.md` in the
-  project-management repository lists them (ch. 13).
+- **Repository layout is a decision.** The project starts in one repository — the code
+  and, in `project/`, its shared record. Whether the deployable units live as components
+  inside it (folders, one CI per component when needed) or in further repositories is
+  decided in the design phase (`DD` repository layout); the kit is installed in each
+  repository, and `project/README.md` lists them (ch. 13).
 
 ### How to choose
 
@@ -286,7 +288,7 @@ rebuilt, reviewed and compared; nobody configures production by clicking.
 
 ### Rules
 
-- Infrastructure is declared in the product repository (`infra/`, or the layout the
+- Infrastructure is declared in the project's repository (`infra/`, or the layout the
   instance decides) and applied by CI with a go-ahead, never from a laptop.
 - **Secrets are never in git.** The repository names where a secret lives, never its
   value. Runtime secrets come from a vault (a service that holds secrets and hands them
@@ -537,44 +539,49 @@ checks (gates and measurements).
 
 ### Rules
 
-- **Three repositories side by side.** A developer's working folder holds `gse-light`
-  (the method, public, never edited), the project-management repository `<pm-repo>`
-  (private: registers, sprints, journal) and the product repository (private: the code,
-  with the kit committed in it), as siblings. The kit's `install.sh`, run from inside the
-  product clone, finds the two others and gives Claude read access to them. Its
-  `settings.json` denies the Edit tool under `../gse-light/**` and on the cockpit, denies
-  the literal command `git push origin main`, and makes Claude ask before any `git push`
-  in a product repository. These rules are conveniences, not a security boundary: the
-  real guard is GitHub branch protection on `main` and on every branch that deploys —
-  recommended, decided by each project in its roles record (`PD`). Known limit: a Claude
-  Code session opened on claude.ai (web or cloud) sees one repository only — the one it
-  was started on — so the method's cross-repository steps run from a local session.
-- **Sandbox repositories before the product repositories exist.** Until the design
-  phase has decided the repository layout (the first of the twelve design decisions,
-  ch. 2) and the product repositories are created, every team member (the project lead
-  or a developer) works in a personal, private, throwaway **sandbox repository** (`<project>-sandbox-<firstname>`,
-  created on GitHub by the project lead or the Project Advisor, cloned next to `gse-light`
-  and `<pm-repo>`) with the kit installed by the one command. Day 0, `/upskilling` and
-  experiments happen there; the project lead's sandbox is where the design phase runs.
-  Journal entries and new 🔴 records go to `<pm-repo>` through the skills. Team members
-  never open Claude Code in `<pm-repo>`: the sessions opened there are the Project
-  Advisor's (pm-kit).
-- **Multi-repository products.** When the design phase splits the product into several
-  repositories (`DD` repository layout), the kit is installed in **each** product
-  repository; the instance's `README.md` in the project-management repository lists the
-  project's repositories, and is the place for an overall view: the Project Advisor opens
-  Claude Code there, with the product repositories added as additional directories, when
-  a task spans them.
-- **Instruction files.** Every repository has a `CLAUDE.md` built from the
-  [kit template](../claude-kit/templates/CLAUDE.product-repo.md): purpose, phase,
-  standing rules, commands to run the gates, what never to do. It is short and kept
-  true; a rule learned from an incident is added with the date and the reason.
-- **Skills and agents** from the [Claude kit](../claude-kit/README.md) give every session
-  the same procedures: the skills `decision-record`, `design-phase`, `session-close`,
-  `upskilling`, `verify-claim` and the read-only agent `change-reviewer`. Documentation
-  gates run from a product repository as
-  `python3 ../gse-light/scripts/check_docs.py ../<pm-repo>` (the project-management
-  repository as root argument).
+- **One repository per project, two clones side by side.** A person's working folder
+  holds the project's repository (private: the code and, in `project/`, the shared record
+  — cockpit, registers, requirements, planning, meetings, journal — with the kit committed
+  in it) and `gse-light` (the method, public, never edited), as siblings. Every role —
+  the developers, the project lead, the Project Advisor — opens Claude Code in the
+  project's repository; nobody opens it in `gse-light`. The kit's `install.sh`, run once
+  from inside the project clone by the Project Advisor (who installs and refreshes the
+  kit), creates `project/` from its skeleton when it is missing and gives Claude read
+  access to `../gse-light`. Its `settings.json` denies the Edit tool under
+  `../gse-light/**` and on the cockpit `project/BRIEFING.md`, denies the literal command
+  `git push origin main`, and makes Claude ask before any `git push`. These rules are
+  conveniences, not a security boundary: the real guard is GitHub branch protection on
+  `main` and on every branch that deploys — recommended, decided by each project in its
+  roles record (`PD`); it needs an organisation-owned repository or a paid plan, and the
+  project's repository is listed in `project/README.md` with its owner.
+- **Day 0 in the project's repository.** Each team member's first hour — clone, `.env`,
+  `check.sh`, first session, `/upskilling`, first journal entry — happens in the project's
+  repository, on a personal branch `day0-<firstname>` (merged or deleted afterwards; the
+  upskilling record stays in the person's home folder). A **sandbox repository** (a
+  personal, private, throwaway repository with the kit, `<project>-sandbox-<firstname>`)
+  is optional: for experiments outside the project only, created by the person; nothing
+  of value stays there.
+- **Several repositories.** When the design phase splits the product into further
+  repositories (`DD` repository layout), the kit is installed in **each**; `project/`
+  stays in the project's first repository, which `project/README.md` names together with
+  the others — the overall view. Known limit: a Claude Code session opened on claude.ai
+  (web or cloud) sees one repository only — the one it was started on — so a task that
+  spans several runs from a local session with the others added as additional
+  directories.
+- **Instruction files.** The project's repository has a `CLAUDE.md` built from the
+  [kit template](../kit/templates/CLAUDE.md): purpose, phase,
+  standing rules, commands to run the gates, a section per role, what never to do. It is
+  short and kept true; a rule learned from an incident is added with the date and the reason.
+- **Skills and agents** from the [kit](../kit/README.md) give every session the same
+  procedures. For every team member: the skills `decision-record`, `design-phase`,
+  `review`, `session-close`, `upskilling`, `verify-claim` and the read-only agent
+  `change-reviewer`. For the Project Advisor only (they check the git user against the
+  roles record and stop for anyone else): `advisor` (the entry point), `meeting` (brief,
+  record, transcribe, minutes with the tasks per participant), `slides`, `method-lesson`,
+  `cockpit-update`, `genai-onboarding`, and the read-only agents `delivery-auditor`,
+  `minutes-verifier` and `design-reviewer` — they serve the weekly meeting; they manage
+  nothing. Documentation gates run from the project's repository as
+  `python3 ../gse-light/scripts/check_docs.py`, next to the gates.
 - **One writer per repository** at a time. With several parallel sessions, give each a
   name, one writing session and read-only watchers.
 - **Verify AI claims**: a session's statement about the system is accepted only with the
@@ -582,12 +589,12 @@ checks (gates and measurements).
 - **No default stack**: Claude proposes a technology only after the drivers are collected
   and inside a `DD` record with its options; the examples of this page and of the
   [landscape](40-tool-landscape-examples.md) are illustrations, never defaults.
-- **Propagate fixes**: after correcting a fact, search the whole repository (and the
-  instance's other repositories) for the old claim. A fix made by hand in an output is
+- **Propagate fixes**: after correcting a fact, search the whole repository — code and
+  `project/` — (and the instance's other repositories, if any) for the old claim. A fix made by hand in an output is
   carried back into the generator that produced it.
 - **Context hand-over**: a long session ends with a journal entry written for a reader
   with no memory — state, rules, what remains, traps.
-- **Cost**: model usage per session is recorded in `instances/<instance>/journal/metrics.csv`; expensive
+- **Cost**: model usage per session is recorded in `project/journal/metrics.csv`; expensive
   actions (paid APIs, large generations) need a go-ahead.
 - **Model access**: who provides the Claude Code licences and the API keys for
   complementary models is a project decision (`PD`) written in the instance's roles
@@ -595,12 +602,6 @@ checks (gates and measurements).
   "direct" and "through a model provider" differ only by configuration, never by code.
 - **Coding agent**: the kit targets Claude Code; independence from the agent is a goal of
   the method's follow-up.
-- **The Project Advisor's own kit** (`pm-kit/`, installed in each project-management repository's `.claude/`) is separate from the
-  developers' kit: the skills `advisor` (the entry point), `meeting` (brief, record,
-  transcribe, minutes with the tasks per participant), `slides`, `method-lesson`,
-  `decision-record`, `cockpit-update`, `session-close`, `genai-onboarding`, and the
-  read-only agents `delivery-auditor`, `minutes-verifier` and `design-reviewer`. It
-  serves the weekly meeting; it manages nothing.
 
 ---
 
@@ -617,12 +618,12 @@ that prove it, and back.
   ([template](../templates/example-record.md)), `DD-NN` for design decisions, test names
   citing the requirement they cover.
 - **Examples and sources.** An instance keeps one file per real example in
-  `instances/<instance>/requirements/40-examples/` and one dated report per source
+  `project/requirements/40-examples/` and one dated report per source
   (an interview, an export, a document) in
-  `instances/<instance>/requirements/50-sources/<date>-<source>.md`. Personal data stays
+  `project/requirements/50-sources/<date>-<source>.md`. Personal data stays
   out of git: an example is written at the level the instance's data-regime record
   allows (ch. 11), and the real data stays where the regime says.
-- A traceability table (`instances/<instance>/requirements/70-traceability.md`) is generated from these
+- A traceability table (`project/requirements/70-traceability.md`) is generated from these
   identifiers by a script, not maintained by hand.
 - Each requirement links to the example that motivates it (principle 1); the weekly map
   "requirement → tests → last result" lists unverified requirements and qualities first
@@ -640,11 +641,11 @@ done with the choices of the design phase; none of them names a tool here.
 
 | When | Item | Who |
 |---|---|---|
-| Day 0 (between the kick-off and W1) | Each member's sandbox repository created and cloned next to `gse-light` and the project-management repository; kit installed by the one command; `/upskilling` run; first journal entry written | Person (project lead or Project Advisor creates; each member installs); Ask Claude (`upskilling`, `session-close`) |
-| Day 0 | Registers and cockpit in place in `instances/<instance>/` | Ask Claude (pm-kit) |
-| **W1 · design phase** | **Drivers collected, `DD` records opened and decided with the team** (the twelve design decisions of ch. 2, in order) — skill `design-phase`, run in the project lead's sandbox; the Project Advisor advises, the project lead decides | Person (team, project lead); Ask Claude (`design-phase`) |
-| W1 · once the repository layout is decided | Product repositories created; kit installed in each (`install.sh` from inside the clone); `CLAUDE.md` filled with the instance and the project-management repository; sandboxes may be deleted | Person (project lead); Automatic (`install.sh`) |
-| W1 | Day-0 CI green in each product repository: `./gates.sh` is a stub that prints "no gates yet: design phase in progress" and passes, run on every pull request and on `main` | Automatic (CI) |
+| W-1 (before the kick-off) | The project's repository created on GitHub (private; its owner named in `project/README.md`), the kit installed in it by the one command from inside the clone — `project/` created from the skeleton, registers and cockpit in place — and committed | Person (project lead creates the repository; the Project Advisor installs); Automatic (`install.sh`) |
+| Day 0 (between the kick-off and W1) | Each member clones the project's repository and `gse-light` side by side, copies `.env`, runs `check.sh`, opens a session on a branch `day0-<firstname>`, runs `/upskilling`, writes a first journal entry | Person (each member); Ask Claude (`upskilling`, `session-close`) |
+| **W1 · design phase** | **Drivers collected, `DD` records opened and decided with the team** (the twelve design decisions of ch. 2, in order) — skill `design-phase`, run in the project's repository; the Project Advisor advises, the project lead decides | Person (team, project lead); Ask Claude (`design-phase`) |
+| W1 · once the repository layout is decided | Components laid out inside the repository or, if the decision splits them, further repositories created and the kit installed in each (`install.sh` from inside each clone); `CLAUDE.md` filled (purpose, commands) in each | Person (project lead; the Project Advisor installs the kit); Automatic (`install.sh`) |
+| W1 | Day-0 CI green in the project's repository: `./gates.sh` is a stub that prints "no gates yet: design phase in progress" and passes, run on every pull request and on `main`; the documentation checks of `project/` run beside it | Automatic (CI) |
 | After the design phase | Gates script filled from the `DD` records (lint, types, tests, migrations, dependency scan, documentation checks); runs locally and in CI, empty test suite green | Ask Claude; Automatic (CI) |
 | W1–W2 | Rehearsal environment declared as code, in the hosting model decided | Ask Claude; Person (go-ahead) |
 | W1–W2 | Sign-in with the identity provider decided, on rehearsal | Ask Claude; Person (client access) |
@@ -663,7 +664,7 @@ done with the choices of the design phase; none of them names a tool here.
 How to choose, per category: the questions the design phase answers, the criteria, and
 the record to open. Tool names are **not** here: options seen in past projects, dated
 and non-normative, are in [40 — Tool landscape: examples](40-tool-landscape-examples.md).
-Each instance lists its own choices in `instances/<instance>/design/00-design-choices.md`.
+Each instance lists its own choices in `project/design/00-design-choices.md`.
 
 The last two columns name the decision each category feeds: one of the twelve decisions
 of `design-phase` §2, by its number and its name.
@@ -688,15 +689,15 @@ of `design-phase` §2, by its number and its name.
 ## Appendix B — Templates
 
 - Decision record (with its **Drivers** line): [`templates/decision-record.md`](../templates/decision-record.md)
-- Design drivers of an instance (`instances/<instance>/design/10-design-drivers.md`): [`templates/design-drivers.md`](../templates/design-drivers.md)
-- Example record (`instances/<instance>/requirements/40-examples/`): [`templates/example-record.md`](../templates/example-record.md)
+- Design drivers of an instance (`project/design/10-design-drivers.md`): [`templates/design-drivers.md`](../templates/design-drivers.md)
+- Example record (`project/requirements/40-examples/`): [`templates/example-record.md`](../templates/example-record.md)
 - Requirement record (`FR-`/`NFR-`, with acceptance criteria and the test that proves it): [`templates/requirement-record.md`](../templates/requirement-record.md)
 - Session journal entry: [`templates/session-journal.md`](../templates/session-journal.md)
 - Meeting agenda and minutes: [`templates/meeting-agenda.md`](../templates/meeting-agenda.md), [`templates/meeting-minutes.md`](../templates/meeting-minutes.md)
 - Skills grid for the kick-off round table: [`templates/skills-grid.md`](../templates/skills-grid.md)
-- Product repository instructions: [`claude-kit/templates/CLAUDE.product-repo.md`](../claude-kit/templates/CLAUDE.product-repo.md)
+- Product repository instructions: [`kit/templates/CLAUDE.md`](../kit/templates/CLAUDE.md)
 - CI pipeline and gates script: installed by the kit as a stub, filled after the design
-  phase from [`claude-kit/templates/ci-gates.yml`](../claude-kit/templates/ci-gates.yml).
+  phase from [`kit/templates/ci-gates.yml`](../kit/templates/ci-gates.yml).
 - Tool options seen in past projects: [`method/40-tool-landscape-examples.md`](40-tool-landscape-examples.md).
 
 ## Appendix C — Anti-patterns lived on Sumvadis
@@ -714,7 +715,7 @@ of `design-phase` §2, by its number and its name.
 
 The method's full glossary — people, documents, weeks, building and testing, generative
 software engineering, acronyms — is [`GLOSSARY.md`](../GLOSSARY.md) at the root of the repository.
-Each instance keeps its own terms in `instances/<instance>/requirements/01-glossary.md`. Technical
+Each instance keeps its own terms in `project/requirements/01-glossary.md`. Technical
 terms used on this page: *container* (a packaged application with everything it needs to run), *image*
 (the file a container starts from), *digest* (the fingerprint that identifies one exact
 image or artefact), *migration* (a numbered script that changes the database structure),
@@ -723,8 +724,8 @@ image or artefact), *migration* (a numbered script that changes the database str
 of the project that a decision rests on), *rehearsal environment* (a copy of production
 where a version is deployed and checked before production), *increment* (the set of
 changes promoted to production on one go-ahead), *sandbox repository* (a personal,
-private, throwaway repository with the kit installed, used before the product
-repositories exist), *data regime* (the level of personal data a product may hold:
+private, throwaway repository with the kit installed, optional, for experiments outside
+the project), *data regime* (the level of personal data a product may hold:
 aggregate, pseudonymised or identified, ch. 11), *forge* (a code-hosting service with
 pull requests and CI, such as GitHub).
 

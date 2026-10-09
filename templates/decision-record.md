@@ -7,7 +7,7 @@
 
 **Consult.** <Links to the documents, records or people to read before deciding.>
 
-**Drivers.** <Which project constraints and facts this decision rests on — from `instances/<instance>/design/10-design-drivers.md`; a design decision (DD) names at least one.>
+**Drivers.** <Which project constraints and facts this decision rests on — from `project/design/10-design-drivers.md`; a design decision (DD) names at least one.>
 
 | Option | Advantages | Drawbacks |
 |---|---|---|

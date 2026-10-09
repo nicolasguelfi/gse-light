@@ -11,20 +11,20 @@
 #   ../gse-light/scripts/meeting/meeting.sh import FILE [DATE]      # copy an audio/transcript file into the day folder
 #                                                                   # (.docx is converted to text with textutil on macOS)
 #
-# Run from the project-management repository (the folder holding instances/), e.g.
+# Run from the project's repository (the folder holding project/), e.g.
 #   ../gse-light/scripts/meeting/meeting.sh status
-# Settings come from `.env` at its root (MEETING_AUDIO_DEVICE, INSTANCE, MEETINGS_DIR); a value
+# Settings come from `.env` at its root (MEETING_AUDIO_DEVICE, MEETINGS_DIR); a value
 # may end with an inline comment, and a blank value counts as unset.
 # Output: <MEETINGS_DIR>/<DATE>/audio.m4a (AAC mono 48 kHz 96 kb/s ≈ 43 MB per hour),
 # meta.json (start, stop, device, duration), record.log. Audio files are git-ignored.
 set -euo pipefail
 
-# the project-management repository: GSE_PM_ROOT, else the nearest folder above holding instances/
-root="${GSE_PM_ROOT:-}"
+# the project's repository: GSE_PROJECT_ROOT, else the nearest folder above holding project/
+root="${GSE_PROJECT_ROOT:-}"
 if [ -z "$root" ]; then
   d="$PWD"
-  while [ "$d" != "/" ] && [ ! -d "$d/instances" ]; do d="$(dirname "$d")"; done
-  [ -d "$d/instances" ] || { echo "run this from the project-management repository (the folder holding instances/)" >&2; exit 1; }
+  while [ "$d" != "/" ] && [ ! -d "$d/project" ]; do d="$(dirname "$d")"; done
+  [ -d "$d/project" ] || { echo "run this from the project's repository (the folder holding project/)" >&2; exit 1; }
   root="$d"
 fi
 cd "$root"
@@ -41,12 +41,7 @@ if [ -f .env ]; then
     [ -n "$v" ] && export "$k=$v"
   done < <(grep -E '^[A-Za-z_][A-Za-z0-9_]*=' .env || true)
 fi
-if [ -z "${INSTANCE:-}" ]; then
-  n="$(find instances -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
-  [ "$n" = 1 ] || { echo "set INSTANCE in $root/.env (instances/ holds $n folders)" >&2; exit 1; }
-  INSTANCE="$(basename "$(find instances -mindepth 1 -maxdepth 1 -type d)")"
-fi
-dir_base="${MEETINGS_DIR:-instances/$INSTANCE/meetings}"
+dir_base="${MEETINGS_DIR:-project/meetings}"
 case "$dir_base" in /*) base="$dir_base" ;; *) base="$root/$dir_base" ;; esac
 device="${MEETING_AUDIO_DEVICE:-0}"
 

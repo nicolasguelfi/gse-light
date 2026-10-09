@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
 """Transcribe a meeting recording: locally by default, with Gemini on request.
 
-  python3 ../gse-light/scripts/meeting/transcribe.py instances/<instance>/meetings/<date>            # engine from .env (default local)
-  python3 ../gse-light/scripts/meeting/transcribe.py instances/<instance>/meetings/<date> --engine gemini
+  python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date>            # engine from .env (default local)
+  python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date> --engine gemini
   python3 ../gse-light/scripts/meeting/transcribe.py path/to/audio.m4a --language fr
 
 Given a folder, the audio file is audio.m4a (what meeting.sh records) when present, else the
@@ -12,14 +12,14 @@ first audio file in name order; the choice and the other candidates are printed.
 
 Engines
   local   mlx-whisper (Apple Silicon, fast) if installed, else whisper.cpp's `whisper-cli`.
-          Nothing leaves the machine. No speaker labels. Install once, in the project-management
-          repository's environment (<pm-repo>/.venv, a link to ~/.venvs/<name>; set-up in
+          Nothing leaves the machine. No speaker labels. Install once, in the project
+          repository's environment (<project-repo>/.venv, a link to ~/.venvs/<name>; set-up in
           scripts/README.md — the script switches to that environment by itself):
               uv pip install --python .venv/bin/python mlx-whisper   # model (~1.6 GB) downloads on first run
           or  brew install whisper-cpp           # and set WHISPER_CPP_MODEL to a ggml model file
   gemini  Google AI Studio (GOOGLE_API_KEY in .env) through scripts/llm_call.py: the audio
           is uploaded; the model returns a transcript with timestamps and speaker labels.
-          The cost line goes to instances/<INSTANCE>/journal/llm-costs.csv and <meeting>/cost.json.
+          The cost line goes to project/journal/llm-costs.csv and <meeting>/cost.json.
           Rule of thumb for the cost: Gemini counts about 32 input tokens per second of audio,
           so one hour of meeting is about 115 000 input tokens (plus the transcript as output).
 
@@ -38,7 +38,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
-from llm_call import PM, load_env, prefer_pm_venv  # noqa: E402
+from llm_call import REPO, load_env, prefer_pm_venv  # noqa: E402
 
 AUDIO_EXT = (".m4a", ".mp3", ".wav", ".aac", ".ogg", ".flac", ".mp4", ".mov", ".webm")
 
@@ -75,7 +75,7 @@ def find_audio(target: Path) -> tuple[Path, Path]:
 # ------------------------------------------------------------------------------- local
 
 def local_engine() -> tuple[str, str] | None:
-    in_venv = PM / ".venv" / "bin" / "mlx_whisper"  # the project-management repository's environment
+    in_venv = REPO / ".venv" / "bin" / "mlx_whisper"  # the project repository's environment
     if in_venv.exists():
         return "mlx_whisper", str(in_venv)
     if shutil.which("mlx_whisper"):
@@ -88,8 +88,8 @@ def local_engine() -> tuple[str, str] | None:
 def transcribe_local(mdir: Path, audio: Path, language: str, env: dict) -> Path:
     eng = local_engine()
     if not eng:
-        sys.exit("no local engine. Install once, in the project-management repository's environment\n"
-                 "(<pm-repo>/.venv, a link to ~/.venvs/<name> — set-up in gse-light/scripts/README.md):\n"
+        sys.exit("no local engine. Install once, in the project repository's environment\n"
+                 "(<project-repo>/.venv, a link to ~/.venvs/<name> — set-up in gse-light/scripts/README.md):\n"
                  "  uv pip install --python .venv/bin/python mlx-whisper   (Apple Silicon; model downloads on first run)\n"
                  "  or: brew install whisper-cpp     (then WHISPER_CPP_MODEL=/path/to/ggml-large-v3-turbo.bin in .env)\n"
                  "Or run with --engine gemini.")

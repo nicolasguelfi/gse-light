@@ -15,7 +15,7 @@ Required Notice: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.co
 | Part | Licence | Full text |
 |---|---|---|
 | **Documents**: every Markdown file, the slide decks and review boards (`.html`, `deck.json`), templates and data files, unless a file says otherwise | Creative Commons **Attribution-NonCommercial 4.0 International** (CC BY-NC 4.0) | [LICENSES/CC-BY-NC-4.0.txt](LICENSES/CC-BY-NC-4.0.txt) · <https://creativecommons.org/licenses/by-nc/4.0/> |
-| **Code**: `scripts/`, `claude-kit/*.sh`, `claude-kit/templates/ci-gates.yml`, `.github/workflows/`, `.claude/settings.json` and `claude-kit/templates/settings.json` | **PolyForm Noncommercial License 1.0.0** | [LICENSES/LicenseRef-PolyForm-Noncommercial-1.0.0.md](LICENSES/LicenseRef-PolyForm-Noncommercial-1.0.0.md) · <https://polyformproject.org/licenses/noncommercial/1.0.0> |
+| **Code**: `scripts/`, `kit/*.sh`, `kit/skills/review/review_board.py`, `kit/templates/ci-gates.yml`, `kit/templates/ci-docs.yml`, `kit/templates/gates.sh`, `.github/workflows/`, `.claude/settings.json` and `kit/templates/settings.json` | **PolyForm Noncommercial License 1.0.0** | [LICENSES/LicenseRef-PolyForm-Noncommercial-1.0.0.md](LICENSES/LicenseRef-PolyForm-Noncommercial-1.0.0.md) · <https://polyformproject.org/licenses/noncommercial/1.0.0> |
 
 The exact mapping, file by file, is in [`REUSE.toml`](REUSE.toml) (the [REUSE](https://reuse.software)
 convention); code files also carry an `SPDX-License-Identifier` line.
@@ -46,11 +46,10 @@ their funding. Selling the work, a service built on it, or using it inside a com
 commercial activity is **commercial use**: it needs a separate written licence from
 right-on-skill (<https://rightonskill.odoo.com/>).
 
-## The Claude kit in product repositories
+## The Claude kit in a project's repository
 
-`claude-kit/install.sh` (product repositories) and `pm-kit/install.sh` (project-management
-repositories) copy their kit together with `.claude/KIT_LICENSE.md`, which carries the Required Notice and this licence's references.
-Keep that file with the kit. Using a kit in a commercial organisation's repository needs a licence from right-on-skill, as above.
+`kit/install.sh` copies the kit into the project's repository together with `.claude/KIT_LICENSE.md`, which carries the Required Notice and this licence's references.
+Keep that file with the kit. Using the kit in a commercial organisation's repository needs a licence from right-on-skill, as above.
 
 ## Third parties
 

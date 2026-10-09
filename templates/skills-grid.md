@@ -19,4 +19,4 @@ Used at the kick-off round table (each person, two minutes) and by the kit skill
 
 Dimensions 6–8 are generic on purpose: the instance replaces them with its own stack
 once the design phase has decided it (`DD` records), and keeps the list in
-`instances/<instance>/governance/30-skills-and-responsibilities.md`.
+`project/governance/30-skills-and-responsibilities.md`.

@@ -1,6 +1,6 @@
 # 15 — The Project Advisor: the method and where the Advisor steps in
 
-Status: draft · v0.7 · 2026-10-09 · the project lead chairs the meetings and keeps time (§4, §5; NG, board r9) · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
+Status: draft · v0.8 · 2026-10-09 · one repository per project, the Advisor installs the kit (§4; board r11); the project lead chairs the meetings and keeps time (§4, §5; NG, board r9) · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a project is run in a few weekly sprints with generative AI under
 > this method, who does each action (a person, a person asking Claude, or Claude and the CI
@@ -10,9 +10,11 @@ Status: draft · v0.7 · 2026-10-09 · the project lead chairs the meetings and 
 > feedback and advice, owns the AI working method and its kit, and now and then brings a
 > technical proposal prepared with Claude or drawn from his experience. Each instance records its own version of these
 > roles in its project register and its presentations in
-> `instances/<instance>/meetings/README.md`.
-> `instances/<instance>/` designates the project's folder in its private project-management
-> repository, cloned next to `gse-light` ([pm-kit](https://github.com/nicolasguelfi/gse-light/blob/main/pm-kit/README.md)).
+> `project/meetings/README.md`.
+> `project/` designates the project's shared record — cockpit, registers, requirements,
+> planning, meetings, journal — a folder at the root of the project's own repository, next
+> to the code; every role, the Advisor included, opens Claude Code in that repository;
+> `gse-light` is cloned beside it ([the kit](https://github.com/nicolasguelfi/gse-light/blob/main/kit/README.md)).
 
 ## 0. Who does an action — three marks
 
@@ -33,10 +35,10 @@ theirs:
 | **Project lead** (lead developer) | runs the weeks: plans each week, reviews code, keeps the sprint record; leads the design phase | sprints, priorities, tickets, the design decisions (`DD`), promotion to the rehearsal environment |
 | **Developers** | build the product with Claude Code as working partner; collect the examples | implementation within their tickets |
 | **Data protection contact** (client side) | guards personal data | any new flow of personal data |
-| **Project Advisor** (named in the roles record) | conceptual feedback and advice; owns the AI method and the kit; may propose tickets and priorities — the project lead decides | the method and the kit |
+| **Project Advisor** (named in the roles record) | conceptual feedback and advice; owns the AI method and the kit, installs and refreshes it in the project's repository; may propose tickets and priorities — the project lead decides | the method and the kit |
 | **Claude sessions** | propose, measure, write, test; act only on a go-ahead | nothing on their own |
 
-Full table, per instance: `instances/<instance>/governance/10-roles-and-go-aheads.md`.
+Full table, per instance: `project/governance/10-roles-and-go-aheads.md`.
 
 **Go-ahead.** Before anyone — a person or Claude — does something that changes a shared
 system (deploys a version, changes a shared database, creates a cloud resource, spends
@@ -52,7 +54,7 @@ the instance's roles record; the product owner confirms the budget line.
 
 ## 2. The need
 
-Each instance states its need in five lines (`instances/<instance>/requirements/00-vision.md`),
+Each instance states its need in five lines (`project/requirements/00-vision.md`),
 owned by the client's product owner and illustrated with real examples and data before
 any requirement is written (principle 1).
 
@@ -61,7 +63,7 @@ any requirement is written (principle 1).
 Claude is fast, tireless, has no memory between sessions and tends to sound sure. The
 method gives it **memory** (files), **rules** (instructions) and **checks** (tests,
 gates and measurements). Today's detail: [reference design ch. 1, 2, 8, 9, 13](00-reference-design.md#1-guiding-principles);
-for developers, the [starting guide](../claude-kit/ONBOARDING.md). The seven principles below
+for developers, the [starting guide](../kit/ONBOARDING.md). The seven principles below
 are those of the reference design ch. 1 and of the developers' kit.
 
 | # | Principle | In practice | Who |
@@ -95,10 +97,10 @@ when the team is full time.
 
 | When | Project Advisor (Person) | Team (Person) | Claude |
 |---|---|---|---|
-| **W-1 · framing** | names, vision draft, licences; presents the method: its rules ([reference design §0](00-reference-design.md#0-purpose-scope-how-to-read)) are adopted by the project lead at the kick-off; no technology is in them — the team chooses it in W1; recommends where the project-management repository lives | — | Ask Claude: prepares the kick-off supports |
+| **W-1 · framing** | names, vision draft, licences; presents the method: its rules ([reference design §0](00-reference-design.md#0-purpose-scope-how-to-read)) are adopted by the project lead at the kick-off; no technology is in them — the team chooses it in W1; installs the kit in the project's repository once it exists on GitHub (`project/` created from the skeleton, committed); recommends where that repository lives (its owner: a person's account or an organisation) | the project lead creates the project's repository on GitHub | Ask Claude: prepares the kick-off supports; `install.sh` (the kit, `project/`) |
 | **W-1 · kick-off** | presents the method, its principles and the kit; leads the round table "where do we start" on the skills grid ([upskilling](20-upskilling.md)) | the project lead adopts the reference design's rules; plans the design phase of W1; asks the client for the examples | Ask Claude: kick-off slides (`slides`) |
-| **W-1 · between the kick-off and W1** | advises asynchronously through 🔴 records flagged "advice asked" | each member works in a personal, private, throwaway **sandbox repository** with the kit installed (`<project>-sandbox-<firstname>`, created on GitHub by the project lead or the Advisor, cloned next to `gse-light` and the project-management repository): Day 0, `/upskilling`, experiments, needs analysis; the product repositories do not exist yet | Ask Claude (in the sandbox): `upskilling`; journal entries and new 🔴 records go to the project-management repository through the skills |
-| **W1 · design phase** | advises on the drivers and the options; decides nothing | the team with the project lead collects the drivers (facts and constraints) and decides the twelve `DD` records, in order: repository layout, hosting, environments and promotion path, stack and language, data store, identity, infrastructure as code, continuous integration, test tools, secrets, dependency updates, monitoring; the first, repository layout, names the real product repositories, which then receive the kit; the phase runs in the project lead's sandbox until then | Ask Claude: `design-phase` skill (opens the records with their options; never proposes a stack as default) |
+| **W-1 · between the kick-off and W1** | advises asynchronously through 🔴 records flagged "advice asked"; gives each member their seat and their access | each member does Day 0 in the project's repository: clones it and `gse-light` side by side, `.env`, `check.sh`, a session on a branch `day0-<firstname>`, `/upskilling`, a first journal entry; needs analysis; a personal sandbox repository only for experiments outside the project | Ask Claude: `upskilling`; journal entries and new 🔴 records written in `project/` by the skills |
+| **W1 · design phase** | advises on the drivers and the options; decides nothing | the team with the project lead collects the drivers (facts and constraints) and decides the twelve `DD` records, in order: repository layout, hosting, environments and promotion path, stack and language, data store, identity, infrastructure as code, continuous integration, test tools, secrets, dependency updates, monitoring; the first, repository layout, says whether the deployable units are components inside the project's repository or further repositories (which then receive the kit); the phase runs in the project's repository | Ask Claude: `design-phase` skill (opens the records with their options; never proposes a stack as default) |
 | **Each week · day before the meeting** | reads a one-page brief | keeps sprint file, linked tickets, journal | Ask Claude (Advisor's session): measures and writes the brief |
 | **Each week · meeting (2 h)** | conceptual feedback on conduct and deliverables; may propose tickets and priorities (the project lead decides) | shows what was delivered; the project lead presents the next sprint; **the project lead chairs and keeps time** | — |
 | **Each week · same evening** | adds his feedback section to the draft minutes | **the project lead validates and sends the minutes** (with Claude: reads the draft, writes the validation line, pushes it); the team takes its tasks into the next sprint | Ask Claude: transcript, draft minutes checked against the recording (the Advisor's session); the validation line and the push (the project lead's session) |
@@ -106,10 +108,12 @@ when the team is full time.
 | **Last week · hand-over** | final retrospective; lessons kept in the method | runbooks, hand-over document | Ask Claude: hand-over document, last journal entry |
 | **At any time** | decides changes to the method and the kit | proposes a lesson when something did not fit | Automatic: records the lesson, dated, once agreed |
 
-Team members (the project lead or a developer) never open Claude Code in the
-project-management repository: the sessions opened there are the Project Advisor's
-(pm-kit). Their journal entries and new 🔴 records reach it through the kit's skills,
-from a sandbox or a product repository.
+Everyone opens Claude Code in the project's repository. The kit's six skills for the team
+write each person's journal entries and new 🔴 records in `project/`; the Advisor's six
+skills (`advisor`, `meeting`, `slides`, `cockpit-update`, `method-lesson`,
+`genai-onboarding`) check the git user against the roles record and stop for anyone else;
+the cockpit `project/BRIEFING.md` is his, denied to the Edit tool of every session (his
+own personal settings allow it).
 
 ## 5. The weekly meeting
 
@@ -127,7 +131,7 @@ over the week; gates green; test coverage and the map of what is verified; each 
 linked to its requirement or example; each promotion on its go-ahead; journal written;
 decisions in the registers.
 
-**What makes the team's work visible**: the sprint file `instances/<instance>/planning/sprints/W<n>.md` and its
+**What makes the team's work visible**: the sprint file `project/planning/sprints/W<n>.md` and its
 GitHub milestone, tickets linked to a requirement or an example, one journal entry per
 session, the coverage report.
 

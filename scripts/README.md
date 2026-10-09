@@ -1,23 +1,24 @@
 # scripts/ — the method's scripts, and how to prepare a machine
 
-Status: v0.2 · 2026-10-08 · for the Project Advisor first; §2 also holds for every team member (the project lead or a developer)
+Status: v0.3 · 2026-10-09 · one repository per project (board r11) · for the Project Advisor first; §2 also holds for every team member (the project lead or a developer)
 
-These scripts are run **from a project-management repository** `<pm-repo>` (the private
-repository that holds the project's decisions, requirements, plans, minutes and journal, with
-`gse-light` cloned next to it), by the Project Advisor's Claude Code sessions or by hand:
+These scripts are run **from the project's repository** `<project-repo>` (the private
+repository that holds the code and, in `project/`, the project's decisions, requirements,
+plans, minutes and journal, with `gse-light` cloned next to it), by the Claude Code sessions
+or by hand:
 
 | Script | What it does | Needs |
 |---|---|---|
-| `check_docs.py` | checks links, registers, cockpit counts, kit copies and the leak guard (no client term in `gse-light`) | Python only |
-| `situation.py` | where the project stands this week, next meeting, next step (printed by the session-start hook) | Python only |
-| `session_start.py` | the session-start hook: git user, situation, what is missing (`.env`…) | Python only |
-| `llm_call.py` | one paid model call (Gemini, or a text model through OpenRouter), cost logged in the instance's journal | the environment of §1 (`google-genai`) |
+| `check_docs.py` | checks links, registers, cockpit counts, the kit copy in `.claude/` and the leak guard (no client term in `gse-light`) | Python only |
+| `situation.py` | where the project stands this week, next meeting, next step (printed by the session-start hook; the Advisor's skills read it) | Python only |
+| `session_start.py` | the session-start hook of every session: the git user and their role, the next meeting; for the Project Advisor also his week's next step, his tasks and the last hand-over | Python only |
+| `llm_call.py` | one paid model call (Gemini, or a text model through OpenRouter), cost logged in `project/journal/llm-costs.csv` | the environment of §1 (`google-genai`) |
 | `meeting/meeting.sh` | records the meeting with ffmpeg (macOS), or imports a file recorded elsewhere | `ffmpeg` |
 | `meeting/transcribe.py` | transcribes a recording: locally (mlx-whisper or whisper.cpp), or with Gemini | the environment of §1 (`mlx-whisper`), or `whisper-cpp` |
 
 "Python only" means Python's standard library: nothing to install beyond `python3` (3.10 or
-later). The two scripts that need more switch **by themselves** to the project-management
-repository's environment when it exists (`<pm-repo>/.venv`, §1); no activation, no special
+later). The two scripts that need more switch **by themselves** to the project repository's
+environment when it exists (`<project-repo>/.venv`, §1); no activation, no special
 command: the skills keep calling `python3 ../gse-light/scripts/…`.
 
 ## 0. The rule for every environment, on every machine
@@ -57,9 +58,9 @@ Prerequisites: git, [Claude Code](https://claude.com/claude-code) signed in, `py
 
 ```bash
 brew install uv ffmpeg                                   # once per machine
-cd <parent folder>/<pm-repo>                             # the project-management repository, next to gse-light
-uv venv ~/.venvs/<pm-repo> --python 3.12                 # the environment, outside the synced tree
-ln -s ~/.venvs/<pm-repo> .venv                           # the link, git-ignored
+cd <parent folder>/<project-repo>                        # the project's repository, next to gse-light
+uv venv ~/.venvs/<project-repo> --python 3.12            # the environment, outside the synced tree
+ln -s ~/.venvs/<project-repo> .venv                      # the link, git-ignored
 uv pip install --python .venv/bin/python google-genai mlx-whisper
 cp .env.example .env                                     # then fill the keys; never committed
 python3 ../gse-light/scripts/situation.py                # says what is still missing
@@ -74,7 +75,7 @@ What each piece is for:
 - `mlx-whisper` — the local transcription engine on Apple Silicon (nothing leaves the
   machine; no speaker labels); its model (about 1.6 GB, `WHISPER_MODEL` in `.env`) downloads
   into `~/.cache/huggingface` on first run. `transcribe.py` looks for it in
-  `<pm-repo>/.venv/bin/` first, then on the `PATH`;
+  `<project-repo>/.venv/bin/` first, then on the `PATH`;
 - on an Intel Mac or Linux, replace `mlx-whisper` by whisper.cpp: `brew install whisper-cpp`
   (or the distribution's package), download a `ggml` model and set `WHISPER_CPP_MODEL` in `.env`;
 - the microphone: `../gse-light/scripts/meeting/meeting.sh devices` lists the inputs; put the
@@ -88,18 +89,20 @@ environment name), copy your `.env` by hand (it is never in git).
 
 The method itself needs **no environment** on a team member's machine: git, a bash terminal
 (Git Bash on Windows), `python3` (the kit's `check.sh` and `check_docs.py` use the standard
-library) and Claude Code signed in. `../gse-light/claude-kit/check.sh`, run from your sandbox
-or product repository, verifies it line by line ([`claude-kit/INSTALL.md`](../claude-kit/INSTALL.md)).
+library) and Claude Code signed in. `../gse-light/kit/check.sh`, run from the project's
+repository, verifies it line by line ([`kit/INSTALL.md`](../kit/INSTALL.md)).
 
 The **product's** own environments (its language, its packages, its `node_modules`) are the
 project's design decisions; on a machine with a synced folder they follow §0 — environment in
 `~/.venvs/<name>`, link in the repository — and the project lead writes the exact commands in
-the product repository's `CLAUDE.md` (section "Commands").
+the project repository's `CLAUDE.md` (section "Commands"). The link `.venv` is one per
+repository: the Advisor's environment of §1 and the product's environment share it when the
+Advisor works on the same clone as the team — then one environment holds both sets of packages.
 
 ## 3. Checking a machine
 
 ```bash
-python3 ../gse-light/scripts/situation.py                                            # .env present? instance found?
+python3 ../gse-light/scripts/situation.py                                            # .env present? project/ found?
 python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt test --dry-run   # "python": the environment's interpreter if the link exists; "key_present"
 python3 ../gse-light/scripts/meeting/transcribe.py --help                            # the engines and where they are looked for
 ../gse-light/scripts/meeting/meeting.sh devices                                      # the audio inputs

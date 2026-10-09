@@ -1,6 +1,6 @@
 # 20 — Upskilling: starting from the team's real levels
 
-Status: draft · v0.3 · 2026-10-08 · author: Nicolas Guelfi, with Claude
+Status: draft · v0.4 · 2026-10-09 · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — A team's levels in generative AI, coding agents and development are
 > unknown at the start and rarely even. The method does not assume them: it measures
@@ -30,8 +30,8 @@ Advisor notes the aggregated picture, never individual scores in public.
 
 Levels are the grid's scale (0–3). The instance lists its technical skills (from the
 stack its `DD` records decided in the design phase) and each person's responsibilities
-in `instances/<instance>/governance/30-skills-and-responsibilities.md`, in the project's
-project-management repository.
+in `project/governance/30-skills-and-responsibilities.md`, in the project's
+repository.
 
 ## 3. The method, introduced in two steps
 
@@ -59,9 +59,9 @@ before the base is in place.
 ## 5. Privacy
 
 Individual answers and plans live in the person's home folder, outside every repository,
-one sub-folder per project (`~/.claude/upskilling/<instance>/record.md`; decided
-2026-10-07) — where Claude Code keeps each user's own data. The skill is run from the
-person's sandbox or product repository, never from the project-management repository.
+one sub-folder per project (`~/.claude/upskilling/<project>/record.md`, named after the
+project's repository; decided 2026-10-07) — where Claude Code keeps each user's own data.
+The skill is run from the project's repository, on Day 0 and whenever a person is stuck.
 The shared file holds only
 counts per dimension and level, with no names, and the alignment tasks decided.
 

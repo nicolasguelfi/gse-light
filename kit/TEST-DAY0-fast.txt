@@ -1,0 +1,73 @@
+# TEST-DAY0 in one paste — v0.7 · 2026-10-09 · same steps as TEST-DAY0.md §0–§3, by role
+# Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light) · CC BY-NC 4.0 (LICENSE.md)
+# Needs: git, python3, a bash terminal (Git Bash on Windows); block 1 also ffmpeg (macOS) for a ten-second recording.
+# Copy ONE block at a time into a bash or zsh terminal, in order. Run outside any synced folder.
+# Who runs what: Project Advisor = 0, 1 ; project lead = 0, 1, 2, 3 ; developer = 0, 1, 2.
+# Block 1 first whatever your role: it creates remote-project.git, the project's repository of the test, with the kit in it.
+# The repositories, side by side per person: gse-light (cloned from GitHub); remote-project.git (local: stands for the
+# project's repository on GitHub); advisor/…, <name>/… (their clones).
+# check.sh exits 1 when a line is MISSING: it is followed by ";" (not "&&") so the
+# block goes on — a "&&" there stopped a block before its end (found in a rehearsal, 2026-10-07).
+
+
+# 0. RESET — deletes ~/gse-test only (the throwaway folder of this test), then the settings
+TEST=~/gse-test
+TAG=demo                       # the two throwaway leak-guard terms of block 1: client-$TAG, project-$TAG
+NAME=alex                      # block 2: your first name in lower case
+rm -rf "$TEST"
+
+
+# 1. PROJECT ADVISOR — remote-project.git; advisor/project with the kit and the project/ skeleton, checked, pushed; .env; dry run; ten-second recording; transcription
+# expected: one "cloned an empty repository" warning; kit/install.sh lists 12 skills and 4 agents and copies the skeleton into project/;
+# check_docs ok; situation.py "next meeting unknown" + "No .env yet"; llm_call dry run shows "python" and "key_present": false;
+# meeting.sh devices lists your audio inputs (macOS); the recording writes audio.m4a + meta.json; transcribe.py writes transcript.md
+# or says "no local engine" with the install line (then: scripts/README.md §1)
+mkdir -p "$TEST/advisor" && \
+cd "$TEST" && \
+git init -q --bare remote-project.git && \
+cd advisor && \
+git clone -q https://github.com/nicolasguelfi/gse-light.git && \
+git clone -q ../remote-project.git project && \
+cd project && \
+../gse-light/kit/install.sh && \
+printf 'client-%s\nproject-%s\n' "$TAG" "$TAG" > project/private-terms.txt && \
+python3 ../gse-light/scripts/check_docs.py && \
+git add -A && git commit -q -m "Install the gse-light kit" && git push -q origin HEAD && \
+python3 ../gse-light/scripts/situation.py && \
+cp .env.example .env && \
+python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt test --dry-run && \
+../gse-light/scripts/meeting/meeting.sh devices && \
+../gse-light/scripts/meeting/meeting.sh start 2026-01-01 && sleep 10 && ../gse-light/scripts/meeting/meeting.sh stop && \
+{ python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/2026-01-01; echo "transcribe exit $? (0 with a local engine; 1 and the install line without)"; } && \
+echo "PROJECT ADVISOR done: advisor/project checked and pushed to remote-project.git"
+
+
+# 2. EVERY TEAM MEMBER (project lead too) — $NAME/{gse-light,project}: the clone that already has the kit; .env; check; gates stub; Day-0 branch
+# expected: check.sh only OK lines, exit 0; bash ./gates.sh says "no gates yet"; git status shows nothing (.env ignored)
+mkdir -p "$TEST/$NAME" && \
+cd "$TEST/$NAME" && \
+{ [ -d gse-light ] || git clone -q https://github.com/nicolasguelfi/gse-light.git; } && \
+git clone -q ../remote-project.git project && \
+cd project && \
+cp .env.example .env && \
+{ ../gse-light/kit/check.sh; echo "exit $? (0 expected)"; } && \
+bash ./gates.sh && \
+git switch -c "day0-$NAME" && \
+echo "--- git status of $NAME/project (must be empty):" && \
+git status --short && \
+echo "DAY 0 done for $NAME: on branch day0-$NAME"
+
+
+# 3. PROJECT LEAD — W1: nothing to install; what you will find before the design phase (interactive, block 4)
+# expected: the Advisor's commit on .claude; the registers in project/design and project/governance; 4 <command> fields in CLAUDE.md
+cd "$TEST/$NAME/project" && \
+git log --oneline -1 -- .claude && \
+ls project/design project/governance && \
+grep -c '<command>' CLAUDE.md && \
+echo "PROJECT LEAD: the design phase runs in this clone with /design-phase (interactive)"
+
+
+# 4. FIRST SESSION (interactive, not part of the paste): Project Advisor — claude in advisor/project, say "go";
+#    project lead and developer — claude in $NAME/project: type /  then  /upskilling ;
+#    ask "what is in project/?" (read access; the cockpit and ../gse-light cannot be edited; any git push is asked first)
+# 5. CLEAN UP afterwards:  rm -rf ~/gse-test   (and ~/.claude/upskilling/project if /upskilling wrote one)

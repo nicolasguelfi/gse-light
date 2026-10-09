@@ -1,5 +1,5 @@
 <!-- Template of the gse-light method (https://github.com/nicolasguelfi/gse-light), CC BY-NC 4.0. Documents made from this template carry no licence obligation: fill it in and keep the result as your own. -->
-<!-- One file per real example, in instances/<instance>/requirements/40-examples/EX-<AREA>-NNN-<short-name>.md.
+<!-- One file per real example, in project/requirements/40-examples/EX-<AREA>-NNN-<short-name>.md.
      EX: an example. <AREA>: the short code of the product area it belongs to (two to four capital letters,
      the same codes as the requirements). NNN: three digits, in order of arrival. Keep the heading format:
      requirements and tests cite the id. Every <…> is a placeholder to replace; delete this comment block. -->

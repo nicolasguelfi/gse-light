@@ -77,6 +77,14 @@ pass" without it.
 - **Decisions go to the registers** in `<pm-zone>` (skill `decision-record`, which commits
   and pushes that record only), never as "open questions" in a file here.
 - **Evaluate ≠ execute**: when asked to evaluate or propose, change nothing.
+- **Asking the person** (the method's owner, 2026-10-09; skill `review`): when you must
+  interact with the person — an answer, a choice, a validation, a go-ahead — prefer the
+  built-in multiple-choice question (QCM), one at a time. When the interaction is more complex,
+  or when you must present data, use the `review` skill: a review board, with a comment field
+  for every point you ask about and a global comment field. In both forms, always and for every
+  question, restate the problem simply so that the person understands it; for every proposal,
+  explain just as simply its advantages and its drawbacks, with all the consequences of that
+  solution. A choice written in prose is a choice the person cannot tick.
   Push, deploy, migrate a shared database, create cloud resources: only with an explicit
   go-ahead (`<pm-zone>/governance/10-roles-and-go-aheads.md`).
 - **Environments and branch model** come from the instance's environments and promotion

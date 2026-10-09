@@ -80,8 +80,8 @@ called the product kit: the kit of the product and sandbox repositories.
   4. create the repository on GitHub (private; branch protection on `main` is recommended, decided in the roles record) and push.
 
   Each team member's sandbox is created on GitHub by the project lead or by you, and receives the product kit by its one command ([`claude-kit/README.md`](../claude-kit/README.md)).
-- **Write**, every week: open Claude Code in `<pm-repo>` — the start hook prints the situation (today, next meeting, next step) — and say "go". The `advisor` skill does the step and asks you only what only you know, one short multiple-choice question (QCM) at a time:
-  - `meeting brief` the day before — facts measured by the `delivery-auditor` agent, decisions awaiting, a timed agenda;
+- **Write**, every week: open Claude Code in `<pm-repo>` — the start hook prints the situation (today, next meeting, next step) — and say "go". The `advisor` skill does the step and asks you only what only you know, one short multiple-choice question (QCM) at a time — or a review board (skill `review`) when the choice is complex:
+  - `meeting brief` the day before — facts measured by the `delivery-auditor` agent, decisions awaiting, the topics in a proposed order (the project lead chairs and keeps time);
   - `record` or `import` on the day;
   - `transcribe`;
   - `minutes` — the draft and your feedback section, checked by `minutes-verifier`; then **the project lead validates and sends them** with his own session ("validated by <his name> on YYYY-MM-DD" in the header);
@@ -107,7 +107,7 @@ called the product kit: the kit of the product and sandbox repositories.
 | Path | What it is | Installed as |
 |---|---|---|
 | [`install.sh`](install.sh) | Installs or refreshes the kit in a project-management repository; copies the instance skeleton into an empty `instances/<instance>/` | run from `<pm-repo>`: `../gse-light/pm-kit/install.sh .` |
-| [`skills/`](skills/) | `advisor` (single entry point), `meeting`, `slides`, `method-lesson`, `decision-record`, `cockpit-update`, `session-close`, `genai-onboarding` | `.claude/skills/` (refreshed) |
+| [`skills/`](skills/) | `advisor` (single entry point), `meeting`, `slides`, `method-lesson`, `decision-record`, `review` (a QCM or a review board whenever you must choose), `cockpit-update`, `session-close`, `genai-onboarding` | `.claude/skills/` (refreshed) |
 | [`agents/`](agents/) | `delivery-auditor` (measures what the team delivered, before each meeting), `minutes-verifier` (every task of the minutes backed by the transcript), `design-reviewer` (consistency of a documentation change) | `.claude/agents/` (refreshed) |
 | [`templates/settings.json`](templates/settings.json) | Permissions (read-only commands, `.env` denied, `../gse-light` reachable) and the start hook | `.claude/settings.json` (created once) |
 | [`templates/CLAUDE.pm-repo.md`](templates/CLAUDE.pm-repo.md) | Rules of the Project Advisor's sessions | `CLAUDE.md` (created once, then owned by `<pm-repo>`) |

@@ -41,10 +41,10 @@ else miss "CLAUDE.md" "the kit is not installed here: ask the project lead (INST
 
 # the kit's files
 n=0
-for s in decision-record session-close verify-claim upskilling design-phase; do
+for s in decision-record session-close verify-claim upskilling design-phase review; do
   [ -f ".claude/skills/$s/SKILL.md" ] || { miss "skill $s" "kit missing or outdated: ask the project lead"; n=1; }
 done
-[ $n = 0 ] && ok "kit skills present (decision-record, session-close, verify-claim, upskilling, design-phase)"
+[ $n = 0 ] && ok "kit skills present (decision-record, session-close, verify-claim, upskilling, design-phase, review)"
 [ -f .claude/agents/change-reviewer.md ] && ok "agent change-reviewer present" || miss "agent change-reviewer" "kit missing or outdated"
 
 if [ -f .claude/settings.json ]; then

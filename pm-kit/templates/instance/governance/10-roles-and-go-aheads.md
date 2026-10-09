@@ -40,6 +40,7 @@ covers **one** action, not the next ones of the same kind.
 | Action | Go-ahead from |
 |---|---|
 | Validating and sending the meeting minutes (the validation line "validated by <name> on YYYY-MM-DD") | the project lead, with his Claude session; the Project Advisor's feedback section stays the Advisor's |
+| Chairing the meetings and keeping time (the kick-off included); the Project Advisor proposes the topics in the brief | project lead |
 | Promote to the rehearsal environment (environments and promotion path record) | project lead |
 | Promote to production | product owner, once the project lead confirms the gates are green |
 | Create, resize or delete cloud resources | product owner (the client's budget) |

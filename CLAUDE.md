@@ -83,6 +83,11 @@ project-management repository (`instances/<instance>/`), cloned next to this one
   instance's roles record), never the author's name or initials; the author's name stays in
   status lines, licence footers and the pm-kit README. Abbreviations are expanded at first
   use ("a short multiple-choice question (QCM)").
+- **Asking the author** (NG, 2026-10-09): a short multiple-choice question (QCM) for a simple
+  point; a review board (skill `review` of the kits, `--lang fr`) when the choice is complex or
+  data must be shown — the problem restated, every option's advantages, drawbacks and
+  consequences, a comment under every point and a global one; his answer comes back as one
+  line; nothing changes before it.
 
 ## Checks
 

@@ -20,7 +20,7 @@ Status: v0.7 · 2026-10-08 · generic · for the project lead and the developers
 | **Instance** | one project run with this method, and its folder `instances/<instance>/` in `<pm-repo>` |
 | **Project-management repository** `<pm-repo>` | the project's shared record — decisions, requirements, plans, minutes, journal — private, one per project. Everyone reads it; each person writes their own part in it through the kit's skills (the project lead: the sprints; the Project Advisor: the cockpit and the minutes); nobody manages the project from it |
 | **Sandbox** | your personal, private, throwaway repository `<project>-sandbox-<firstname>` with the kit, for Day 0 and your experiments until the product repositories exist; the project lead's sandbox hosts the design phase |
-| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, five skills, one agent, permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with the code |
+| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, six skills, one agent, permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with the code |
 | **Day 0** | each person's first hour on the project — clone, kit, `.env`, `check.sh`, first session |
 | **W1 … W6**, **W-1** | the project's weeks, one sprint each; W-1 is the framing week before W1 |
 | **Design phase** | the step of W1 where the project lead, with Claude, turns the project's facts and constraints into twelve technical decisions (`DD` records), in order: repository layout, hosting, environments and promotion path, stack and language, data store, identity, infrastructure as code, continuous integration, test tools, secrets, dependency updates, monitoring — recorded with the kit skill `design-phase` |
@@ -196,7 +196,10 @@ personal, is **[INSTALL.md](INSTALL.md)**. In short:
 5. **Check**: `../gse-light/claude-kit/check.sh` from inside your sandbox or product
    repository — every line OK, or it tells you what to do.
 6. **Open a session**: `claude`, accept the workspace trust dialog, type `/` and check that
-   `design-phase`, `decision-record`, `session-close`, `verify-claim` and `upskilling` appear.
+   `design-phase`, `decision-record`, `review`, `session-close`, `verify-claim` and `upskilling` appear.
+   Whenever Claude needs your answer, it asks by a short multiple-choice question or, for a
+   complex choice, by a review board (skill `review`): the problem restated, every option's
+   advantages, drawbacks and consequences, a comment under every point; you send back one line.
    Work locally: a Claude Code session started on claude.ai (web or cloud) sees one
    repository only, not `../gse-light` nor `../<pm-repo>`.
 7. **Start from where you are**: in the session, type `/upskilling` (the kit's

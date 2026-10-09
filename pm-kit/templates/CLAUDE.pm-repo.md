@@ -71,6 +71,14 @@ layout, names the product repositories, which then receive the kit; gates, CI an
   of the file being changed: NG for everything except `instances/<instance>/planning/sprints/`
   (the project lead), each person's own journal entries and new 🔴 records (their author),
   and a record's status (its decider, named in the roles record).
+- **Asking the person** (NG, 2026-10-07 and 2026-10-09; skill `review`): when you must
+  interact with the person — an answer, a choice, a validation, a go-ahead — prefer the
+  built-in multiple-choice question (QCM), one at a time. When the interaction is more complex,
+  or when you must present data, use the `review` skill: a review board, with a comment field
+  for every point you ask about and a global comment field. In both forms, always and for every
+  question, restate the problem simply so that the person understands it; for every proposal,
+  explain just as simply its advantages and its drawbacks, with all the consequences of that
+  solution. A choice written in prose is a choice the person cannot tick.
 - **Measure before asserting**: never state the state of a system (a branch, a
   deployment, a count) without the command that measured it. Never announce an
   unverified cause.
@@ -144,9 +152,6 @@ this repository's own sessions join them. Keep each to two lines; move a rule up
   presentations: dark, slides numbered n/N, proposal tone (`meeting` §1b) — 2026-10-07 — NG.
 - Lessons that hold for developers are also copied into the kit template's "Lessons
   learned here" — 2026-10-07 — NG asked to carry the project's lessons into the kit.
-- Interact by QCM for simple questions and by review board (an artifact) for complex
-  ones; always restate the problem and each option's advantages, drawbacks and
-  consequences — 2026-10-07 — NG's directive.
 - Do not raise consent or storage-location concerns for meeting recordings: NG handles
   them himself — 2026-10-07 — NG's directive.
 - Keep permission deny rules narrow: `Read(./.env.*)` also blocked `.env.example` —

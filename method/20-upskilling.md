@@ -23,7 +23,7 @@ Advisor notes the aggregated picture, never individual scores in public.
 |---|---|---|---|
 | Asking an agent for a task, reading its proposal, saying no | 2 | 2 | 1 |
 | Reviewing AI-written code and tests before merging | 2 | 3 | — |
-| Using the kit (`decision-record`, `design-phase`, `session-close`, `upskilling`, `verify-claim`, agent `change-reviewer`) | 2 | 3 | — |
+| Using the kit (`decision-record`, `design-phase`, `review`, `session-close`, `upskilling`, `verify-claim`, agent `change-reviewer`) | 2 | 3 | — |
 | Git, pull requests, CI gates | 2 | 3 | — |
 | Writing tests with Claude (unit, integration, end-to-end) | 2 | 2 | — |
 | The project's technical skills — the stack decided in the design phase (instance list) | per responsibility | per responsibility | — |

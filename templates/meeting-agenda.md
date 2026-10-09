@@ -4,16 +4,16 @@
 - **Participants:** <project lead>, <the developers>, <the Project Advisor>; <product owner, if present>
 - **Prepared:** YYYY-MM-DD by Claude for the Project Advisor, from `delivery-auditor` (commands cited) — read it the day before
 
-## Agenda (2 h)
+## Agenda — topics in a proposed order; durations indicative; the project lead chairs and keeps time
 
-| Time | Item | Who leads |
+| Time (indicative) | Item | Who leads |
 |---|---|---|
 | 0:00 | Facts of the week (planned / done, increment, gates) — 10 min | Project Advisor reads, project lead comments |
 | 0:10 | Demo or deliverables of the sprint — 30 min | team |
 | 0:40 | Project Advisor's feedback: project conduct, deliverables — 25 min | Project Advisor |
 | 1:05 | Decisions awaiting someone in the room — 20 min | the decider |
 | 1:25 | Next sprint: goal and tickets — 25 min | project lead |
-| 1:50 | Tasks per participant, next meeting — 10 min | Project Advisor |
+| 1:50 | Tasks per participant, next meeting — 10 min | project lead |
 
 ## Facts (from `delivery-auditor`, each with its command)
 

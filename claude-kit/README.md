@@ -12,7 +12,7 @@ Advisor who maintains it: read your section (§1–§4), then the contents table
 
 | Word | Meaning |
 |---|---|
-| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, five skills, one agent, permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with the code. Two kits: this `claude-kit` for product and sandbox repositories, the [`pm-kit`](../pm-kit/README.md) for the Project Advisor in `<pm-repo>` |
+| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, six skills, one agent, permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with the code. Two kits: this `claude-kit` for product and sandbox repositories, the [`pm-kit`](../pm-kit/README.md) for the Project Advisor in `<pm-repo>` |
 | **Skill, agent** | a skill is a procedure Claude runs when asked (`/name`) or when the situation calls for it; an agent is a read-only helper Claude launches (a reviewer, an auditor) |
 | **Project-management repository** `<pm-repo>` | the project's shared record — decisions, requirements, plans, minutes, journal — private, one per project. Everyone reads it; each person writes their own part in it through the kit's skills; nobody manages the project from it |
 | **Instance** | one project run with the method, and its folder `instances/<instance>/` in `<pm-repo>` |
@@ -76,7 +76,7 @@ Advisor who maintains it: read your section (§1–§4), then the contents table
 ## 4. If you are the Project Advisor
 
 - **Install**: nothing of this kit — you own its content, the project lead installs and refreshes it; your own kit for `<pm-repo>` is the [pm-kit](../pm-kit/README.md).
-- **Write**: the kit, **here**, by pull request in the `gse-light` repository; then each product repository reruns the one command of §1. Two skills (`decision-record`, `session-close`) are also in the pm-kit: `scripts/check_docs.py` fails if the two copies differ. The entry pages stay in step and change together — and never carry a client or project name: the leak guard (`check_docs.py`) refuses it:
+- **Write**: the kit, **here**, by pull request in the `gse-light` repository; then each product repository reruns the one command of §1. Three skills (`decision-record`, `review`, `session-close`) are also in the pm-kit: `scripts/check_docs.py` fails if the two copies differ. The entry pages stay in step and change together — and never carry a client or project name: the leak guard (`check_docs.py`) refuses it:
   - [QUICKSTART.md](../QUICKSTART.md);
   - [INSTALL.md](INSTALL.md);
   - [ONBOARDING.md](ONBOARDING.md);
@@ -108,6 +108,7 @@ Advisor who maintains it: read your section (§1–§4), then the contents table
 | [`skills/session-close/`](skills/session-close/SKILL.md) | Journal entry, metrics, hand-over; commits and pushes those paths only | `.claude/skills/session-close/` (refreshed) |
 | [`skills/verify-claim/`](skills/verify-claim/SKILL.md) | Measure before asserting | `.claude/skills/verify-claim/` (refreshed) |
 | [`skills/upskilling/`](skills/upskilling/SKILL.md) | Personal coach: where you start, what your responsibilities need, a short plan, the method in two steps ([method](../method/20-upskilling.md)) | `.claude/skills/upskilling/` (refreshed) |
+| [`skills/review/`](skills/review/SKILL.md) | How Claude asks you to answer, choose, validate or decide: a short multiple-choice question for a simple point, a review board for the rest — the problem restated, every option's advantages, drawbacks and consequences, a comment under every point and a global one; your answer in one line | `.claude/skills/review/` (refreshed) |
 | [`agents/change-reviewer.md`](agents/change-reviewer.md) | Reviews a change against the reference design and the instance's `DD` records | `.claude/agents/change-reviewer.md` (refreshed) |
 
 The kit targets **Claude Code only**; with another coding agent the rules still apply, the

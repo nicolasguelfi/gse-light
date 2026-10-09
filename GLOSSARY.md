@@ -141,7 +141,8 @@ Status: v0.2 · 2026-10-08 · for newcomers to generative software engineering �
 | **NG** | The author's initials; the Project Advisor of his own instances | §2 |
 | **PD-NN** | Project decision record, in the project register | §3 |
 | **PR** | Pull request | §5 |
-| **QCM** | *Questionnaire à choix multiples*: a short multiple-choice question, the way the Project Advisor's sessions ask him one thing at a time | §2 |
+| **QCM** | *Questionnaire à choix multiples*: a short multiple-choice question, the way a Claude session asks a person one simple thing at a time (skill `review`) | §2 |
+| **Review board** | an interactive page of proposals by subject — the problem restated, each option's advantages, drawbacks and consequences, a recommendation, a comment under every point — that the person ticks and sends back as one line; how a session asks for a complex choice, a validation or a decision (skill `review`) | §2 |
 | **W-1, Wn** | The framing week before the first sprint; week n of the project | §4 |
 | **🔴 🟢 🟡** | Pending, decided, provisional (status badges) | §3 |
 

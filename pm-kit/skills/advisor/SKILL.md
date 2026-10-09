@@ -24,7 +24,8 @@ If his message is a different request, serve it first, then come back here.
 
 ## 1. Do the step — who does what
 
-Ask him only by **one short multiple-choice question (QCM)** at a time.
+Ask him only by **one short multiple-choice question (QCM)** at a time — or by a review board
+(skill `review`) when the choice is complex or needs data in front of him.
 
 | `kind` | You do | You ask him (only this) |
 |---|---|---|

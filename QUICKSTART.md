@@ -25,8 +25,8 @@ real user interface — through a **kit** committed in each product repository a
 | **Product repository** `<product-repo>` | the code, private, one or several (repository layout, the first design decision); the kit is committed in it |
 | **Register** | one document per kind of decision — project `PD`, requirements `DEC`, design `DD` — one numbered record per decision, a dashboard at the top |
 | **Decision record and badges** | every `PD-NN`, `DEC-NNN` or `DD-NN` in these pages is one numbered decision record, with a status badge: 🔴 pending, 🟢 decided, 🟡 provisional; its *decider* is the person the roles record names for it, the only one who turns it 🟢 |
-| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, five skills, one agent, permissions, a `gates.sh` stub, a CI workflow that runs it (`bash ./gates.sh`) — installed with one command, committed with the code |
-| **Skill, agent** | the five skills — `design-phase`, `decision-record`, `session-close`, `verify-claim`, `upskilling` — are procedures Claude runs when asked (`/name`); the agent, `change-reviewer`, is a read-only helper Claude launches |
+| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, six skills, one agent, permissions, a `gates.sh` stub, a CI workflow that runs it (`bash ./gates.sh`) — installed with one command, committed with the code |
+| **Skill, agent** | the six skills — `design-phase`, `decision-record`, `review`, `session-close`, `verify-claim`, `upskilling` — are procedures Claude runs when asked (`/name`) or by rule (`review`: how Claude asks you to choose — a short multiple-choice question, or a review board with the problem restated and every option's advantages, drawbacks and consequences); the agent, `change-reviewer`, is a read-only helper Claude launches |
 | **Gates** | the project's automated checks (tests, lint, end-to-end) run by `gates.sh` and the CI before a merge; on Day 0 a stub that says "no gates yet" |
 | **Sandbox** | a personal, private, throwaway repository `<project>-sandbox-<firstname>` with the kit, for Day 0 and experiments until the product repositories exist; the project lead's sandbox hosts the design phase |
 | **Placeholders** `<instance>`, `<pm-repo>`, `<product-repo>`, `<project>`, `<firstname>` | stand for the project's real names; `<instance>` is the folder name under `instances/` (`ls ../<pm-repo>/instances` shows it; the project lead gives it) |
@@ -152,7 +152,7 @@ GitHub branch protection on `main`.
   ../gse-light/claude-kit/check.sh                           # every line OK, or it says what to do
   ```
 
-  Then `claude` in the product repository, type `/` (the five skills appear), run `/upskilling` if you have not done it in your sandbox.
+  Then `claude` in the product repository, type `/` (the six skills appear), run `/upskilling` if you have not done it in your sandbox.
 - **Write**: the code, by pull request on a feature branch with its tests; your journal entries and 🔴 records as from your sandbox.
 - **Never**: run `install.sh` in a product repository (if you cloned before the kit was there: `git pull` once the project lead has pushed); edit `gse-light` from a project session; push to `main` without the go-ahead; commit a secret.
 

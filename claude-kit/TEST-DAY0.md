@@ -109,8 +109,8 @@ bash ./gates.sh                                        # the Day-0 stub, run as 
 ```
 
 **Expected**: `install.sh` prints `product repository sandbox · method ../gse-light · project
-management ../pm/instances/demo/`, lists five skills (`decision-record`, `design-phase`,
-`session-close`, `upskilling`, `verify-claim`) and one agent (`change-reviewer`), creates
+management ../pm/instances/demo/`, lists six skills (`decision-record`, `design-phase`,
+`review`, `session-close`, `upskilling`, `verify-claim`) and one agent (`change-reviewer`), creates
 `CLAUDE.md`, `.claude/settings.json`, `.gitattributes`, `gates.sh`, `.env.example` and
 `.github/workflows/gates.yml`; `check.sh` shows every line `OK`, among them `kit committed`,
 `settings.json gives Claude read access…`, `kit version <hash> (current)` — the hash is the
@@ -173,7 +173,7 @@ in your `gse-light`).
 | Role | Where | What to do in the session |
 |---|---|---|
 | Project Advisor | `claude` in `$TEST/advisor/pm` | the start hook prints the situation (next meeting unknown, no `.env` or the one you copied); say "go": the `advisor` skill proposes the next step and asks you one short multiple-choice question |
-| Project lead, developer | `claude` in `$TEST/$NAME/sandbox` (or in `lead/product`, `dev/product` for the product phase) | type `/` — `decision-record`, `design-phase`, `session-close`, `verify-claim`, `upskilling` appear; type `/upskilling` — fifteen minutes of questions and small checks, then a personal plan; ask *"what is in ../pm/instances/demo/?"* — Claude reads it (`additionalDirectories`) but cannot edit `../gse-light` nor the instance's `BRIEFING.md` (deny rules of `.claude/settings.json`), and asks before any `git push` |
+| Project lead, developer | `claude` in `$TEST/$NAME/sandbox` (or in `lead/product`, `dev/product` for the product phase) | type `/` — `decision-record`, `design-phase`, `review`, `session-close`, `verify-claim`, `upskilling` appear; type `/upskilling` — fifteen minutes of questions and small checks, then a personal plan; ask *"what is in ../pm/instances/demo/?"* — Claude reads it (`additionalDirectories`) but cannot edit `../gse-light` nor the instance's `BRIEFING.md` (deny rules of `.claude/settings.json`), and asks before any `git push` |
 
 ## 6. Check that nothing personal went into git
 

@@ -1,6 +1,6 @@
 ---
 name: meeting
-description: The Project Advisor's weekly meeting chain for the active instance - `brief` the day before (facts from delivery-auditor, decisions awaiting, timed agenda), `record` / `import` on the day, `transcribe` (local by default, Gemini on request), `minutes` (executive summary, decisions to the registers, tasks per participant cited from the transcript, Project Advisor's feedback) checked by minutes-verifier. One folder per meeting under instances/<instance>/meetings/<date>/. Use for anything about preparing, recording, transcribing or writing up the weekly meeting.
+description: The Project Advisor's weekly meeting chain for the active instance - `brief` the day before (facts from delivery-auditor, decisions awaiting, the topics in a proposed order), `record` / `import` on the day, `transcribe` (local by default, Gemini on request), `minutes` (executive summary, decisions to the registers, tasks per participant cited from the transcript, Project Advisor's feedback) checked by minutes-verifier. One folder per meeting under instances/<instance>/meetings/<date>/. Use for anything about preparing, recording, transcribing or writing up the weekly meeting.
 ---
 
 # meeting — one skill, five steps, one folder
@@ -37,8 +37,9 @@ never read `.env` yourself — the scripts do).
    measured when possible), open questions, decisions promised.
 4. **Decisions awaiting.** The 🔴 and 🟡 rows of the three registers whose decider is in
    the room, and `instances/<instance>/BRIEFING.md` §1b.
-5. **Write `agenda.md`** from `../gse-light/templates/meeting-agenda.md`: a two-hour timed agenda
-   (facts first, then the team's demo or deliverables, then the Project Advisor's feedback, then
+5. **Write `agenda.md`** from `../gse-light/templates/meeting-agenda.md`: the topics in a proposed order with
+   indicative durations — the project lead chairs the meeting and keeps time, the Advisor proposes
+   the topics — (facts first, then the team's demo or deliverables, then the Project Advisor's feedback, then
    decisions, then next sprint — which the project lead presents, not NG), the
    auditor's facts, the follow-up table, the points NG wants to raise (ask him once,
    QCM, if the auditor found something he must choose to raise or not).
@@ -54,7 +55,7 @@ nothing to audit: skip `delivery-auditor`.
 1. One QCM with three questions: audience (the client, the team, both), support (document +
    slides, slides only, document only), scope (the whole project, or this meeting only) —
    each with its advantages, drawbacks and consequences.
-2. Write `agenda.md` (participants, timed agenda, decisions awaiting someone in the
+2. Write `agenda.md` (participants, topics in a proposed order, decisions awaiting someone in the
    room, points the Project Advisor intends to raise, material) from
    [`../gse-light/method/15-project-advisor.md`](https://github.com/nicolasguelfi/gse-light/blob/main/method/15-project-advisor.md), which is the
    source of the support; update that document rather than writing a second one.

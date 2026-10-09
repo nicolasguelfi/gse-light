@@ -1,6 +1,6 @@
 # 15 — The Project Advisor: the method and where the Advisor steps in
 
-Status: draft · v0.6 · 2026-10-08 · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
+Status: draft · v0.7 · 2026-10-09 · the project lead chairs the meetings and keeps time (§4, §5; NG, board r9) · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a project is run in a few weekly sprints with generative AI under
 > this method, who does each action (a person, a person asking Claude, or Claude and the CI
@@ -100,7 +100,7 @@ when the team is full time.
 | **W-1 · between the kick-off and W1** | advises asynchronously through 🔴 records flagged "advice asked" | each member works in a personal, private, throwaway **sandbox repository** with the kit installed (`<project>-sandbox-<firstname>`, created on GitHub by the project lead or the Advisor, cloned next to `gse-light` and the project-management repository): Day 0, `/upskilling`, experiments, needs analysis; the product repositories do not exist yet | Ask Claude (in the sandbox): `upskilling`; journal entries and new 🔴 records go to the project-management repository through the skills |
 | **W1 · design phase** | advises on the drivers and the options; decides nothing | the team with the project lead collects the drivers (facts and constraints) and decides the twelve `DD` records, in order: repository layout, hosting, environments and promotion path, stack and language, data store, identity, infrastructure as code, continuous integration, test tools, secrets, dependency updates, monitoring; the first, repository layout, names the real product repositories, which then receive the kit; the phase runs in the project lead's sandbox until then | Ask Claude: `design-phase` skill (opens the records with their options; never proposes a stack as default) |
 | **Each week · day before the meeting** | reads a one-page brief | keeps sprint file, linked tickets, journal | Ask Claude (Advisor's session): measures and writes the brief |
-| **Each week · meeting (2 h)** | conceptual feedback on conduct and deliverables; may propose tickets and priorities (the project lead decides) | shows what was delivered; the project lead presents the next sprint | — |
+| **Each week · meeting (2 h)** | conceptual feedback on conduct and deliverables; may propose tickets and priorities (the project lead decides) | shows what was delivered; the project lead presents the next sprint; **the project lead chairs and keeps time** | — |
 | **Each week · same evening** | adds his feedback section to the draft minutes | **the project lead validates and sends the minutes** (with Claude: reads the draft, writes the validation line, pushes it); the team takes its tasks into the next sprint | Ask Claude: transcript, draft minutes checked against the recording (the Advisor's session); the validation line and the push (the project lead's session) |
 | **W1 · examples and data** | advice on the analysis of the need; now and then a technical proposal prepared with Claude | collects examples and source-data exports, writes a dated report per source | Ask Claude: analyses examples and data into requirements |
 | **Last week · hand-over** | final retrospective; lessons kept in the method | runbooks, hand-over document | Ask Claude: hand-over document, last journal entry |
@@ -114,8 +114,9 @@ from a sandbox or a product repository.
 ## 5. The weekly meeting
 
 Two hours, the day fixed at each meeting for the next one; the rhythm is set per
-instance (§4). Indicative agenda, adapted by
-the participants ([template](../templates/meeting-agenda.md)): facts of the week (10 min);
+instance (§4). **The project lead chairs the meeting and keeps time** (the kick-off included);
+the Advisor proposes the topics in the brief. Topics in a proposed order, durations indicative,
+adapted by the participants ([template](../templates/meeting-agenda.md)): facts of the week (10 min);
 demo or deliverables (30 min); the Advisor's feedback (25 min); decisions awaiting someone
 in the room (20 min); next sprint, presented by the project lead (25 min); tasks per
 participant and next date (10 min).

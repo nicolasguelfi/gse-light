@@ -15,7 +15,7 @@ the Project Advisor when the instance is created; `<instance>` is the folder nam
 | **Instance** | one project run with the method, and its folder `instances/<instance>/` in the project-management repository `<pm-repo>` |
 | **Project-management repository** `<pm-repo>` | the project's shared record (decisions, requirements, plans, minutes, journal), private, one per project; everyone reads it, each person writes their own part in it through the kit's skills; nobody manages the project from it |
 | **Go-ahead** | the written yes of the person who holds that right (roles record), before any state-changing action |
-| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, five skills, one agent, permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with the code |
+| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, six skills, one agent, permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with the code |
 | **Skill, agent** | a skill is a procedure Claude runs when asked (`/name`) or when the situation calls for it; an agent is a read-only helper Claude launches |
 | **Decision record and badges** | every `PD-NN`, `DEC-NNN` or `DD-NN` in this folder is one numbered decision record in a *register* (project `PD`, requirements `DEC`, design `DD`), with a status badge: 🔴 pending, 🟢 decided, 🟡 provisional; its *decider* is the person the roles record names for it, the only one who turns it 🟢 |
 | **Cockpit** | `BRIEFING.md`, the Project Advisor's one-page dashboard — what awaits him, what awaits the team, what changed; written by his sessions only |

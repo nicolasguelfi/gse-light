@@ -21,7 +21,7 @@ Status: v0.5 · 2026-10-08 · one section per role (project lead, developer, pro
 
 | Word | Meaning |
 |---|---|
-| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, five skills, one agent, permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with the code. Two kits: this `claude-kit` for product and sandbox repositories, the `pm-kit` for the Project Advisor in `<pm-repo>` |
+| **Kit** | the files that make every Claude Code session in a repository follow the method — `CLAUDE.md`, six skills, one agent, permissions, a `gates.sh` stub, a CI workflow — installed with one command, committed with the code. Two kits: this `claude-kit` for product and sandbox repositories, the `pm-kit` for the Project Advisor in `<pm-repo>` |
 | **Instance** | one project run with the method, and its folder `instances/<instance>/` in `<pm-repo>` |
 | **Placeholders** `<instance>`, `<pm-repo>`, `<product-repo>`, `<project>`, `<firstname>` | the project's real names; `<instance>` is the folder name under `instances/` (`ls ../<pm-repo>/instances` shows it; the project lead gives it) |
 | **Sandbox** | a personal, private, throwaway repository `<project>-sandbox-<firstname>` with the kit, created on GitHub by the project lead or the Project Advisor, for Day 0 and experiments until the product repositories exist; the project lead's sandbox hosts the design phase |
@@ -101,7 +101,7 @@ The command looks for `../gse-light` and for the sibling folder that holds
 |---|---|
 | `CLAUDE.md` | the rules, with `<instance>` and `<pm-repo>` filled; the `<…>` fields (purpose, commands) are yours — **ask Claude**: `claude`, then *"fill CLAUDE.md with this project's purpose and commands"* |
 | `.claude/settings.json` | additional directories `../gse-light` and `../<pm-repo>`; the Edit tool denied under `../gse-light/**` and on `../<pm-repo>/instances/<instance>/BRIEFING.md` (the cockpit); the literal command `git push origin main` denied; Claude asks before any `git push`. Conveniences for the session, not a security boundary: `main` is protected on GitHub (branch protection) in every repository |
-| `.claude/skills/` (`design-phase`, `decision-record`, `session-close`, `verify-claim`, `upskilling`), `.claude/agents/change-reviewer.md` | the kit's own files, refreshed on every run |
+| `.claude/skills/` (`design-phase`, `decision-record`, `review`, `session-close`, `verify-claim`, `upskilling`), `.claude/agents/change-reviewer.md` | the kit's own files, refreshed on every run |
 | `gates.sh` | Day-0 stub: prints *no gates yet: design phase in progress* and exits 0; the design phase fills it |
 | `.github/workflows/gates.yml` | runs `bash ./gates.sh` on every pull request and on every push to `main` — green from Day 0 |
 | `.gitattributes`, `.env.example`, `.gitignore` entries (`.env`, `CLAUDE.local.md`) | line endings, personal files out of git |
@@ -158,7 +158,7 @@ added (`claude --add-dir ../<repo-a> --add-dir ../<repo-b>`).
   claude                                                     # accept the workspace trust dialog
   ```
 
-  In the session: type `/` and check that `design-phase`, `decision-record`, `session-close`, `verify-claim` and `upskilling` appear; then run **`/upskilling`** (where you start, and a short personal plan). You never run `install.sh` in a product repository. If you cloned `<product-repo>` before the kit was there: `git pull` once the project lead has pushed.
+  In the session: type `/` and check that `design-phase`, `decision-record`, `review`, `session-close`, `verify-claim` and `upskilling` appear; then run **`/upskilling`** (where you start, and a short personal plan). You never run `install.sh` in a product repository. If you cloned `<product-repo>` before the kit was there: `git pull` once the project lead has pushed.
 - **No product repository yet? your sandbox.** Until the product repositories exist (the first decision of the design phase names them), every team member works in their sandbox `<project>-sandbox-<firstname>`, cloned next to `gse-light` and `<pm-repo>`. It plays `<product-repo>` in the commands above, with one difference: it is yours, so **you** run the one command in it and commit the kit:
   1. `../gse-light/claude-kit/install.sh <instance>`;
   2. the `git add` and `git commit` lines of §2;

@@ -130,9 +130,11 @@ and the [reference design](https://github.com/nicolasguelfi/gse-light/blob/main/
   - [`claude-kit/INSTALL.md`](https://github.com/nicolasguelfi/gse-light/blob/main/claude-kit/INSTALL.md) — clone the repositories side by side, `.env`, `check.sh`;
   - [`claude-kit/ONBOARDING.md`](https://github.com/nicolasguelfi/gse-light/blob/main/claude-kit/ONBOARDING.md) — who provides what, the method in one page, your first session step by step, the week's rhythm;
   - the [roles record](governance/10-roles-and-go-aheads.md).
-- **Install**: your sandbox `<project>-sandbox-<firstname>` with the kit (the one command
-  above), then `/upskilling` in your first session; later, clone the product repositories
-  (the kit is already in them).
+- **Install**: the numbered path of [`QUICKSTART.md`, "from zero to your first session"](https://github.com/nicolasguelfi/gse-light/blob/main/QUICKSTART.md#if-you-are-a-developer-from-zero-to-your-first-session)
+  with this instance's names — your seat and Claude Code, GitHub access, the three clones side
+  by side, the kit in your sandbox `<project>-sandbox-<firstname>` by the one command above,
+  `.env`, `check.sh`, `/upskilling`; later, clone the product repositories (the kit is already
+  in them).
 - **Write**: code by pull request in the product repositories; your journal entries and new
   🔴 records, through the kit skills `session-close` and `decision-record`, from your sandbox
   or a product repository.

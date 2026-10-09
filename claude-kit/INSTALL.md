@@ -1,11 +1,11 @@
 # Installing the kit — project lead once, developers by cloning
 
-Status: v0.5 · 2026-10-08 · one section per role (project lead, developer, product owner, Project Advisor) · maintained by the Project Advisor
+Status: v0.6 · 2026-10-09 · one section per role; §3 points to the developer's numbered path in QUICKSTART (project lead, developer, product owner, Project Advisor) · maintained by the Project Advisor
 
 > **Essentials** — How the kit gets into the repositories, and what is shared or personal.
 >
 > - **Project lead**: one command, once per product repository, then a commit — §2.
-> - **Developers**: a clone and three personal steps — §3.
+> - **Developers**: the numbered path from zero is in QUICKSTART; what this page adds — §3.
 > - **Product owner**: nothing to install — §4.
 > - **Project Advisor**: the rehearsal and the refresh — §5.
 >
@@ -145,26 +145,9 @@ added (`claude --add-dir ../<repo-a> --add-dir ../<repo-b>`).
 
 ## 3. If you are a developer — get the kit (about 15 minutes)
 
-- **Install** (*you*): clone the three repositories side by side, copy `.env`, check, open a session:
-
-  ```bash
-  mkdir -p ~/dev/<project> && cd ~/dev/<project>
-  git clone https://github.com/nicolasguelfi/gse-light.git  # the gse-light repository (method, kits)
-  git clone <pm-repo URL>                                    # the project-management repository <pm-repo>
-  git clone <product-repo URL>                               # the product repository: the kit comes with it
-  cd <product-repo>
-  cp .env.example .env                                       # in your clone of <product-repo>; fill it with what the project lead gives you
-  ../gse-light/claude-kit/check.sh                           # every line OK, or it says what to do
-  claude                                                     # accept the workspace trust dialog
-  ```
-
-  In the session: type `/` and check that `design-phase`, `decision-record`, `review`, `session-close`, `verify-claim` and `upskilling` appear; then run **`/upskilling`** (where you start, and a short personal plan). You never run `install.sh` in a product repository. If you cloned `<product-repo>` before the kit was there: `git pull` once the project lead has pushed.
-- **No product repository yet? your sandbox.** Until the product repositories exist (the first decision of the design phase names them), every team member works in their sandbox `<project>-sandbox-<firstname>`, cloned next to `gse-light` and `<pm-repo>`. It plays `<product-repo>` in the commands above, with one difference: it is yours, so **you** run the one command in it and commit the kit:
-  1. `../gse-light/claude-kit/install.sh <instance>`;
-  2. the `git add` and `git commit` lines of §2;
-  3. then `cp .env.example .env` and `check.sh`.
-
-  Day 0, `/upskilling` and your experiments happen there. The project lead's sandbox is also where the design phase runs.
+- **The path, step by step** (*you*): one numbered table, from no account to your first session in a product repository, with who does each step — [QUICKSTART.md, "from zero to your first session"](../QUICKSTART.md#if-you-are-a-developer-from-zero-to-your-first-session): your seat and Claude Code (steps 2–4), GitHub access (5), the three clones side by side in one parent folder (6), the kit in your sandbox, installed and committed by **you** (7–8), `.env`, `check.sh`, the gates and `/upskilling` (9–12), the product repository once the project lead has pushed the kit in it (15). This page adds what is shared or personal (§0), the prerequisites by platform (§1) and what `check.sh` says (§6).
+- **Two rules of the path**: in your sandbox `<project>-sandbox-<firstname>` **you** run the one command (`../gse-light/claude-kit/install.sh <instance>`) and commit the kit — it is your repository, and it plays `<product-repo>` until the product repositories exist (the first decision of the design phase names them); in a product repository you **never** run `install.sh`: the kit comes with the clone (cloned before it was there? `git pull` once the project lead has pushed).
+- **In the session**: type `/` and check that `design-phase`, `decision-record`, `review`, `session-close`, `verify-claim` and `upskilling` appear; then run **`/upskilling`** (where you start, and a short personal plan). Day 0, `/upskilling` and your experiments happen in the sandbox; the project lead's sandbox is also where the design phase runs.
 - **Write**, through the kit's skills only: your journal entries and 🔴 records, which go to `<pm-repo>/instances/<instance>/` from the sandbox as from any product repository.
 - **Never** open Claude Code in `<pm-repo>`: the sessions opened there are the Project Advisor's.
 

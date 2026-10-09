@@ -1,6 +1,6 @@
 # Quick start — what gse-light does for you and what to use, all project long
 
-Status: v0.4 · 2026-10-08 · one page, a section per role; details in [INSTALL.md](claude-kit/INSTALL.md) and [ONBOARDING.md](claude-kit/ONBOARDING.md)
+Status: v0.5 · 2026-10-09 · one page, a section per role; the developer's numbered path from zero; details in [INSTALL.md](claude-kit/INSTALL.md) and [ONBOARDING.md](claude-kit/ONBOARDING.md)
 
 ## What gse-light does for you
 
@@ -115,46 +115,39 @@ GitHub branch protection on `main`.
 - **Write**: the sprint file `<pm-repo>/instances/<instance>/planning/sprints/W<n>.md`, the `DD` records, the review of every pull request.
 - **Never**: open Claude Code in `<pm-repo>` (a session opened there acts in the Advisor's name); turn a record 🟢 unless the roles record names you its decider; run `install.sh` for someone else — each developer runs it in their own sandbox, and nobody but you in a product repository.
 
-## If you are a developer: your sandbox
+## If you are a developer: from zero to your first session
 
-- **Read first**:
-  - this page;
-  - then [INSTALL.md](claude-kit/INSTALL.md) — prerequisites, Windows, troubleshooting;
-  - and [ONBOARDING.md](claude-kit/ONBOARDING.md) — the words used, your first session step by step, the Day-0 and first-sprint checklists.
-- **Install** (*you*, once the project lead or the Advisor has created your sandbox on GitHub): until the product repositories exist, every team member works in their sandbox `<project>-sandbox-<firstname>`, with the kit installed by the one command — here **you** run it, it is your repository:
+One numbered path, from no account to your first session in a product repository; keep it
+open on Day 0. **Who** says who does the step — *you*, *the Project Advisor*, *the project
+lead*, *ask Claude*. The other pages point here instead of repeating it:
+[INSTALL.md](claude-kit/INSTALL.md) adds the prerequisites by platform, what is shared or
+personal and what `check.sh` says; [ONBOARDING.md](claude-kit/ONBOARDING.md) the method in
+one page, your first session step by step and the checklists.
 
-  ```bash
-  mkdir -p ~/dev/<project> && cd ~/dev/<project>
-  git clone https://github.com/nicolasguelfi/gse-light.git   # the gse-light repository (the method)
-  git clone <pm-repo URL>                                    # the project-management repository
-  git clone <sandbox URL>                                    # your sandbox <project>-sandbox-<firstname>
-  cd <project>-sandbox-<firstname>
-  ../gse-light/claude-kit/install.sh <instance>              # ONE command; add --pm <pm-repo> if it asks
-  git add CLAUDE.md .claude .env.example .gitattributes .gitignore .github gates.sh
-  git commit -m "Install the Claude kit (<instance>)" && git push -u origin HEAD
-  cp .env.example .env                                       # your keys, never committed
-  ../gse-light/claude-kit/check.sh                           # every line OK, or it says what to do
-  claude                                                     # type /, run /upskilling, then experiment
-  ```
+| # | Step | Who | Do | Check |
+|---|---|---|---|---|
+| 1 | **Your machine** | you | Git, a bash terminal (Git Bash on Windows), `python3` — [INSTALL.md §1](claude-kit/INSTALL.md#1-prerequisites-everyone) | `git --version` and `python3 --version` print a version |
+| 2 | **Your Claude seat** | the Project Advisor | invites you to his Claude team: an invitation to your e-mail address, or an identity on his organisation's domain (he gives you the address and a one-time password; you sign in once and set your password) | the mail "You've been invited to join … on Claude" is in that mailbox |
+| 3 | **Accept the seat** | you | the mail's **Accept invitation** — or https://claude.ai/login › **Continue with Google** when the identity is a Google one | claude.ai opens in the Advisor's organisation (bottom-left menu); never a personal account |
+| 4 | **Claude Code** | you | install it from https://claude.com/claude-code (the installer, or `npm install -g @anthropic-ai/claude-code`); open a new terminal; `claude` › **Claude account with subscription** (never *Anthropic Console account*) › **Authorize** in the browser | `claude --version` prints a version; no `/logout` afterwards |
+| 5 | **GitHub access** | the Project Advisor, the project lead | write access on `<pm-repo>` (from its host, named in the roles record); your sandbox `<project>-sandbox-<firstname>`, private, created with you as admin (the project lead or the Advisor); you accept the two invitations GitHub mails you | both repositories open on github.com under your account |
+| 6 | **Three clones side by side** | you | `mkdir -p ~/dev/<project> && cd ~/dev/<project>` · `git clone https://github.com/nicolasguelfi/gse-light.git` · `git clone <pm-repo URL>` · `git clone <sandbox URL>` | `ls` shows `gse-light`, `<pm-repo>` and your sandbox |
+| 7 | **The kit in your sandbox** | you | `cd <project>-sandbox-<firstname>` · `../gse-light/claude-kit/install.sh <instance>` — ONE command; add `--pm <pm-repo>` if it asks; `<instance>` is the folder name that `ls ../<pm-repo>/instances` shows | it lists what it wrote: `CLAUDE.md`, `.claude/`, `gates.sh`, the CI workflow… |
+| 8 | **Commit the kit** | you | `git add CLAUDE.md .claude .env.example .gitattributes .gitignore .github gates.sh` · `git commit -m "Install the Claude kit (<instance>)"` · `git push -u origin HEAD` | `git status` is clean; the files are on GitHub |
+| 9 | **Your `.env`** | you | `cp .env.example .env`, then fill it with what the project lead gives you | `git status --short` never lists `.env` |
+| 10 | **Check** | you | `../gse-light/claude-kit/check.sh` | every line OK, no MISSING line — or it says what to do |
+| 11 | **The gates, once** | you | `./gates.sh` | prints *no gates yet: design phase in progress* (the Day-0 stub) |
+| 12 | **First session and `/upskilling`** | you | `claude`; accept the workspace trust dialog; type `/` — the six skills appear; `/upskilling` (ten minutes of questions, a short personal plan) | your plan is in `~/.claude/upskilling/<instance>/record.md`, outside every repository |
+| 13 | **Read** | you | the reference design chapters 0, 1, 2 and 13; the `CLAUDE.md` of your sandbox; then your first session step by step — [ONBOARDING.md §3b](claude-kit/ONBOARDING.md#3b-your-first-session-step-by-step-30-minutes) | you can say in five lines how a session works here: gates, registers, go-aheads |
+| 14 | **Close the session** | ask Claude | *"Close the session"* (skill `session-close`) | your first journal entry is in `<pm-repo>/instances/<instance>/journal/`, pushed by the skill |
+| 15 | **The product repository** — W1, once the project lead has installed the kit in it and pushed | you | `cd ~/dev/<project>` · `git clone <product-repo URL>` · `cd <product-repo>` · `cp .env.example .env` · `../gse-light/claude-kit/check.sh` · `claude` | no MISSING line; `/` shows the six skills. You never run `install.sh` there; cloned before the kit was in? `git pull` |
+| 16 | **Work** | you, ask Claude | a ticket, a feature branch with its tests, `./gates.sh`, the `change-reviewer` agent, the pull request, *"Close the session"* — the table "All project long" below | — |
 
-  `/upskilling` is the kit's self-assessment of your starting level, with a personal plan; its record stays in your sandbox.
-- **Write**: your journal entry at the end of each session and your new 🔴 records — the skills `session-close` and `decision-record` push them to `<pm-repo>/instances/<instance>/` for you, from the sandbox as from any product repository.
-- **Never**: open Claude Code in `<pm-repo>` — the sessions opened there are the Advisor's. Your sandbox stays yours for experiments afterwards (next section).
+Steps 2 and 5 are done for you, in this order, at the kick-off or the day you start;
+everything from step 6 is your own hour, and nothing in it needs the Advisor.
 
-## If you are a developer: a product repository that already has the kit
-
-- **Install** (*you*, once the project lead has pushed the kit):
-
-  ```bash
-  cd ~/dev/<project>                                         # gse-light and <pm-repo> are already there (your sandbox step)
-  git clone <product-repo URL>                               # the product repository, kit included
-  cd <product-repo> && cp .env.example .env                  # your keys, never committed
-  ../gse-light/claude-kit/check.sh                           # every line OK, or it says what to do
-  ```
-
-  Then `claude` in the product repository, type `/` (the six skills appear), run `/upskilling` if you have not done it in your sandbox.
-- **Write**: the code, by pull request on a feature branch with its tests; your journal entries and 🔴 records as from your sandbox.
-- **Never**: run `install.sh` in a product repository (if you cloned before the kit was there: `git pull` once the project lead has pushed); edit `gse-light` from a project session; push to `main` without the go-ahead; commit a secret.
+- **Write**: the code, by pull request on a feature branch with its tests; your journal entry at the end of each session and your new 🔴 records — the skills `session-close` and `decision-record` push them to `<pm-repo>/instances/<instance>/` for you, from the sandbox as from any product repository.
+- **Never**: open Claude Code in `<pm-repo>` — the sessions opened there are the Advisor's; run `install.sh` in a product repository; edit `gse-light` from a project session; push to `main` without the go-ahead; commit a secret. Your sandbox stays yours for experiments afterwards.
 
 ## If you are the product owner
 

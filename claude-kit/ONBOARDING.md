@@ -1,6 +1,6 @@
 # Working with generative AI under this method — starting guide for the team
 
-Status: v0.7 · 2026-10-08 · generic · for the project lead and the developers, with a short section for the product owner and the Project Advisor · maintained by the Project Advisor
+Status: v0.8 · 2026-10-09 · generic · §3a points to the developer's numbered path in QUICKSTART · for the project lead and the developers, with a short section for the product owner and the Project Advisor · maintained by the Project Advisor
 
 > **Essentials** — A project run with this method (an *instance*) is built in sprints
 > with Claude Code as a working partner, under a few firm rules: measure before asserting,
@@ -166,47 +166,41 @@ then in the product repositories. In addition, you:
 ## 3. If you are a developer
 
 - **Read first**: this page, then your repository's `CLAUDE.md`.
-- **Install**: the kit in your sandbox only (§3a); a product repository brings it with the clone.
+- **Install**: the numbered path from zero — [QUICKSTART.md](../QUICKSTART.md#if-you-are-a-developer-from-zero-to-your-first-session) — then §3a for what to know on the way; the kit in your sandbox only, a product repository brings it with the clone.
 - **Write**, through the kit's skills: your journal entries and your new 🔴 records.
 - **Never**: run `install.sh` in a product repository, open Claude Code in `<pm-repo>`, turn a record 🟢 — and the **Never** of §1 holds.
 
 ### 3a. Day 0 — get set up (15 minutes to install, 15 for `/upskilling`)
 
-The full procedure, with prerequisites for macOS and Windows and what is shared or
-personal, is **[INSTALL.md](INSTALL.md)**. In short:
+The path from zero — no account yet — to your first session in a product repository is
+**one numbered table**, with who does each step:
+[QUICKSTART.md, "from zero to your first session"](../QUICKSTART.md#if-you-are-a-developer-from-zero-to-your-first-session).
+Prerequisites by platform, what is shared or personal and what `check.sh` says:
+[INSTALL.md](INSTALL.md). What to know while you follow it:
 
-1. **Prerequisites**: Git with access to the repositories on GitHub, a bash terminal (Git
-   Bash on Windows), `python3`, Claude Code signed in with the account the Project Advisor
-   invited ([INSTALL.md §1](INSTALL.md#1-prerequisites-everyone)).
-2. **Before W1 — in your sandbox.** Until the product repositories exist (the first
-   decision of the design phase, repository layout, names them), you work in
-   `<project>-sandbox-<firstname>`: a personal, private, throwaway repository on GitHub,
-   created for you by the project lead or the Project Advisor. Clone it next to `gse-light`
-   and `<pm-repo>`, run the one command in it **yourself**
-   (`../gse-light/claude-kit/install.sh <instance>`) and commit the kit
-   ([INSTALL.md §3](INSTALL.md#3-if-you-are-a-developer--get-the-kit-about-15-minutes)). Your sessions'
-   journal entries and 🔴 records go to `<pm-repo>/instances/<instance>/` through the
-   skills, as from any product repository. You never open Claude Code in `<pm-repo>`: the
-   sessions opened there are the Project Advisor's.
-3. **Once the product repository exists**, clone it side by side with the two others, in
-   the same parent folder: the kit is already in it, installed by the project lead with one
-   command from inside its clone and committed. **You never run `install.sh` there**; if you
-   cloned before the kit was there, `git pull` once the project lead has pushed.
-4. **Your `.env`**: `cp .env.example .env`, then fill it with what the project lead gave you.
-5. **Check**: `../gse-light/claude-kit/check.sh` from inside your sandbox or product
-   repository — every line OK, or it tells you what to do.
-6. **Open a session**: `claude`, accept the workspace trust dialog, type `/` and check that
-   `design-phase`, `decision-record`, `review`, `session-close`, `verify-claim` and `upskilling` appear.
-   Whenever Claude needs your answer, it asks by a short multiple-choice question or, for a
-   complex choice, by a review board (skill `review`): the problem restated, every option's
-   advantages, drawbacks and consequences, a comment under every point; you send back one line.
-   Work locally: a Claude Code session started on claude.ai (web or cloud) sees one
-   repository only, not `../gse-light` nor `../<pm-repo>`.
-7. **Start from where you are**: in the session, type `/upskilling` (the kit's
-   self-assessment skill). Ten minutes of questions and two or three small checks, then a
-   short personal plan matched to your responsibilities; your answers stay in your home
-   folder, outside every repository ([method](../method/20-upskilling.md)). The method
-   comes in two steps: the base in your first sprint, tests and coverage in the second.
+- **Before W1, in your sandbox.** Until the product repositories exist (the first decision
+  of the design phase, repository layout, names them), you work in
+  `<project>-sandbox-<firstname>`: a personal, private, throwaway repository on GitHub,
+  created for you by the project lead or the Project Advisor. You run the one command in it
+  **yourself** and commit the kit (steps 7–8). Your sessions' journal entries and 🔴 records
+  go to `<pm-repo>/instances/<instance>/` through the skills, as from any product
+  repository. You never open Claude Code in `<pm-repo>`: the sessions opened there are the
+  Project Advisor's.
+- **Once the product repository exists** (step 15), clone it side by side with the two
+  others, in the same parent folder: the kit is already in it, installed by the project lead
+  with one command from inside its clone and committed. **You never run `install.sh`
+  there**; if you cloned before the kit was there, `git pull` once the project lead has pushed.
+- **How Claude asks you** (from step 12): whenever Claude needs your answer, it asks by a
+  short multiple-choice question or, for a complex choice, by a review board (skill
+  `review`): the problem restated, every option's advantages, drawbacks and consequences, a
+  comment under every point; you send back one line.
+- **Work locally**: a Claude Code session started on claude.ai (web or cloud) sees one
+  repository only, not `../gse-light` nor `../<pm-repo>`.
+- **`/upskilling`** (step 12) is the kit's self-assessment skill: ten minutes of questions
+  and two or three small checks, then a short personal plan matched to your
+  responsibilities; your answers stay in your home folder, outside every repository
+  ([method](../method/20-upskilling.md)). The method comes in two steps: the base in your
+  first sprint, tests and coverage in the second.
 
 **Check you are done**: `../gse-light/claude-kit/check.sh` prints no MISSING line.
 

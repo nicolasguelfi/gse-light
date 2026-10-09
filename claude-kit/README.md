@@ -60,7 +60,8 @@ Advisor who maintains it: read your section (§1–§4), then the contents table
 ## 2. If you are a developer
 
 - **Read first**:
-  - [INSTALL.md §3](INSTALL.md#3-if-you-are-a-developer--get-the-kit-about-15-minutes) — clone, `.env`, `check.sh`, first session;
+  - [QUICKSTART.md, "from zero to your first session"](../QUICKSTART.md#if-you-are-a-developer-from-zero-to-your-first-session) — the numbered path, from no account to your first session in a product repository, who does each step;
+  - then [INSTALL.md §3](INSTALL.md#3-if-you-are-a-developer--get-the-kit-about-15-minutes) — what is shared or personal, prerequisites by platform, what `check.sh` says;
   - then [ONBOARDING.md](ONBOARDING.md) — the method in one page, your first session, the Day-0 checklist;
   - to rehearse Day 0 on your own machine first: [TEST-DAY0.md](TEST-DAY0.md).
 - **Install**: nothing in a product repository — the kit comes with the clone, then three personal steps (`.env`, `check.sh`, `claude`). In your sandbox you run the one command of §1 yourself and commit the kit.

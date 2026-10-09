@@ -65,7 +65,7 @@ One reading path for everyone: the [reference design](method/00-reference-design
 ## If you are a developer
 
 - **Read first**:
-  - [QUICKSTART.md](QUICKSTART.md) — what gse-light does for you, your Day 0, what to use at each moment of the project, one page;
+  - [QUICKSTART.md](QUICKSTART.md) — what gse-light does for you, **the numbered path from zero to your first session** (who does each step), what to use at each moment of the project, one page;
   - then [`claude-kit/INSTALL.md`](claude-kit/INSTALL.md) — prerequisites, clone, `.env`, `check.sh`, Windows, troubleshooting;
   - then [`claude-kit/ONBOARDING.md`](claude-kit/ONBOARDING.md) — the words used, the method in one page, your first session step by step, the Day-0 and first-sprint checklists;
   - then the reference design's common chapters (above).

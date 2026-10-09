@@ -69,7 +69,11 @@ project-management repository (`instances/<instance>/`), cloned next to this one
   `../gse-light/pm-kit/install.sh .`, the product repositories with `claude-kit/install.sh`.
 - **Developer documents stay in step**: `QUICKSTART.md` (one page), `claude-kit/INSTALL.md`,
   `claude-kit/ONBOARDING.md` and the two Day-0 rehearsals change together — 2026-10-08 —
-  developers had no one-page guide at the root.
+  developers had no one-page guide at the root. **One numbered path, one place** (NG,
+  2026-10-09): the developer's path from zero (account, seat, access, clones, kit, first
+  session, product repository) is the table of `QUICKSTART.md`; the other pages point to it
+  and add only what is theirs — the Day-0 commands were written five times and no page
+  carried the steps before the first clone.
 - **Paths in kit files**: skills and agents run from the project-management repository (or a
   product repository); method paths are written `../gse-light/…`, and Markdown links to the
   method use `https://github.com/nicolasguelfi/gse-light/blob/main/…` (checked locally).

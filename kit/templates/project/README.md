@@ -162,7 +162,7 @@ and the [reference design](https://github.com/nicolasguelfi/gse-light/blob/main/
   (`../gse-light/kit/install.sh`, then a commit — [`kit/README.md`](https://github.com/nicolasguelfi/gse-light/blob/main/kit/README.md));
   refresh it the same way after a change in `gse-light`; your machine for recording and
   transcription ([`scripts/README.md`](https://github.com/nicolasguelfi/gse-light/blob/main/scripts/README.md));
-  `"allow": ["Edit(./project/BRIEFING.md)"]` in your own `.claude/settings.local.json` (never committed).
+  your own rules, `cp .claude/roles/advisor.json .claude/settings.local.json` (never committed).
 - **Write**: open Claude Code in the project's repository — the start hook says where the
   week stands — and say "go": your sessions write this page, `BRIEFING.md`, the meeting
   folders (brief, transcript, the draft minutes with your feedback section — the project

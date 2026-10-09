@@ -98,6 +98,22 @@ for p in .env CLAUDE.local.md .claude/settings.local.json; do
   [ -z "$(git ls-files "$p")" ] || { miss "$p not in git" "personal file is tracked: git rm --cached $p"; n=1; }
 done
 [ $n = 0 ] && ok "no personal file tracked by git (.env, CLAUDE.local.md, settings.local.json)"
+# your own Claude Code rules: .claude/settings.local.json holds every rule of your role's file
+if [ -f .claude/settings.local.json ]; then
+  role="$(python3 - <<'PY' 2>/dev/null
+import json, pathlib
+mine = json.loads(pathlib.Path(".claude/settings.local.json").read_text()).get("permissions", {})
+for f in sorted(pathlib.Path(".claude/roles").glob("*.json")):
+    ref = json.loads(f.read_text()).get("permissions", {})
+    if all(set(ref.get(k, [])) <= set(mine.get(k, [])) for k in ("allow", "ask", "deny")):
+        print(f.stem); break
+PY
+)"
+  [ -n "$role" ] && ok "your Claude Code rules hold the role '$role' (.claude/settings.local.json)" \
+    || warn "settings.local.json" "it holds no role's full rules: compare with .claude/roles/*.json"
+else
+  warn "settings.local.json" "your own Claude Code rules are missing: cp .claude/roles/team.json .claude/settings.local.json (the Project Advisor: advisor.json)"
+fi
 [ -f .env ] && ok ".env present" || warn ".env" "copy .env.example to .env and fill it (INSTALL.md §3)"
 
 exit $fail

@@ -21,7 +21,7 @@ Checks:
        FAIL when the register holds fewer 🔴 than §3 says (a record closed without the cockpit),
        WARN only when it holds more (new 🔴 opened by the team; the Project Advisor's next session
        refreshes the cockpit) — a developer's commit never turns CI red for that;
-     - .claude/skills and .claude/agents are identical to gse-light's kit (else: refresh with kit/install.sh);
+     - .claude/skills, .claude/agents and .claude/roles are identical to gse-light's kit (else: refresh with kit/install.sh);
      - deck freshness: for every slide of a deck in force (project/meetings/<date>/slides/project/slides/),
        WARN when a file named in its "Source:" footer was committed after the slide (or after the deck's last
        "Sources checked: YYYY-MM-DD HH:MM" line in slides/README.md), or when the footer is missing;
@@ -260,6 +260,7 @@ def check_copies() -> None:
         hint = "refresh: ../gse-light/kit/install.sh"
         same_tree(METHOD / "kit/skills", ROOT / ".claude/skills", ".claude/skills", hint, False)
         same_tree(METHOD / "kit/agents", ROOT / ".claude/agents", ".claude/agents", hint, False)
+        same_tree(METHOD / "kit/roles", ROOT / ".claude/roles", ".claude/roles", hint, False)
 
 
 SOURCE_RE = re.compile(r"Source:\s*([^<]*)", re.I)

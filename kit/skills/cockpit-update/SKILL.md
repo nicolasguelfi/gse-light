@@ -10,8 +10,9 @@ description: Refresh project/BRIEFING.md, the Project Advisor's cockpit of the p
 `project/BRIEFING.md` is the Project Advisor's single entry point (Nicolas
 Guelfi, NG, is the Project Advisor, not the project manager). A stale §1 is a defect; so
 is a §1 that carries project-management tasks that belong to the project lead. Only his
-sessions edit it (roles record): the kit's `settings.json` denies the Edit tool on it for
-everyone, and his own `.claude/settings.local.json` (never committed) allows it.
+sessions edit it (roles record): the team's rules (`.claude/roles/team.json`, copied into
+each member's `.claude/settings.local.json`) deny the Edit tool on it; his own, copied from
+`advisor.json` (never committed), allow it.
 
 1. **Collect** the 🔴 rows of the three dashboards (`project/governance/05-project-decisions.md`,
    `project/requirements/05-decisions.md`, `project/design/05-design-decisions.md`) with their "Who

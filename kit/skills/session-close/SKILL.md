@@ -22,8 +22,8 @@ whoever opened the session. Paths below are relative to its root; the method is 
    - a hand-over for a reader with no memory: state, rules learned, traps.
 3. **Append one row to `project/journal/metrics.csv`** (columns in `project/journal/README.md`).
 4. **Who closes?** Only the Project Advisor's sessions edit `project/BRIEFING.md` (roles
-   record; the kit's settings deny the Edit tool on it, his own `settings.local.json` allows
-   it). A session of the project lead or of a developer **never touches it**: it reports what
+   record; the team's rules, `.claude/roles/team.json`, deny the Edit tool on it, his own
+   `settings.local.json` allows it). A session of the project lead or of a developer **never touches it**: it reports what
    §1 or §1b should say
    in its journal entry, under "For the next session", and stops here for the cockpit.
    The Project Advisor's session **refreshes `project/BRIEFING.md`** with the

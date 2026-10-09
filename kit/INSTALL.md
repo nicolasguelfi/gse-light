@@ -54,7 +54,7 @@ Status: v0.7 · 2026-10-09 · one repository per project, one kit for every role
 | The documentation checks: `.github/workflows/docs.yml` (`check_docs` on `project/`, with `gse-light` at the installed `KIT_VERSION`) | `<project-repo>` | **yes** |
 | `.gitattributes` (`*.sh text eol=lf`: keeps `gates.sh` runnable from a Windows clone) and `.env.example` | `<project-repo>` | **yes** |
 | Your keys and settings: `.env` | `<project-repo>` (your clone) | **no** (git-ignored by the kit) |
-| Your personal instructions: `CLAUDE.local.md`; your personal permissions: `.claude/settings.local.json` — the Project Advisor's allows the Edit tool on the cockpit: `{"permissions": {"allow": ["Edit(./project/BRIEFING.md)"]}}` | `<project-repo>` (your clone) | **no** (the kit ignores the first; Claude Code excludes the second itself) |
+| Your personal instructions: `CLAUDE.local.md`; your personal permissions: `.claude/settings.local.json`, copied once from your role's file in `.claude/roles/` (`team.json` or `advisor.json`), yours to adapt | `<project-repo>` (your clone) | **no** (the kit ignores the first; Claude Code excludes the second itself) |
 | Meeting recordings (`project/meetings/<date>/audio*`) | the Project Advisor's clone | **no** (git-ignored by the kit) |
 | Your sessions, Claude's memory of you, your personal skills | `~/.claude/` on your machine | **no** — never in any repository |
 | Your upskilling record (answers, plan) | `~/.claude/upskilling/<project>/record.md` | **no** — in your home folder, one sub-folder per project |
@@ -98,7 +98,8 @@ It writes:
 |---|---|
 | `project/` | the shared record's skeleton, from `kit/templates/project/`: `README.md` (the project, its phase, its people, the repositories), `BRIEFING.md` (the cockpit: §1, §1b, §2, §3 with the pending counts), the three registers with their §0 dashboards (`governance/05-project-decisions.md`, `requirements/05-decisions.md`, `design/05-design-decisions.md`), the roles record `governance/10-roles-and-go-aheads.md`, `journal/` (README, `metrics.csv`), `meetings/README.md`; `<project>` filled with the repository's name; **never touched again** once the folder has files |
 | `CLAUDE.md` | the rules every session loads, with the repository's name filled; the `<…>` fields (purpose, commands) are the project lead's after the design phase — **ask Claude**: *"fill CLAUDE.md with this project's purpose and commands"* |
-| `.claude/settings.json` | `../gse-light` as additional directory; the Edit tool denied under `../gse-light/**` and on `./project/BRIEFING.md`; the literal command `git push origin main` denied; Claude asks before any `git push`; the start hook (`scripts/session_start.py`). Conveniences for the session, not a security boundary |
+| `.claude/settings.json` | the floor every session shares: `../gse-light` as additional directory; reading `.env`, a forced push and the literal command `git push origin main` denied; the start hook (`scripts/session_start.py`). Conveniences for the session, not a security boundary |
+| `.claude/roles/` (`team.json`, `advisor.json`) | each role's personal rules, the kit's own files, refreshed on every run; each person copies theirs once to `.claude/settings.local.json` — `team.json`: Claude asks before any `git push`, the Edit tool denied under `../gse-light/**` and on `./project/BRIEFING.md`; `advisor.json`: both allowed. A personal file can add a rule, never lift a shared one (Claude Code checks deny, then ask, then allow) |
 | `.claude/skills/` (twelve: `design-phase`, `decision-record`, `review`, `session-close`, `verify-claim`, `upskilling`, and yours — `advisor`, `meeting`, `slides`, `cockpit-update`, `method-lesson`, `genai-onboarding`), `.claude/agents/` (`change-reviewer`, `delivery-auditor`, `minutes-verifier`, `design-reviewer`) | the kit's own files, refreshed on every run |
 | `gates.sh` | Day-0 stub: prints *no gates yet: design phase in progress* and exits 0; the design phase fills it |
 | `.github/workflows/gates.yml` | runs `bash ./gates.sh` on every pull request and on every push to `main` — green from Day 0 |
@@ -122,9 +123,8 @@ Protected `main`: `git switch -c kit && git push -u origin kit`, then open the p
 on GitHub; the Day-0 CI runs the stub and the documentation checks, both green. Tell the team
 the kit is in: they clone.
 
-On your machine, once: `.claude/settings.local.json` with
-`{"permissions": {"allow": ["Edit(./project/BRIEFING.md)"]}}` (the cockpit is yours; the shared
-settings deny it to every session), and the machine's preparation for the recording and
+On your machine, once: `cp .claude/roles/advisor.json .claude/settings.local.json` (your own
+rules: your sessions may edit the cockpit and `gse-light`; never committed), and the machine's preparation for the recording and
 transcription scripts ([`scripts/README.md`](../scripts/README.md) §1).
 
 **Refresh** after the kit changes in the `gse-light` repository:

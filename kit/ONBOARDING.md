@@ -118,10 +118,29 @@ And three habits:
 - editing `project/BRIEFING.md` (the Project Advisor's cockpit) or anything under `gse-light` from a project session;
 - running the Project Advisor's skills (`advisor`, `meeting`, `slides`, `cockpit-update`, `method-lesson`, `genai-onboarding`): they check the git user and stop.
 
-The kit's `settings.json` denies Claude the Edit tool on the cockpit and under `gse-light`,
-and the literal command `git push origin main`; Claude asks before any `git push`. These
-rules are conveniences for the session, not a security boundary: review by a person guards
-the rest, with GitHub branch protection on `main` when the project has enabled it (roles record).
+The kit's `settings.json` is the floor every session shares: it denies Claude reading `.env`,
+a forced push and the literal command `git push origin main`. Your own rules go in
+`.claude/settings.local.json` (never committed), copied once from your role's file in
+`.claude/roles/`: with `team.json`, Claude asks before any `git push` and may not edit the
+cockpit nor `gse-light`. Claude Code adds up the rules of every file and checks deny, then
+ask, then allow, so a personal file can add a rule but never lift a shared one. These rules
+are conveniences for the session, not a security boundary: GitHub rights guard the rest —
+only the Project Advisor writes to `gse-light`; in the project everyone goes through pull
+requests, reviewed by a person, with branch protection on `main` when the project has
+enabled it (roles record).
+
+**Skipping permission prompts.** The mode that skips Claude Code's confirmations cannot be
+set in the project's files (Claude Code ignores it there): it is each person's own choice,
+best made per session at launch — for instance with an alias in your shell profile
+(`~/.zshrc` or `~/.bashrc`):
+
+```bash
+alias claude-libre='claude --dangerously-skip-permissions'
+```
+
+— or for all your projects with `"defaultMode": "bypassPermissions"` in `~/.claude/settings.json`.
+Even in that mode, deny rules and explicit ask rules still apply (Claude Code documentation:
+settings, permissions, permission modes — read 2026-10-09).
 
 ## 2. If you are the project lead
 
@@ -178,6 +197,8 @@ Prerequisites by platform, what is shared or personal and what `check.sh` says:
   or deleted afterwards. A sandbox (your own throwaway repository) is for experiments outside
   the project, if you want one; nothing of value stays there.
 - **Your `.env`**: `cp .env.example .env`, then fill it with what the project lead gave you.
+- **Your rules for Claude**: `cp .claude/roles/team.json .claude/settings.local.json` (never
+  committed); adapt it if you wish — it can add rules, never lift the shared ones (§1).
 - **Check**: `../gse-light/kit/check.sh` from inside `<project-repo>` — every line OK, or it
   tells you what to do.
 - **Open a session**: `claude`, accept the workspace trust dialog, type `/` and check that
@@ -249,7 +270,7 @@ every pull request was reviewed by the agent and by you; no decision lives only 
 ## 5. If you are the Project Advisor
 
 - **Read first**: the cockpit (your page), the journal entries and the weekly brief.
-- **Install**: the kit, once, in the project's repository ([INSTALL.md §2](INSTALL.md#2-if-you-are-the-project-advisor--install-the-kit-once-and-refresh-it)); your sessions open there, like everyone's — the start hook tells them apart.
+- **Install**: the kit, once, in the project's repository ([INSTALL.md §2](INSTALL.md#2-if-you-are-the-project-advisor--install-the-kit-once-and-refresh-it)); your sessions open there, like everyone's — the start hook tells them apart. Your own rules: `cp .claude/roles/advisor.json .claude/settings.local.json`, once.
 - **Write**: the cockpit, the draft minutes and your feedback section (the project lead validates and sends them), `project/README.md` and the governance pages; push only on your own go-ahead.
 - **Never**: decide in the project (your advice is 🟡 at most); write a client or project name in `gse-light` (the leak guard refuses it).
 
@@ -263,6 +284,7 @@ Copy into your journal entries and tick with the command that proves each line.
 - [ ] `gse-light` and `<project-repo>` cloned side by side, in one parent folder — `ls ..`
 - [ ] The kit present in your clone — `../gse-light/kit/check.sh` (no MISSING line)
 - [ ] `.env` created from `.env.example`, not tracked — `git status --short | grep -c .env` → 0
+- [ ] Your role's rules copied to `.claude/settings.local.json` — `../gse-light/kit/check.sh` says OK
 - [ ] Your Day-0 branch — `git branch --show-current` → `day0-<firstname>`
 - [ ] Gates run once — `./gates.sh` output quoted (the Day-0 stub)
 - [ ] Reference design chapters 0 (purpose), 1 (principles), 2 (how people and AI share the decisions) and 13 (working with the AI day to day) read — the project lead adds 15 (the start-of-project checklist); `CLAUDE.md` read

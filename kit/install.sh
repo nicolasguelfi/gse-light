@@ -7,7 +7,7 @@
 #   ../gse-light/kit/install.sh
 # Two repositories side by side in the same parent folder: the project's repository (where you run
 # this) and the method `gse-light`, read by every session and changed by none.
-# Copies the skills and agents into .claude/ (overwriting the kit's own files only) and creates, if
+# Copies the skills, agents and role rules (roles/) into .claude/ (overwriting the kit's own files only) and creates, if
 # absent: project/ (from templates/project/, the shared record's skeleton — never touched once it
 # has files), CLAUDE.md, .claude/settings.json, .gitattributes, gates.sh, .env.example and the two CI
 # workflows (gates, docs). The project's repository owns those files afterwards.
@@ -52,7 +52,13 @@ else
   echo "project/ already has files: skeleton not applied"
 fi
 
-mkdir -p .claude/skills .claude/agents
+mkdir -p .claude/skills .claude/agents .claude/roles
+# each role's own Claude Code rules: kit-owned, refreshed every time; each person copies theirs once
+# into .claude/settings.local.json (never committed) — the shared settings.json is only the floor
+for role in "$kit"/roles/*.json; do
+  cp "$role" .claude/roles/
+  echo "role    $(basename "$role" .json)"
+done
 for skill in "$kit"/skills/*/; do
   name="$(basename "$skill")"
   rm -rf ".claude/skills/$name"
@@ -70,7 +76,7 @@ if [ ! -f CLAUDE.md ]; then
 fi
 if [ ! -f .claude/settings.json ]; then
   cp "$kit/templates/settings.json" .claude/settings.json
-  echo "created .claude/settings.json (reads ../gse-light; Edit denied under ../gse-light/** and on project/BRIEFING.md; asks before any git push; start hook)"
+  echo "created .claude/settings.json (the floor for everyone: reads ../gse-light; never reads .env; no force push, no push to main; start hook) — each person: cp .claude/roles/<team|advisor>.json .claude/settings.local.json"
 fi
 if [ ! -f .gitattributes ]; then
   cp "$kit/templates/gitattributes" .gitattributes

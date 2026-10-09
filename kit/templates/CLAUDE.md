@@ -6,11 +6,14 @@ meetings, journal. Two repositories side by side, in one parent folder: this one
 method **`gse-light`** in `../gse-light`, read by every session and changed by none
 (an additional directory of `.claude/settings.json`). Every role opens Claude Code **here**:
 the developers, the project lead and the Project Advisor; the rules below say what each
-one's session does. The same `settings.json` denies the Edit tool under `../gse-light/` and
-on `project/BRIEFING.md` (the Project Advisor's cockpit) and the literal command
-`git push origin main`, and asks before any `git push`. These rules are conveniences, not a
-security boundary: the project decides in its roles record how `main` is protected on
-GitHub. Never try to work around them.
+one's session does. The same `settings.json` is the floor every session shares: it denies
+reading `.env`, a forced push and the literal command `git push origin main`. Each person adds
+their own rules in `.claude/settings.local.json` (never committed), copied once from their
+role's file in `.claude/roles/` — `team.json` asks before any `git push` and denies the Edit
+tool under `../gse-light/` and on `project/BRIEFING.md` (the Project Advisor's cockpit);
+`advisor.json` allows both to him. These rules are conveniences, not a security boundary:
+who may push where is set on GitHub (the project decides in its roles record how `main` is
+protected). Never try to work around them.
 **Read `../gse-light/method/00-reference-design.md` chapters 1 (principles) and 13 (working
 with the AI day to day), `project/README.md` (the project, its phase, its people), and
 `project/design/00-design-choices.md` and `05-design-decisions.md`, once per session.**
@@ -155,9 +158,9 @@ pass" without it.
   (meeting day, participants, points to raise, his feedback section of the minutes), one
   short QCM at a time. If his message is a different request, serve it, then return to the
   step. `/advisor` re-assesses on demand.
-- **You write**: the cockpit `project/BRIEFING.md` (the Edit tool is denied on it for every
-  session, his included: his `.claude/settings.local.json`, never committed, allows it —
-  `"allow": ["Edit(./project/BRIEFING.md)"]`), the meeting briefs and the draft minutes with
+- **You write**: the cockpit `project/BRIEFING.md` (the team's rules, `.claude/roles/team.json`,
+  deny the Edit tool on it; his own `.claude/settings.local.json`, copied from
+  `.claude/roles/advisor.json` and never committed, allows it), the meeting briefs and the draft minutes with
   his feedback section (the project lead validates and sends them), `project/README.md` and
   the governance pages, his journal entries, the 🟢 of the records he decides; the method, in
   `../gse-light` — never with a client or project term in it (`project/private-terms.txt`
@@ -226,8 +229,8 @@ Branch model: <from the project's environments and promotion path decision — e
 branches → an integration branch → the branch that deploys to the rehearsal environment →
 `main` (production)>. Work on feature branches; open pull requests to <the integration
 branch>. Never push to `main`, nor to any branch that deploys, without the go-ahead for that
-promotion (`settings.json` denies the literal `git push origin main` and asks before any
-push; GitHub branch protection on `main` when the project has enabled it). A session pushes
+promotion (`settings.json` denies the literal `git push origin main`; the team's rules ask
+before any push; GitHub branch protection on `main` when the project has enabled it). A session pushes
 only on the go-ahead of the person it works for (or when they asked for the push in the same
 request), and only that person's own commits. A method change is committed in `gse-light`
 first, then `../gse-light/kit/install.sh` refreshes `.claude/` here (commit that too).

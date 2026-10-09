@@ -1,6 +1,8 @@
 {
   "permissions": {
-    "additionalDirectories": ["../gse-light"],
+    "additionalDirectories": [
+      "../gse-light"
+    ],
     "allow": [
       "Bash(git status:*)",
       "Bash(git diff:*)",
@@ -17,15 +19,10 @@
       "Bash(../gse-light/scripts/meeting/meeting.sh devices:*)",
       "Bash(../gse-light/scripts/meeting/meeting.sh status:*)"
     ],
-    "ask": [
-      "Bash(git push:*)"
-    ],
     "deny": [
       "Read(./.env)",
       "Read(./.env.local)",
       "Read(./.env.*.local)",
-      "Edit(../gse-light/**)",
-      "Edit(./project/BRIEFING.md)",
       "Bash(git push --force:*)",
       "Bash(git push origin main:*)"
     ]

@@ -97,6 +97,7 @@ mkdir -p "$TEST/$NAME" && cd "$TEST/$NAME"
 git clone -q ../remote-project.git project             # the project's repository: the kit comes with it
 cd project
 cp .env.example .env                                   # your keys, never committed
+cp .claude/roles/team.json .claude/settings.local.json  # your rules for Claude, never committed
 { ../gse-light/kit/check.sh; echo "exit $? (0 expected)"; }   # expected: only OK lines
 bash ./gates.sh                                        # the Day-0 stub, run as CI runs it — expected: "no gates yet: design phase in progress …", exit 0
 git switch -c "day0-$NAME"                             # your Day-0 branch: first session, /upskilling, first journal entry
@@ -128,7 +129,7 @@ grep -c '<command>' CLAUDE.md                          # expected: 4 — the com
 | Role | Where | What to do in the session |
 |---|---|---|
 | Project Advisor | `claude` in `$TEST/advisor/project` | the start hook prints the situation (next meeting unknown, no `.env` or the one you copied) and your block (BRIEFING §1, the hand-over); say "go": the `advisor` skill proposes the next step and asks you one short multiple-choice question |
-| Project lead, developer | `claude` in `$TEST/$NAME/project` | the start hook prints who you are and the next meeting; type `/` — `decision-record`, `design-phase`, `review`, `session-close`, `verify-claim`, `upskilling` appear (the six others are the Advisor's and stop for you); type `/upskilling` — fifteen minutes of questions and small checks, then a personal plan; ask *"what is in project/?"* — Claude reads it but cannot edit `../gse-light` nor `project/BRIEFING.md` (deny rules of `.claude/settings.json`), and asks before any `git push` |
+| Project lead, developer | `claude` in `$TEST/$NAME/project` | the start hook prints who you are and the next meeting; type `/` — `decision-record`, `design-phase`, `review`, `session-close`, `verify-claim`, `upskilling` appear (the six others are the Advisor's and stop for you); type `/upskilling` — fifteen minutes of questions and small checks, then a personal plan; ask *"what is in project/?"* — Claude reads it but cannot edit `../gse-light` nor `project/BRIEFING.md` (deny rules of `.claude/roles/team.json`, copied to `.claude/settings.local.json`), and asks before any `git push` |
 
 ## 5. Check that nothing personal went into git
 

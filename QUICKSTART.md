@@ -69,12 +69,13 @@ the project's repository.
 | Product owner | none | reads `project/` on GitHub, with read access to the project's repository |
 
 Every session **reads** the method in `../gse-light` and **writes** in the project's repository.
-The kit's `settings.json`:
+The kit's `settings.json`, the floor every session shares:
 
 - lists `../gse-light` as an additional directory;
-- denies Claude the Edit tool under `../gse-light/**` and on `project/BRIEFING.md` (the Advisor's cockpit: his one-page dashboard; his own `.claude/settings.local.json`, never committed, allows it to him);
-- denies the literal `git push origin main`; Claude asks before any `git push`;
+- denies Claude reading `.env`, a forced push and the literal `git push origin main`;
 - runs the start hook: the situation of the week for everyone, the Advisor's tasks for him (the git user matched against the roles record).
+
+Each person adds their own rules in `.claude/settings.local.json` (never committed), copied once from their role's file in `.claude/roles/`: `team.json` for the project lead and the developers (Claude asks before any `git push`; the Edit tool denied under `../gse-light/**` and on `project/BRIEFING.md`, the Advisor's cockpit: his one-page dashboard), `advisor.json` for the Project Advisor (both allowed to him). Claude Code adds up the rules of every file and checks deny, then ask, then allow: a personal file can add a rule, never lift a shared one.
 
 Conveniences for the session, not a security boundary: what guards the method, the cockpit
 and `main` is review by a person and, when the project has enabled it in its roles record,

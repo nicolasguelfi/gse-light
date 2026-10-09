@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(./project/BRIEFING.md)",
+      "Edit(../gse-light/**)"
+    ]
+  }
+}

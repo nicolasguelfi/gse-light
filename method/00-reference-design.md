@@ -547,9 +547,11 @@ checks (gates and measurements).
   project's repository; nobody opens it in `gse-light`. The kit's `install.sh`, run once
   from inside the project clone by the Project Advisor (who installs and refreshes the
   kit), creates `project/` from its skeleton when it is missing and gives Claude read
-  access to `../gse-light`. Its `settings.json` denies the Edit tool under
-  `../gse-light/**` and on the cockpit `project/BRIEFING.md`, denies the literal command
-  `git push origin main`, and makes Claude ask before any `git push`. These rules are
+  access to `../gse-light`. Its `settings.json` is the floor every session shares (no
+  reading of `.env`, no forced push, no literal `git push origin main`); each person adds
+  their own rules in `.claude/settings.local.json`, copied from their role's file in
+  `.claude/roles/` — the team's deny the Edit tool under `../gse-light/**` and on the
+  cockpit `project/BRIEFING.md` and make Claude ask before any `git push`. These rules are
   conveniences, not a security boundary: the real guard is GitHub branch protection on
   `main` and on every branch that deploys — recommended, decided by each project in its
   roles record (`PD`); it needs an organisation-owned repository or a paid plan, and the

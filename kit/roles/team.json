@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "ask": [
+      "Bash(git push:*)"
+    ],
+    "deny": [
+      "Edit(../gse-light/**)",
+      "Edit(./project/BRIEFING.md)"
+    ]
+  }
+}

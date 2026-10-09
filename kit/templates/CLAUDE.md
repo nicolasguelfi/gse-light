@@ -117,6 +117,13 @@ pass" without it.
   `project/meetings/<date>/minutes.md`); the Project Advisor gives feedback and advice, owns
   the method and this kit, and installs and refreshes the kit here. Do not wait for the
   Project Advisor on a project decision — ask the project lead.
+- **The kit's files here are open** (the method's owner, 2026-10-10): anyone may change and
+  commit any file of `.claude/`, the kit's skills, agents and roles included, and add the
+  project's own (a name of their own, e.g. `<repository name>-…`, so a kit refresh never
+  overwrites them). `check_docs` lists a changed kit file as a warning. The Project Advisor
+  reviews those changes when he chooses and decides what enters a new kit version, which he
+  installs by pull request; a change he does not take is overwritten then, unless it was moved
+  under a project name. The project lead never refreshes the kit unless the Advisor asks.
 - **Writing style**: plain words first, technical words second, in every document; define
   each technical term at first use. Documents are in English (the team's working language);
   a person may write in another language — answer them in theirs.
@@ -222,7 +229,7 @@ this repository's own sessions join them. Keep each to two lines; move a rule up
 
 `python3 ../gse-light/scripts/check_docs.py` before committing anything under `project/`,
 and after any change in `../gse-light`: links (including links to the method), the registers
-and the cockpit counts, that `.claude/` matches the kit, the deck's freshness, and the
+and the cockpit counts, the kit files changed here (a warning), the deck's freshness, and the
 **leak guard** — no term of `project/private-terms.txt` in `gse-light`. CI runs the same
 script (`.github/workflows/docs.yml`) next to the gates (`.github/workflows/gates.yml`).
 

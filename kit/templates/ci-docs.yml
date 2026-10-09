@@ -5,7 +5,7 @@
 # (project/private-terms.txt). gse-light is checked out at the commit recorded in
 # .claude/KIT_VERSION (written by kit/install.sh), so a newer kit on GitHub never turns this
 # repository's CI red by itself: the copies of the skills are compared with the version they
-# were installed from. Full history (fetch-depth 0): the short hash resolves, and the leak guard
+# were installed from, and a copy the team changed is a warning, never a failure. Full history (fetch-depth 0): the short hash resolves, and the leak guard
 # reads every commit message.
 name: docs
 

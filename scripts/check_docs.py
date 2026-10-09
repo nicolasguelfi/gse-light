@@ -21,7 +21,9 @@ Checks:
        FAIL when the register holds fewer 🔴 than §3 says (a record closed without the cockpit),
        WARN only when it holds more (new 🔴 opened by the team; the Project Advisor's next session
        refreshes the cockpit) — a developer's commit never turns CI red for that;
-     - .claude/skills, .claude/agents and .claude/roles are identical to gse-light's kit (else: refresh with kit/install.sh);
+     - .claude/skills, .claude/agents and .claude/roles against gse-light's kit at the installed version: in a
+       project, a kit file changed or removed is a WARN, never a FAIL (the team may change any file, the
+       Project Advisor reviews these differences and decides what enters the kit — NG, 2026-10-10);
      - deck freshness: for every slide of a deck in force (project/meetings/<date>/slides/project/slides/),
        WARN when a file named in its "Source:" footer was committed after the slide (or after the deck's last
        "Sources checked: YYYY-MM-DD HH:MM" line in slides/README.md), or when the footer is missing;
@@ -177,22 +179,24 @@ def check_registers() -> None:
                                 "(new 🔴 opened by the team; the Project Advisor's next session refreshes the cockpit)")
 
 
-def same_tree(src: Path, copy: Path, label: str, hint: str, only_common: bool) -> None:
+def same_tree(src: Path, copy: Path, label: str, hint: str, only_common: bool,
+              out: list[str] | None = None) -> None:
     """Every file under src has an identical copy under copy (folders absent from copy are
-    skipped when only_common)."""
+    skipped when only_common); each difference goes to out (errors by default)."""
+    out = errors if out is None else out
     if not src.is_dir():
         return
     for item in sorted(p for p in src.iterdir() if p.is_dir() or p.suffix == ".md"):
         mine = copy / item.name
         if not mine.exists():
             if not only_common:
-                errors.append(f"{label}/{item.name}: missing ({hint})")
+                out.append(f"{label}/{item.name}: missing ({hint})")
             continue
         files = [item] if item.is_file() else [f for f in item.rglob("*") if f.is_file()]
         for f in files:
             g = mine if item.is_file() else mine / f.relative_to(item)
             if not g.exists() or g.read_bytes() != f.read_bytes():
-                errors.append(f"{label}/{item.name}: differs from {src.relative_to(METHOD)}/{item.name} ({f.name}; {hint})")
+                out.append(f"{label}/{item.name}: differs from {src.relative_to(METHOD)}/{item.name} ({f.name}; {hint})")
 
 
 WHO_START, WHO_END = "<!-- who-is-who:start -->", "<!-- who-is-who:end -->"
@@ -257,10 +261,12 @@ def check_copies() -> None:
         check_who_is_who()
         check_catalogue()
     elif IS_PROJECT:
-        hint = "refresh: ../gse-light/kit/install.sh"
-        same_tree(METHOD / "kit/skills", ROOT / ".claude/skills", ".claude/skills", hint, False)
-        same_tree(METHOD / "kit/agents", ROOT / ".claude/agents", ".claude/agents", hint, False)
-        same_tree(METHOD / "kit/roles", ROOT / ".claude/roles", ".claude/roles", hint, False)
+        # the team may change any file of .claude/, the kit's included; the Project Advisor reviews
+        # these differences and decides what enters the kit, so they warn and never turn CI red
+        hint = "changed in the project: the Project Advisor reviews it before the next kit version"
+        same_tree(METHOD / "kit/skills", ROOT / ".claude/skills", ".claude/skills", hint, False, warnings)
+        same_tree(METHOD / "kit/agents", ROOT / ".claude/agents", ".claude/agents", hint, False, warnings)
+        same_tree(METHOD / "kit/roles", ROOT / ".claude/roles", ".claude/roles", hint, False, warnings)
 
 
 SOURCE_RE = re.compile(r"Source:\s*([^<]*)", re.I)

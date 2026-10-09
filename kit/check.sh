@@ -23,6 +23,7 @@ command -v git >/dev/null && ok "git $(git --version | awk '{print $3}')" || mis
 command -v python3 >/dev/null && ok "python3 $(python3 --version 2>&1 | awk '{print $2}')" \
   || miss "python3" "install Python 3 (the method's scripts need it: check_docs.py, situation.py)"
 if command -v claude >/dev/null; then ok "Claude Code $(claude --version 2>/dev/null | head -1)"
+elif [ -n "${CLAUDECODE:-}" ]; then ok "Claude Code (running inside a Claude Code session; \`claude\` not on this shell's PATH)"
 else miss "Claude Code" "install it and sign in with the invited account (INSTALL.md §1)"; fi
 
 # the two repositories side by side

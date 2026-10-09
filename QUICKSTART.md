@@ -1,6 +1,6 @@
 # Quick start — what gse-light does for you and what to use, all project long
 
-Status: v0.6 · 2026-10-09 · one page, a section per role; one repository per project (board r11): two clones, the kit installed once by the Project Advisor; the developer's numbered path from zero; details in [INSTALL.md](kit/INSTALL.md) and [ONBOARDING.md](kit/ONBOARDING.md)
+Status: v0.7 · 2026-10-09 · step 0 — the machine from zero (GitHub account, Git, Python, the environment rule) · one page, a section per role; one repository per project (board r11): two clones, the kit installed once by the Project Advisor; the developer's numbered path from zero; details in [INSTALL.md](kit/INSTALL.md) and [ONBOARDING.md](kit/ONBOARDING.md)
 
 ## What gse-light does for you
 
@@ -110,7 +110,11 @@ in one page, your first session step by step and the checklists.
 
 | # | Step | Who | Do | Check |
 |---|---|---|---|---|
-| 1 | **Your machine** | you | Git, a bash terminal (Git Bash on Windows), `python3` — [INSTALL.md §1](kit/INSTALL.md#1-prerequisites-everyone) | `git --version` and `python3 --version` print a version |
+| 0a | **A GitHub account, and a way to sign in from the terminal** | you | an account on github.com with your professional e-mail; then `gh auth login` (the GitHub command-line tool, from https://cli.github.com — it sets up HTTPS or SSH for you) or, by hand, an SSH key (`ssh-keygen -t ed25519`, the public key pasted under Settings › SSH and GPG keys) | `gh auth status` says logged in, or `ssh -T git@github.com` greets you by name |
+| 0b | **Git and a terminal** | you | macOS: `xcode-select --install` (Git and the command-line tools), or Homebrew's `brew install git`; Windows: Git for Windows from https://git-scm.com (it brings **Git Bash**: use it for every command of this page); Linux: your package manager. Then `git config --global user.name "Firstname Lastname"` and `git config --global user.email "you@…"` | `git --version` prints a version; `git config --global user.name` prints your name |
+| 0c | **Python 3** (3.10 or later; the method's scripts need it) | you | macOS: comes with the command-line tools, or `brew install python`; Windows: the installer from https://python.org or `winget install Python.Python.3.12` (tick "Add to PATH"); Linux: your package manager | `python3 --version` prints 3.10 or later |
+| 0d | **One rule before any environment** | you | nothing to install for the method itself. If your clones will live in a synced folder (Dropbox, OneDrive, iCloud Drive…), every Python environment of the product goes to `~/.venvs/<name>` and the repository holds a link — [`scripts/README.md` §0](scripts/README.md#0-the-rule-for-every-environment-on-every-machine); Node.js only if you choose the `npm` installer of Claude Code at step 4 (the native installer needs nothing) | — |
+| 1 | **Your machine, checked** | you | the details by platform and the troubleshooting: [INSTALL.md §1](kit/INSTALL.md#1-prerequisites-everyone) | `git --version`, `python3 --version` and `gh auth status` all answer |
 | 2 | **Your Claude seat** | the Project Advisor | invites you to his Claude team: an invitation to your e-mail address, or an identity on his organisation's domain (he gives you the address and a one-time password; you sign in once and set your password) | the mail "You've been invited to join … on Claude" is in that mailbox |
 | 3 | **Accept the seat** | you | the mail's **Accept invitation** — or https://claude.ai/login › **Continue with Google** when the identity is a Google one | claude.ai opens in the Advisor's organisation (bottom-left menu); never a personal account |
 | 4 | **Claude Code** | you | install it from https://claude.com/claude-code (the installer, or `npm install -g @anthropic-ai/claude-code`); open a new terminal; `claude` › **Claude account with subscription** (never *Anthropic Console account*) › **Authorize** in the browser | `claude --version` prints a version; no `/logout` afterwards |

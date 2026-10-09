@@ -187,6 +187,9 @@ Carried over from the method's sessions (rule — date — why), newest first; t
 this repository's own sessions join them. Keep each to two lines; move a rule up into
 "Standing rules" when it holds everywhere.
 
+- Before every push to `gse-light`, run `python3 ../gse-light/scripts/check_docs.py` from the
+  project's repository: only there does the leak guard read `project/private-terms.txt`, commit
+  messages included — 2026-10-09 — a commit message naming a project ticket reached the public method.
 - A question with options goes to the person as a QCM or a review board (skill `review`), even
   when it was asked as an "analysis" — never as prose with options — 2026-10-09 — twice in one
   session the options came back as paragraphs the person could not tick.

@@ -90,7 +90,8 @@ nothing to audit: skip `delivery-auditor`.
 - `--engine openrouter --speakers "<names and roles>"` (2026-10-09): the same through OpenRouter
   with NG's `OPENROUTER_API_KEY` (model `OPENROUTER_MODEL`, default `google/gemini-2.5-pro`);
   the audio is sent in parts of 20 min, one cost line per part. Preferred for speaker labels:
-  one key for every vendor. Check the labels before writing the minutes.
+  one key for every vendor. Say the estimated cost before running it (Pro: about 1 € per
+  hour and a half, its reasoning tokens included). Check the labels before writing the minutes.
 - Output `transcript.md`: `[hh:mm:ss]` per line. Keep it; `minutes-verifier` needs it.
 
 ## 4. `minutes` — the same evening

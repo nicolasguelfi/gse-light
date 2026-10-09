@@ -87,6 +87,10 @@ nothing to audit: skip `delivery-auditor`.
 - `--engine gemini` when speaker labels matter: the audio is uploaded to Google AI
   Studio with NG's key; the cost line is written to `project/journal/llm-costs.csv` and
   `project/meetings/<date>/cost.json`. Say the estimated cost before running it.
+- `--engine openrouter --speakers "<names and roles>"` (2026-10-09): the same through OpenRouter
+  with NG's `OPENROUTER_API_KEY` (model `OPENROUTER_MODEL`, default `google/gemini-2.5-pro`);
+  the audio is sent in parts of 20 min, one cost line per part. Preferred for speaker labels:
+  one key for every vendor. Check the labels before writing the minutes.
 - Output `transcript.md`: `[hh:mm:ss]` per line. Keep it; `minutes-verifier` needs it.
 
 ## 4. `minutes` — the same evening

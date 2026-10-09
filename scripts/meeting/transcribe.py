@@ -6,6 +6,8 @@
   python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date>            # engine from .env (default local)
   python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date> --engine gemini
   python3 ../gse-light/scripts/meeting/transcribe.py path/to/audio.m4a --language fr
+  python3 ../gse-light/scripts/meeting/transcribe.py project/meetings/<date> --engine openrouter \
+      --speakers "Ana (project lead), Ben (developer), the Project Advisor"
 
 Given a folder, the audio file is audio.m4a (what meeting.sh records) when present, else the
 first audio file in name order; the choice and the other candidates are printed.
@@ -22,6 +24,14 @@ Engines
           The cost line goes to project/journal/llm-costs.csv and <meeting>/cost.json.
           Rule of thumb for the cost: Gemini counts about 32 input tokens per second of audio,
           so one hour of meeting is about 115 000 input tokens (plus the transcript as output).
+  openrouter  The same kind of transcript through OpenRouter (OPENROUTER_API_KEY in .env, model
+          OPENROUTER_MODEL, default google/gemini-2.5-pro), through llm_call.py too. The audio
+          is cut by ffmpeg into parts of --chunk-minutes (default 20) that overlap by 10 s, sent
+          one after the other (mp3 mono, inline); each part gets the end of the previous one so
+          that the speaker labels stay the same; the times are shifted back onto the whole
+          meeting and the overlap is dropped. One cost line per part.
+          Speaker labels are the model's guesses: --speakers names the people present (names
+          and roles) so that the model can use a name when the conversation makes it certain.
 
 Output, next to the audio: transcript.md (one paragraph per segment, [hh:mm:ss] prefix),
 plus transcript.srt and transcript.json for the local engine.
@@ -32,8 +42,10 @@ import argparse
 import json
 import os
 import shutil
+import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -129,6 +141,87 @@ def transcribe_local(mdir: Path, audio: Path, language: str, env: dict) -> Path:
     return out_md
 
 
+# -------------------------------------------------------------------------- openrouter
+
+OVERLAP_S = 10
+# Any [a:b] or [a:b:c] / [a:b.c] stamp, wherever the model puts it (it may glue utterances on one line).
+STAMP = re.compile(r"\[(\d{1,2}):(\d{2})(?:[:.](\d{1,3}))?\]")
+PART_FORMAT = """
+Times: [MM:SS] counted from the start of this audio part (minutes and seconds only, e.g. [07:42]).
+Start a NEW LINE for every utterance; every line starts with its [MM:SS] stamp."""
+
+
+def stamp_seconds(a: str, b: str, c: str | None, part_len: float) -> float:
+    """[MM:SS], [MM:SS:mmm] / [MM:SS.mmm] (milliseconds) or [HH:MM:SS]; a reading that falls
+    beyond the part is taken as minutes:seconds:fraction instead."""
+    a_, b_ = int(a), int(b)
+    if c is None:
+        return a_ * 60 + b_
+    if len(c) == 3:
+        return a_ * 60 + b_ + int(c) / 1000
+    hms_reading = a_ * 3600 + b_ * 60 + int(c)
+    return hms_reading if hms_reading <= part_len + 5 else a_ * 60 + b_ + int(c) / 100
+
+
+def utterances(raw: str, part_len: float) -> list[tuple[float, str]]:
+    """Split the model's answer into (seconds from the part's start, text) at every stamp."""
+    stamps = list(STAMP.finditer(raw))
+    out = []
+    for i, m in enumerate(stamps):
+        end = stamps[i + 1].start() if i + 1 < len(stamps) else len(raw)
+        text = " ".join(raw[m.end():end].split())
+        if text:
+            out.append((stamp_seconds(*m.groups(), part_len), text))
+    return out
+
+
+def duration_s(audio: Path) -> float:
+    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
+                          str(audio)], check=True, capture_output=True, text=True).stdout.strip()
+    return float(out)
+
+
+def transcribe_openrouter(mdir: Path, audio: Path, language: str, env: dict,
+                          speakers: str = "", chunk_minutes: int = 20) -> Path:
+    model = env.get("OPENROUTER_MODEL") or "google/gemini-2.5-pro"
+    out_md = mdir / "transcript.md"
+    total = duration_s(audio)
+    step = chunk_minutes * 60
+    starts = [i * step for i in range(int(total // step) + (1 if total % step else 0))]
+    lines: list[str] = []
+    parts_dir = mdir / "transcript-parts"  # the model's raw answer per part, kept for checking
+    parts_dir.mkdir(exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="transcribe-") as tmp:
+        for n, start in enumerate(starts, 1):
+            lead = OVERLAP_S if start else 0
+            part_len = min(step + lead, total - start + lead)
+            part = Path(tmp) / f"part{n:02d}.mp3"
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", str(start - lead), "-t", str(step + lead),
+                            "-i", str(audio), "-ac", "1", "-ar", "16000", "-c:a", "libmp3lame", "-b:a", "32k",
+                            str(part)], check=True)
+            prompt = (GEMINI_PROMPT.replace("[hh:mm:ss]", "[MM:SS]") + PART_FORMAT
+                      + (f"\nThe main language is {language}." if language else "")
+                      + (f"\nPeople present (use a name only when the conversation makes it certain, "
+                         f"otherwise Speaker N): {speakers}" if speakers else ""))
+            if lines:
+                prompt += ("\nThis part follows an earlier one; keep the same speaker labels. "
+                           "The earlier part ended with:\n" + "\n".join(lines[-12:]))
+            raw = parts_dir / f"part{n:02d}.md"
+            cmd = [sys.executable, str(ROOT / "scripts" / "llm_call.py"), "--provider", "openrouter",
+                   "--model", model, "--prompt", prompt, "--file", str(part), "--out", str(raw),
+                   "--meeting", str(mdir), "--purpose", f"transcribe {mdir.name} part {n}/{len(starts)}"]
+            print(f"[transcribe] openrouter {model} part {n}/{len(starts)} from {hms(start)}", file=sys.stderr)
+            subprocess.run(cmd, check=True)
+            for rel, text in utterances(raw.read_text(encoding="utf-8"), part_len):
+                if rel < lead:  # already in the previous part
+                    continue
+                lines.append(f"[{hms(start - lead + rel)}] {text}")
+    header = (f"# Transcript — {mdir.name}\n\nEngine: OpenRouter ({model}), {len(starts)} parts of "
+              f"{chunk_minutes} min; speaker labels are the model's guesses — check them before the minutes.\n\n")
+    out_md.write_text(header + "\n".join(lines) + "\n", encoding="utf-8")
+    return out_md
+
+
 # ------------------------------------------------------------------------------ gemini
 
 def transcribe_gemini(mdir: Path, audio: Path, language: str, env: dict) -> Path:
@@ -148,14 +241,19 @@ def main() -> int:
     prefer_pm_venv()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("target", type=Path, help="meeting folder or audio file")
-    ap.add_argument("--engine", choices=["local", "gemini"], help="default: TRANSCRIBE_ENGINE in .env, else local")
+    ap.add_argument("--engine", choices=["local", "gemini", "openrouter"], help="default: TRANSCRIBE_ENGINE in .env, else local")
     ap.add_argument("--language", help="e.g. fr, en; default: TRANSCRIBE_LANGUAGE in .env, else auto")
+    ap.add_argument("--speakers", default="", help="openrouter: the people present, names and roles, for the speaker labels")
+    ap.add_argument("--chunk-minutes", type=int, default=20, help="openrouter: length of each audio part (default 20)")
     a = ap.parse_args()
     env = load_env()
     engine = a.engine or env.get("TRANSCRIBE_ENGINE") or "local"
     language = a.language if a.language is not None else env.get("TRANSCRIBE_LANGUAGE", "")
     mdir, audio = find_audio(a.target)
-    out = (transcribe_local if engine == "local" else transcribe_gemini)(mdir, audio, language, env)
+    if engine == "openrouter":
+        out = transcribe_openrouter(mdir, audio, language, env, a.speakers, a.chunk_minutes)
+    else:
+        out = (transcribe_local if engine == "local" else transcribe_gemini)(mdir, audio, language, env)
     n = sum(1 for l in out.read_text(encoding="utf-8").splitlines() if l.startswith("["))
     print(f"transcript → {out} ({n} timed lines, engine {engine})")
     return 0

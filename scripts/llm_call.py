@@ -9,12 +9,14 @@ appends one row to a cost log. Two providers today:
 
   gemini      Google AI Studio through the `google-genai` package; accepts files
               (audio, PDF, images) uploaded with the Files API.
-  openrouter  OpenAI-compatible HTTP API (one key for many vendors); text only.
+  openrouter  OpenAI-compatible HTTP API (one key for many vendors); text, plus audio files
+              sent inline (base64 `input_audio`) to the models that take audio (Gemini).
 
 Usage
 -----
   python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "Summarise this" --file notes.md
   python3 ../gse-light/scripts/llm_call.py --provider openrouter --model openai/gpt-4o-mini --prompt-file p.txt
+  python3 ../gse-light/scripts/llm_call.py --provider openrouter --model google/gemini-2.5-pro --prompt "Transcribe" --file part.mp3
   python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "..." --meeting project/meetings/261014 --out minutes-draft.md
   python3 ../gse-light/scripts/llm_call.py --provider gemini --prompt "..." --dry-run      # no network, no cost
 
@@ -26,6 +28,7 @@ small price table (`LLM_PRICES_JSON` in `.env` overrides it); the invoice is the
 from __future__ import annotations
 
 import argparse
+import base64
 import csv
 import datetime as dt
 import json
@@ -96,6 +99,8 @@ COST_COLUMNS = ["timestamp", "provider", "model", "input_tokens", "output_tokens
 DEFAULT_PRICES = {
     "gemini-2.5-flash": (0.30, 2.50),
     "gemini-2.5-pro": (1.25, 10.00),
+    "google/gemini-2.5-flash": (0.30, 2.50),
+    "google/gemini-2.5-pro": (1.25, 10.00),
     "openai/gpt-4o-mini": (0.15, 0.60),
 }
 
@@ -185,20 +190,28 @@ def call_gemini(env: dict, model: str, prompt: str, system: str | None,
 
 def call_openrouter(env: dict, model: str, prompt: str, system: str | None,
                     files: list[Path]) -> tuple[str, int, int]:
-    if files:
-        sys.exit("openrouter: files are not supported by this helper (text only); use --provider gemini")
+    other = [f for f in files if f.suffix.lower().lstrip(".") not in OPENROUTER_AUDIO]
+    if other:
+        sys.exit(f"openrouter: only audio files are supported ({', '.join(sorted(OPENROUTER_AUDIO))}); "
+                 f"not {', '.join(map(str, other))} — use --provider gemini")
     key = env.get("OPENROUTER_API_KEY")
     if not key:
         sys.exit("OPENROUTER_API_KEY missing in .env")
     base = env.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1").rstrip("/")
+    content: str | list = prompt
+    if files:  # audio goes inline, base64; the model must take audio input (e.g. google/gemini-*)
+        content = [{"type": "text", "text": prompt}] + [
+            {"type": "input_audio", "input_audio": {
+                "data": base64.b64encode(f.read_bytes()).decode("ascii"),
+                "format": f.suffix.lower().lstrip(".")}} for f in files]
     messages = ([{"role": "system", "content": system}] if system else []) + [
-        {"role": "user", "content": prompt}]
+        {"role": "user", "content": content}]
     body = json.dumps({"model": model, "messages": messages}).encode()
     req = urllib.request.Request(f"{base}/chat/completions", data=body, headers={
         "Authorization": f"Bearer {key}", "Content-Type": "application/json",
         "HTTP-Referer": "https://github.com/nicolasguelfi/gse-light", "X-Title": "gse-light Project Advisor kit"})
     try:
-        with urllib.request.urlopen(req, timeout=300) as r:
+        with urllib.request.urlopen(req, timeout=900) as r:
             data = json.loads(r.read().decode())
     except urllib.error.HTTPError as e:
         sys.exit(f"openrouter HTTP {e.code}: {e.read().decode()[:500]}")
@@ -206,6 +219,8 @@ def call_openrouter(env: dict, model: str, prompt: str, system: str | None,
     usage = data.get("usage", {})
     return text, int(usage.get("prompt_tokens", 0)), int(usage.get("completion_tokens", 0))
 
+
+OPENROUTER_AUDIO = {"wav", "mp3", "aiff", "aac", "ogg", "flac", "m4a"}  # openrouter.ai/docs, 2026-10-09
 
 PROVIDERS = {"gemini": call_gemini, "openrouter": call_openrouter}
 DEFAULT_MODEL_VAR = {"gemini": "GEMINI_MODEL", "openrouter": "OPENROUTER_MODEL"}
@@ -220,7 +235,7 @@ def main() -> int:
     g.add_argument("--prompt")
     g.add_argument("--prompt-file", type=Path)
     ap.add_argument("--system", help="system instruction (text)")
-    ap.add_argument("--file", type=Path, action="append", default=[], help="file to attach (gemini only); repeatable")
+    ap.add_argument("--file", type=Path, action="append", default=[], help="file to attach (gemini: any; openrouter: audio); repeatable")
     ap.add_argument("--out", type=Path, help="write the answer here instead of stdout")
     ap.add_argument("--meeting", type=Path, help="meeting folder: also append the cost to its cost.json")
     ap.add_argument("--purpose", default="", help="free text for the cost log")

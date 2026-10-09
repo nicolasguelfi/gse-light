@@ -1,6 +1,6 @@
 # The catalogue — every artefact of gse-light, by type
 
-Status: v0.2 · 2026-10-09 · one row per artefact: what it does, who uses it, where it lives or is installed · the `review` skill added to both kits; the location column shortened so that "what it does" has the room (NG, 2026-10-09) · `check_docs` verifies that every skill, agent, template and script in the folders has its row here
+Status: v0.3 · 2026-10-09 · §6 renamed "Published on claude.ai — decks and review boards" (an artefact of the method is any piece of it; an Artifact is also what claude.ai calls a published page — NG, 2026-10-09) · one row per artefact: what it does, who uses it, where it lives or is installed · the `review` skill added to both kits; the location column shortened so that "what it does" has the room (NG, 2026-10-09) · `check_docs` verifies that every skill, agent, template and script in the folders has its row here
 
 **What this page is.** The inventory of the method's artefacts, grouped by type, for anyone who
 wants to know what exists and what each piece is for before opening it. The two kits are the
@@ -125,7 +125,7 @@ Installed by `../gse-light/pm-kit/install.sh . [<instance>]`, which also copies 
 | [`install.sh`](pm-kit/install.sh) | copies skills, agents, settings, `CLAUDE.md`, `.env.example`, the CI, the scaffold; records `PM_KIT_VERSION` | the Project Advisor, at the start and after every pm-kit change | |
 | [`README.md`](pm-kit/README.md) | the pm-kit's page by role: what a project-management repository is, how to start a project, the weekly chain | the Project Advisor | |
 
-## 6. Artefacts published on claude.ai — one folder per artefact in the instance
+## 6. Published on claude.ai — decks and review boards, one folder per artefact in the instance
 
 Where: under `<pm-repo>/instances/<instance>/meetings/<date>/`, with a row in the registry `meetings/README.md`.
 

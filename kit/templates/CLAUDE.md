@@ -125,8 +125,17 @@ pass" without it.
   installs by pull request; a change he does not take is overwritten then, unless it was moved
   under a project name. The project lead never refreshes the kit unless the Advisor asks.
 - **Writing style**: plain words first, technical words second, in every document; define
-  each technical term at first use. Documents are in English (the team's working language);
-  a person may write in another language — answer them in theirs.
+  each technical term at first use.
+- **Languages: two layers** (the method's owner, 2026-10-10). **What stays in the repository**
+  — documents, registers, minutes, code and its comments, commits, pull requests, tickets — is
+  in the project's working language, **English by default** (another one only by a `PD`
+  record). **What is addressed to the person** — your answers in the chat, every QCM, every
+  review board (its frame, notes, proposals and buttons), the summaries you make of an agent's
+  report, of a script's output or of the start hook — is in **the language the person writes
+  in**, whatever the language of the instructions, skills and tools, which are in English.
+  Translate when you relay; never paste an English report as your answer to a person who writes
+  in another language. Quotations (a transcript, a command's output cited as proof) stay as
+  they are.
 - **Documentation with the code**: behaviour changed ⇒ document changed in the same commit.
 - **Propagation**: after correcting a fact, grep the whole repository (code and `project/`)
   for the old claim. The deck in force is part of it: `check_docs` warns when a file named

@@ -602,6 +602,13 @@ checks (gates and measurements).
   complementary models is a project decision (`PD`) written in the instance's roles
   record. Keys live in a git-ignored `.env` per repository, one variable per vendor;
   "direct" and "through a model provider" differ only by configuration, never by code.
+- **Languages: two layers.** The method is written for international teams: what stays in
+  the project's repository (documents, registers, minutes, code, commits, pull requests,
+  tickets) is in the project's working language, English by default — another one by a `PD`
+  record; what a Claude session addresses to a person (chat, multiple-choice questions,
+  review boards, summaries of agents' reports and scripts' output) is in the language that
+  person writes in. The kit's instructions and tools are in English and never decide the
+  language of the conversation (the method's owner, 2026-10-10).
 - **Coding agent**: the kit targets Claude Code; independence from the agent is a goal of
   the method's follow-up.
 

@@ -11,8 +11,13 @@ Input: a JSON specification (see --example). Output: one or more .html files.
 
     python3 .claude/skills/review/review_board.py spec.json -o board.html --fragment
     python3 .claude/skills/review/review_board.py spec.json -o board.html --per-page 4   # default: 8 per page
-    python3 .claude/skills/review/review_board.py spec.json -o board.html --lang fr      # French labels
+    python3 .claude/skills/review/review_board.py spec.json -o board.html --lang fr      # French buttons
     python3 .claude/skills/review/review_board.py --example > spec.json
+    python3 .claude/skills/review/review_board.py --print-labels > labels.json         # to translate
+
+Language: everything on the board is in the person's language. Buttons and fields come from
+LABELS (en, fr built in); any other language: "lang" and a "labels" object in the
+specification (every key of --print-labels, translated; a missing key falls back to English).
 
 Specification
 -------------
@@ -21,6 +26,8 @@ Specification
   "eyebrow": "project · design phase",         # small line above the title (page number added)
   "intro":   "…",                              # the instructions frame; the only field that accepts HTML
   "prefix":  "r1",                             # head of the copied line
+  "lang":    "de",                             # optional: the person's language (else --lang)
+  "labels":  {"keep": "Behalten", …},          # optional: buttons and fields, translated
   "mode":    "single",                         # single = radio (one per subject) | multi = checkboxes
   "groups": [{
      "key": "runner",                          # what appears in the copied line (unique per page)
@@ -54,6 +61,7 @@ import html
 import json
 import mimetypes
 import os
+import sys
 
 AUDIO = {".mp3", ".wav", ".m4a", ".ogg", ".flac", ".aac"}
 IMAGE = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"}
@@ -449,8 +457,12 @@ def main():
     ap.add_argument("--fragment", action="store_true",
                     help="content ALONE, without doctype/html/head/body — to publish as an "
                          "artifact (the panel next to the conversation)")
-    ap.add_argument("--lang", default="en", choices=sorted(LABELS),
-                    help="language of the page's buttons and fields (default: en)")
+    ap.add_argument("--lang", default=None,
+                    help="the person's language for the buttons and fields: en and fr built in, any "
+                         "other with a \"labels\" object in the specification (default: the "
+                         "specification's \"lang\", else en)")
+    ap.add_argument("--print-labels", action="store_true",
+                    help="print the English buttons and fields, to translate into \"labels\"")
     ap.add_argument("--max-px", type=int, default=1400,
                     help="longest side of the inlined image PREVIEWS (0 = full size); "
                          "the file on disk is never touched")
@@ -462,6 +474,9 @@ def main():
     if a.example:
         print(json.dumps(EXAMPLE, ensure_ascii=False, indent=2))
         return
+    if a.print_labels:
+        print(json.dumps(LABELS["en"], ensure_ascii=False, indent=2))
+        return
     if not a.spec or not a.out:
         ap.error("spec and --out are required (or --example)")
 
@@ -472,14 +487,25 @@ def main():
     dupes = sorted({k for k in keys if keys.count(k) > 1})
     if dupes:
         raise SystemExit(f"duplicate subject keys (the copied line would be ambiguous): {dupes}")
-    L = LABELS[a.lang]
+    lang = a.lang or spec.get("lang") or "en"
+    custom = spec.get("labels") or {}
+    unknown = sorted(set(custom) - set(LABELS["en"]))
+    if unknown:
+        raise SystemExit(f"unknown keys in \"labels\": {unknown} (see --print-labels)")
+    L = {**LABELS["en"], **LABELS.get(lang, {}), **custom}
+    if "{page}" not in L["page"] or "{pages}" not in L["page"]:
+        raise SystemExit('the "page" label must keep {page} and {pages}')
+    missing = sorted(k for k in LABELS["en"] if lang not in LABELS and k not in custom)
+    if missing:
+        print(f"warning: no labels for language '{lang}': {', '.join(missing)} stay in English "
+              f"(add them to \"labels\", see --print-labels)", file=sys.stderr)
 
     n = a.per_page or len(groups)
     chunks = [groups[i:i + n] for i in range(0, len(groups), n)]
     base, ext = os.path.splitext(a.out)
     for i, ch in enumerate(chunks, 1):
         out = a.out if len(chunks) == 1 else f"{base}-{i}{ext}"
-        page = render_page(spec, ch, L, a.lang, i, len(chunks), a.max_px, a.fragment)
+        page = render_page(spec, ch, L, lang, i, len(chunks), a.max_px, a.fragment)
         with open(out, "w", encoding="utf-8") as f:
             f.write(page)
         mb = os.path.getsize(out) / 1e6

@@ -34,8 +34,19 @@ recommended option comes first and is labelled "(Recommended)".
 ```bash
 python3 .claude/skills/review/review_board.py --example > spec.json      # the shape
 python3 .claude/skills/review/review_board.py spec.json -o board.html --fragment --per-page 0
-python3 .claude/skills/review/review_board.py spec.json -o board.html --fragment --lang fr   # French labels
+python3 .claude/skills/review/review_board.py spec.json -o board.html --fragment --lang fr   # French buttons
+python3 .claude/skills/review/review_board.py --print-labels > labels.json   # the buttons' texts, to translate
 ```
+
+**Language** (the method's owner, 2026-10-10): the board is addressed to the person, so
+**all of it is in the language the person writes in** — the `intro`, the headings, the
+notes' labels (`"Problem"` and `"Measured"` are the English ones: write their translation),
+the marks in `facts` (Person, Ask Claude, Automatic), the proposals, the pros and cons — and
+its buttons and fields: `--lang en` or `--lang fr` are built in; for any other language, put
+`"lang": "<code>"` and a `"labels"` object in the specification, with every key that
+`--print-labels` prints, translated (a missing key falls back to English, with a warning).
+When the frame names a button, use the label the page shows (`copy`). The keys and the
+proposal labels (`runner`, `p1`) stay as they are: they come back in the line.
 
 The specification (one JSON) carries, **per subject** (`groups[]`): a `key` (what comes back
 in the line), a `heading`, the `notes` — **"Problem"** restated in plain words, then
@@ -77,6 +88,8 @@ entry, and record any decision through `decision-record`.
 
 ## Guardrails
 
+- **One language per board**: the person's; never English buttons around a text in their
+  language, or the reverse.
 - **Never pre-tick, never decide for the person.** Recommend, always; choose, never.
 - **Show every option that exists**, including the ones you would not recommend, with why.
 - **Nothing changes before the line** — no file, no push, no paid call.

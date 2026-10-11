@@ -142,7 +142,10 @@ pass" without it.
   in a slide's "Source:" footer was committed after the slide.
 - **Never "the repository" alone**: name it — this repository `<repository name>`, the
   method `gse-light`.
-- Before a pull request, run the `change-reviewer` agent.
+- **Before a pull request** (review on evidence, reference design ch. 8): run the
+  `change-reviewer` agent, then the `adversarial-reviewer` with the pull request's number only
+  (never your reasoning); fill `.github/pull_request_template.md`; check the size
+  (`python3 ../gse-light/scripts/pr_size.py`): beyond the project lead's threshold, split.
 - **Every session ends with `session-close`**: a journal entry in `project/journal/`
   (one `YYYY-MM-DD-<initials>-sNN.md` per session, never rewritten — research data on
   AI-assisted engineering) and one row in `project/journal/metrics.csv`; the skill commits
@@ -151,7 +154,7 @@ pass" without it.
 ## If you are a developer's or the project lead's session
 
 - **Your skills**: `design-phase` (the project lead, W1), `decision-record`, `review`,
-  `session-close`, `verify-claim`, `upskilling`; your agent: `change-reviewer`. The six other
+  `session-close`, `verify-claim`, `upskilling`; your agents: `change-reviewer`, `adversarial-reviewer`. The six other
   skills (`advisor`, `meeting`, `slides`, `cockpit-update`, `method-lesson`,
   `genai-onboarding`) and the agents `delivery-auditor`, `minutes-verifier` and
   `design-reviewer` are the Project Advisor's: they check the git user and stop for anyone else.

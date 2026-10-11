@@ -74,9 +74,9 @@ project folder project/`, copies the skeleton (`README.md`, `BRIEFING.md`, the t
 registers, the roles record, `journal/`, `meetings/`) into `project/`, lists the twelve
 skills (`advisor`, `cockpit-update`, `decision-record`, `design-phase`, `genai-onboarding`,
 `meeting`, `method-lesson`, `review`, `session-close`, `slides`, `upskilling`, `verify-claim`)
-and the four agents (`change-reviewer`, `delivery-auditor`, `design-reviewer`,
+and the five agents (`adversarial-reviewer`, `change-reviewer`, `delivery-auditor`, `design-reviewer`,
 `minutes-verifier`), creates `CLAUDE.md`, `.claude/settings.json`, `.gitattributes`, `gates.sh`,
-`.env.example`, `.github/workflows/gates.yml` and `docs.yml`, and writes `KIT_VERSION`;
+`.env.example`, `.github/workflows/gates.yml`, `docs.yml` and `review.yml`, `.github/pull_request_template.md`, and writes `KIT_VERSION`;
 `check_docs` prints `ok`; `situation.py` says what is missing; the dry run shows the Python it
 uses (the linked `.venv` when the project's repository has one — not in this test) and no key;
 the recording needs a microphone allowed for your terminal (macOS: System Settings › Privacy &

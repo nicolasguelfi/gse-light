@@ -576,8 +576,8 @@ checks (gates and measurements).
   short and kept true; a rule learned from an incident is added with the date and the reason.
 - **Skills and agents** from the [kit](../kit/README.md) give every session the same
   procedures. For every team member: the skills `decision-record`, `design-phase`,
-  `review`, `session-close`, `upskilling`, `verify-claim` and the read-only agent
-  `change-reviewer`. For the Project Advisor only (they check the git user against the
+  `review`, `session-close`, `upskilling`, `verify-claim` and the read-only agents
+  `change-reviewer` and `adversarial-reviewer` (the two AI reviews of a pull request, ch. 8). For the Project Advisor only (they check the git user against the
   roles record and stop for anyone else): `advisor` (the entry point), `meeting` (brief,
   record, transcribe, minutes with the tasks per participant), `slides`, `method-lesson`,
   `cockpit-update`, `genai-onboarding`, and the read-only agents `delivery-auditor`,

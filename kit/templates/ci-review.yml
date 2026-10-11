@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
+# SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
+# The size check of the review on evidence (template for .github/workflows/review.yml; reference design
+# ch. 8): on every pull request, the lines of code changed against the base branch. It fails only when
+# the project lead has set a threshold (project/governance/pr-size.json) and the code exceeds it;
+# tests and documentation never count. gse-light at the installed kit version, as in docs.yml.
+name: review
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: repo
+          fetch-depth: 0
+      - name: Read the installed kit version
+        id: kit
+        run: echo "ref=$(tr -d '[:space:]' < repo/.claude/KIT_VERSION 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v5
+        with:
+          repository: nicolasguelfi/gse-light   # public; a private copy would need a token
+          path: gse-light
+          fetch-depth: 0
+      - name: gse-light at the installed kit version
+        env:
+          REF: ${{ steps.kit.outputs.ref }}
+        run: |
+          if [ -n "$REF" ] && git -C gse-light cat-file -e "$REF^{commit}" 2>/dev/null; then
+            git -C gse-light checkout -q --detach "$REF"
+          else
+            echo "::warning::.claude/KIT_VERSION missing or unknown in gse-light ('$REF'): using its main branch"
+          fi
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Size of the change (code only)
+        working-directory: repo
+        env:
+          BASE: ${{ github.base_ref }}
+        run: python3 ../gse-light/scripts/pr_size.py --base "origin/$BASE"

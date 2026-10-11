@@ -17,7 +17,7 @@ Status: v0.9 · 2026-10-09 · generic · one repository per project (board r11) 
 | Word | Meaning |
 |---|---|
 | **Project's repository** `<project-repo>` | the one repository of the project: the code, and in `project/` the shared record — cockpit, registers, requirements, planning, meetings, journal, roles. Everyone reads it; each person writes their own part |
-| **Kit** | the files that make every Claude Code session in `<project-repo>` follow the method — `CLAUDE.md`, twelve skills, four agents, permissions and the start hook, a `gates.sh` stub, two CI workflows — installed once by the Project Advisor, committed with the code; you get it by cloning |
+| **Kit** | the files that make every Claude Code session in `<project-repo>` follow the method — `CLAUDE.md`, twelve skills, five agents, permissions and the start hook, a `gates.sh` stub, three CI workflows, a pull-request template — installed once by the Project Advisor, committed with the code; you get it by cloning |
 | **Day 0** | each person's first hour on the project — clone, `.env`, `check.sh`, first session |
 | **W1 … W6**, **W-1** | the project's weeks, one sprint each; W-1 is the framing week before W1 |
 | **Design phase** | the step of W1 where the project lead, with Claude, turns the project's facts and constraints into twelve technical decisions (`DD` records), in order: repository layout, hosting, environments and promotion path, stack and language, data store, identity, infrastructure as code, continuous integration, test tools, secrets, dependency updates, monitoring — recorded with the kit skill `design-phase` |
@@ -105,9 +105,11 @@ And three habits:
   done with the command that measured it, decisions touched, what is left, a hand-over for
   a reader with no memory. These entries are also research data on AI-assisted
   engineering — never rewritten.
-- **Before a pull request, run the `change-reviewer` agent.** It checks gates, data
-  regime, secrets, migrations, documentation, decisions, tests — and says "ready" or lists
-  the fixes.
+- **Before a pull request, run the `change-reviewer` agent, then the `adversarial-reviewer`.**
+  The first checks gates, data regime, secrets, migrations, documentation, decisions,
+  tests, and says "ready" or lists the fixes. The second gets the pull request's number
+  only and tries to break the change. Fill the pull-request template: the project lead
+  reviews the **evidence** it carries, not every line.
 
 **Never**:
 
@@ -229,9 +231,11 @@ Open `claude` in the project's repository and work through this, in your own wor
    decision it serves). *"Propose how to do #NN; change nothing yet."* — read the proposal;
    ask for the alternatives if there is a choice; if it is a real choice, *"record it with
    decision-record"*.
-4. *"Do it on a feature branch, run the gates, show me the diff."* — review the diff
-   yourself; Claude's code is accepted through the gates **and** your reading.
-5. *"Run the change-reviewer agent."* — fix what it lists, then open the pull request to
+4. *"Do it on a feature branch, run the gates, replay the use case through the interface."*
+   Claude's code is accepted on evidence: the gates, the replayed use case, the tests that
+   prove the requirement. Read the code where a risk is flagged.
+5. *"Run the change-reviewer agent, then the adversarial-reviewer on the pull request."*
+   Fix what they list, fill the pull-request template, then open the pull request to
    the integration branch named in `CLAUDE.md` (from the environments-and-promotion-path
    `DD`). The pull request updates the document that describes the behaviour, in the same
    diff.

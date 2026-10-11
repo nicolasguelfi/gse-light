@@ -9,8 +9,8 @@
 # this) and the method `gse-light`, read by every session and changed by none.
 # Copies the skills, agents and role rules (roles/) into .claude/ (overwriting the kit's own files only) and creates, if
 # absent: project/ (from templates/project/, the shared record's skeleton — never touched once it
-# has files), CLAUDE.md, .claude/settings.json, .gitattributes, gates.sh, .env.example and the two CI
-# workflows (gates, docs). The project's repository owns those files afterwards.
+# has files), CLAUDE.md, .claude/settings.json, .gitattributes, gates.sh, .env.example, the three CI
+# workflows (gates, docs, review) and the pull-request template. The project's repository owns those files afterwards.
 # Works with bash 3.2 (macOS) and Git Bash.
 set -euo pipefail
 
@@ -104,6 +104,14 @@ fi
 if [ ! -f .github/workflows/docs.yml ]; then
   cp "$kit/templates/ci-docs.yml" .github/workflows/docs.yml
   echo "created .github/workflows/docs.yml — runs the documentation checks of project/ (check_docs) with gse-light at the installed kit version"
+fi
+if [ ! -f .github/workflows/review.yml ]; then
+  cp "$kit/templates/ci-review.yml" .github/workflows/review.yml
+  echo "created .github/workflows/review.yml — the size of each pull request (scripts/pr_size.py); fails only beyond the project lead's threshold, project/governance/pr-size.json"
+fi
+if [ ! -f .github/pull_request_template.md ]; then
+  cp "$kit/templates/pull_request_template.md" .github/pull_request_template.md
+  echo "created .github/pull_request_template.md — the pull request on evidence (reference design ch. 8)"
 fi
 
 # personal files and recordings stay out of git: Claude Code excludes .claude/settings.local.json

@@ -22,7 +22,13 @@ each member's `.claude/settings.local.json`) deny the Edit tool on it; his own, 
    method, kit, his spending; approvals he owes; advice the team explicitly asked for),
    each with why and a link. Remove tasks that are done (check the register or the
    journal — do not assume). Keep task numbers stable (`T1`, `T2`…); a new task gets
-   the next number. **§1b — Awaiting the team**: the 🔴 records whose decider is the
+   the next number. **By when** (first column; the method's owner, 2026-10-11): a date
+   (`YYYY-MM-DD`), "now", or "before <event>" when the deadline is an event not yet
+   dated; derive it from a source — the next meeting in `project/meetings/schedule.json`
+   (a brief is due the day before), the planning, a record's due date, a promise in the
+   minutes — and name that source in "Why"; never invent a date. Sort the rows: "now"
+   first, then dates ascending, then "before <event>". Recompute every date at each
+   refresh. **§1b — Awaiting the team**: the 🔴 records whose decider is the
    project lead, the product owner or the data protection contact, with the Project Advisor's
    part ("advice", "chosen with you").
 3. **§2 — What changed**: dated bullets of what happened since the last

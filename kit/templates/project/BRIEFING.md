@@ -2,7 +2,7 @@
 
 > The single entry point for the Project Advisor. **§1 = what awaits you**: your own
 > decisions (method, kit, your spending) and the points where the team expects your
-> advice. §1b = what awaits the team, visible to you, not yours. §2 = what changed
+> advice, soonest first. §1b = what awaits the team, visible to you, not yours. §2 = what changed
 > since your last acknowledgement. §3 = state. Only the Project Advisor's sessions edit
 > this file (roles record); the `cockpit-update` skill refreshes it.
 
@@ -10,9 +10,9 @@
 
 ## §1 — Awaiting you
 
-| # | Task | Why | Where |
-|---|---|---|---|
-| T1 | <one action only you can take, in one line> | <why it waits for you> | <link to the record or document> |
+| By when | # | Task | Why | Where |
+|---|---|---|---|---|
+| <YYYY-MM-DD, or "now", or "before <event>"> | T1 | <one action only you can take, in one line> | <why it waits for you, and what sets the date> | <link to the record or document> |
 
 ## §1b — Awaiting the team
 

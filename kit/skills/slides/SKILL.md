@@ -69,8 +69,12 @@ No row: it is a new deck (§1). A row: reopen it (§2).
 
 ## 3. After the meeting
 
-Sync once more (§2.1) so the presented version is in git. NG exports the PDF (Share ›
-Export › PDF) if it is to be distributed; commit it in `project/meetings/<date>/slides/`.
+Sync once more (§2.1) so the presented version is in git. **The session renders the PDF** to
+distribute (the method's owner, 2026-10-11 — he no longer exports it by hand):
+`python3 ../gse-light/scripts/slides_pdf.py project/meetings/<date>/slides "<title> v<N>.pdf"`;
+look at three pages (a table, a card slide, a diagram) before committing it in that folder, and
+replace the earlier export. Needs Playwright with Chromium: if missing, the script prints the
+install line; give it to NG, or fall back to the viewer (Share › Export › PDF).
 
 ## Design rules (NG, 2026-10-07)
 

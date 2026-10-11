@@ -11,6 +11,7 @@ or by hand:
 |---|---|---|
 | `check_docs.py` | checks links, registers, cockpit counts, the kit copy in `.claude/` and the leak guard (no client term in `gse-light`) | Python only |
 | `pr_size.py` | the size of a pull request: lines of code, of tests and other, against the base branch; fails only beyond the project lead's threshold (`project/governance/pr-size.json`); run by the `review.yml` workflow | Python only |
+| `slides_pdf.py` | renders a deck's sources (`project/meetings/<date>/slides/project/`) to one PDF, a page per slide, notes left out | Playwright with Chromium |
 | `situation.py` | where the project stands this week, next meeting, next step (printed by the session-start hook; the Advisor's skills read it) | Python only |
 | `session_start.py` | the session-start hook of every session: the git user and their role, the next meeting; for the Project Advisor also his week's next step, his tasks and the last hand-over | Python only |
 | `llm_call.py` | one paid model call (Gemini, or a text model through OpenRouter), cost logged in `project/journal/llm-costs.csv` | the environment of §1 (`google-genai`) |

@@ -120,7 +120,9 @@ pass" without it.
 - **The kit's files here are open** (the method's owner, 2026-10-10): anyone may change and
   commit any file of `.claude/`, the kit's skills, agents and roles included, and add the
   project's own (a name of their own, e.g. `<repository name>-…`, so a kit refresh never
-  overwrites them). `check_docs` lists a changed kit file as a warning. The Project Advisor
+  overwrites them). `check_docs` lists a changed kit file as a warning; one exception, the
+  shared floor: it fails when `.claude/settings.json` loses a `deny` rule of the kit or the start
+  hook (the team may add rules, never remove them). The Project Advisor
   reviews those changes when he chooses and decides what enters a new kit version, which he
   installs by pull request; a change he does not take is overwritten then, unless it was moved
   under a project name. The project lead never refreshes the kit unless the Advisor asks.
@@ -241,7 +243,8 @@ this repository's own sessions join them. Keep each to two lines; move a rule up
 
 `python3 ../gse-light/scripts/check_docs.py` before committing anything under `project/`,
 and after any change in `../gse-light`: links (including links to the method), the registers
-and the cockpit counts, the kit files changed here (a warning), the deck's freshness, and the
+and the cockpit counts, the kit files changed here (a warning), the shared floor of
+`.claude/settings.json` (a failure if a `deny` rule or the start hook is gone), the deck's freshness, and the
 **leak guard** — no term of `project/private-terms.txt` in `gse-light`. CI runs the same
 script (`.github/workflows/docs.yml`) next to the gates (`.github/workflows/gates.yml`).
 

@@ -24,6 +24,9 @@ Checks:
      - .claude/skills, .claude/agents and .claude/roles against gse-light's kit at the installed version: in a
        project, a kit file changed or removed is a WARN, never a FAIL (the team may change any file, the
        Project Advisor reviews these differences and decides what enters the kit — NG, 2026-10-10);
+     - .claude/settings.json, the floor every session shares: FAIL when a "deny" rule of the kit's floor or
+       its start hook is missing (a pull request could weaken the floor unseen — the project lead, 2026-10-11);
+       WARN for any other difference (the team may add its own rules);
      - deck freshness: for every slide of a deck in force (project/meetings/<date>/slides/project/slides/),
        WARN when a file named in its "Source:" footer was committed after the slide (or after the deck's last
        "Sources checked: YYYY-MM-DD HH:MM" line in slides/README.md), or when the footer is missing;
@@ -34,6 +37,7 @@ Checks:
 from __future__ import annotations
 
 import datetime
+import json
 import re
 import subprocess
 import sys
@@ -267,6 +271,31 @@ def check_copies() -> None:
         same_tree(METHOD / "kit/skills", ROOT / ".claude/skills", ".claude/skills", hint, False, warnings)
         same_tree(METHOD / "kit/agents", ROOT / ".claude/agents", ".claude/agents", hint, False, warnings)
         same_tree(METHOD / "kit/roles", ROOT / ".claude/roles", ".claude/roles", hint, False, warnings)
+        check_settings_floor()
+
+
+def check_settings_floor() -> None:
+    """The shared .claude/settings.json keeps the kit's floor: every deny rule and the start hook."""
+    kit_file, own_file = METHOD / "kit/templates/settings.json", ROOT / ".claude/settings.json"
+    if not own_file.exists():
+        errors.append(".claude/settings.json: missing (the floor every session shares; ../gse-light/kit/install.sh creates it)")
+        return
+    try:
+        kit, own = (json.loads(f.read_text(encoding="utf-8")) for f in (kit_file, own_file))
+    except json.JSONDecodeError as e:
+        errors.append(f".claude/settings.json: not valid JSON ({e})")
+        return
+    own_deny = set(own.get("permissions", {}).get("deny", []))
+    for rule in kit.get("permissions", {}).get("deny", []):
+        if rule not in own_deny:
+            errors.append(f".claude/settings.json: the floor's rule \"deny {rule}\" is missing (restore it from the kit)")
+    def commands(d: dict) -> set[str]:
+        return {h.get("command", "") for e in d.get("hooks", {}).get("SessionStart", []) for h in e.get("hooks", [])}
+    if commands(kit) - commands(own):
+        errors.append(".claude/settings.json: the start hook (SessionStart) is missing or changed (restore it from the kit)")
+    if kit != own and not any(e.startswith(".claude/settings.json") for e in errors):
+        warnings.append(".claude/settings.json: differs from the kit (the floor is intact; the Project Advisor "
+                        "reviews it before the next kit version)")
 
 
 SOURCE_RE = re.compile(r"Source:\s*([^<]*)", re.I)

@@ -145,6 +145,10 @@ nothing — will find it.
 - **Tickets.** Work items are GitHub issues in the project's repository (several
   repositories: in the one the ticket changes); each ticket names the requirement or
   decision it serves.
+  A ticket whose result is a reference document (a standard, a schema, a catalogue, a
+  list of criteria) describes that result's structure before work starts: its lists, their
+  columns, the type of each value and, for each criterion, its metric or why it has none
+  (the Project Advisor, 2026-10-14: a task set as "propose a standard" had no defined output).
 
 ### Illustration — Sumvadis
 

@@ -183,6 +183,7 @@ To rehearse your role's Day 0 on your own machine first: [TEST-DAY0.md](TEST-DAY
 | `check.sh` says | Do |
 |---|---|
 | `MISSING git`, `MISSING python3`, `MISSING Claude Code` | install it (§1); sign Claude Code in with the invited account |
+| `WARN Claude Code — installed for Windows but not on this Git Bash's PATH` | Claude Code answers in a Windows terminal, but this Git Bash window does not see it — most often it was opened before the installation: close it, open a new Git Bash, run the check again |
 | `MISSING gse-light next to this repository` | clone the `gse-light` repository in the same parent folder as your clone of `<project-repo>` |
 | `MISSING CLAUDE.md` or `MISSING project/` | the kit is not installed here, or not pushed yet: the Project Advisor runs the one command and pushes (§2); `git pull` once he has |
 | `MISSING skill …`, `MISSING agent …`, `WARN skill …` | the kit is incomplete or outdated: the Project Advisor refreshes it (§2) |

@@ -24,6 +24,8 @@ command -v python3 >/dev/null && ok "python3 $(python3 --version 2>&1 | awk '{pr
   || miss "python3" "install Python 3 (the method's scripts need it: check_docs.py, situation.py)"
 if command -v claude >/dev/null; then ok "Claude Code $(claude --version 2>/dev/null | head -1)"
 elif [ -n "${CLAUDECODE:-}" ]; then ok "Claude Code (running inside a Claude Code session; \`claude\` not on this shell's PATH)"
+elif command -v where.exe >/dev/null && where.exe claude >/dev/null 2>&1; then
+  warn "Claude Code" "installed for Windows but not on this Git Bash's PATH: close and reopen Git Bash, then run this check again (INSTALL.md §5)"
 else miss "Claude Code" "install it and sign in with the invited account (INSTALL.md §1)"; fi
 
 # the two repositories side by side

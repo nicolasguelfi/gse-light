@@ -20,8 +20,13 @@ cd "$repo"
 
 # prerequisites: git, python3 (the method's scripts), Claude Code
 command -v git >/dev/null && ok "git $(git --version | awk '{print $3}')" || miss "git" "install Git"
-command -v python3 >/dev/null && ok "python3 $(python3 --version 2>&1 | awk '{print $2}')" \
-  || miss "python3" "install Python 3 (the method's scripts need it: check_docs.py, situation.py)"
+if ! command -v python3 >/dev/null; then miss "python3" "install Python 3 (the method's scripts need it: check_docs.py, situation.py)"
+else pyv="$(python3 --version 2>&1 | head -1)"
+  case "$pyv" in
+    "Python 3."*) ok "python3 ${pyv#Python }" ;;
+    *) miss "python3" "this python3 does not run Python 3 (it printed '$pyv'); on Windows it is often the Microsoft Store placeholder: turn off the python3 app execution alias, or copy python.exe to python3.exe in your Python folder (INSTALL.md §5)" ;;
+  esac
+fi
 if command -v claude >/dev/null; then ok "Claude Code $(claude --version 2>/dev/null | head -1)"
 elif [ -n "${CLAUDECODE:-}" ]; then ok "Claude Code (running inside a Claude Code session; \`claude\` not on this shell's PATH)"
 elif command -v where.exe >/dev/null && where.exe claude >/dev/null 2>&1; then

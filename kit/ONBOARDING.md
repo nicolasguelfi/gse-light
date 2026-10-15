@@ -99,7 +99,8 @@ And three habits:
 - **Decisions go to the registers**, never as "TODO decide" in a file. A choice between
   options with consequences → skill `decision-record` → a `PD`/`DEC`/`DD` record in
   `project/`, 🔴 until its decider decides. Your session can open a record and commit it
-  (the skill commits that path only); it closes none.
+  (the skill commits that path only); it turns 🟢 only a record whose decider is the person it
+  works for, in the pull request that writes the decision.
 - **Every session ends with a journal entry** in `project/journal/` (skill
   `session-close`, which commits your entry and the metrics row, nothing else): what was
   done with the command that measured it, decisions touched, what is left, a hand-over for

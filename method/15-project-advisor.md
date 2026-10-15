@@ -1,6 +1,6 @@
 # 15 — The Project Advisor: the method and where the Advisor steps in
 
-Status: draft · v0.8 · 2026-10-09 · one repository per project, the Advisor installs the kit (§4; board r11); the project lead chairs the meetings and keeps time (§4, §5; NG, board r9) · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
+Status: draft · v0.9 · 2026-10-15 · when the Advisor blocks (§1; the method's owner, board r19); v0.8 2026-10-09: one repository per project, the Advisor installs the kit (§4; board r11); the project lead chairs the meetings and keeps time (§4, §5; NG, board r9) · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a project is run in a few weekly sprints with generative AI under
 > this method, who does each action (a person, a person asking Claude, or Claude and the CI
@@ -47,6 +47,19 @@ it" for that one action. The next action of the same kind needs a new "yes". Pro
 to the rehearsal environment (the copy of production where a version is checked first;
 its name and shape are an instance `DD`): project lead. Production, cloud, budget:
 product owner. Personal data: data protection contact.
+
+**When the Advisor blocks** (the method's owner, 2026-10-15). The Advisor is a consultant:
+he is never on the team's critical path. A record turns 🟢 in its decider's own session, in
+the pull request that writes the decision; the Advisor reads the registers' changes after the
+fact (the weekly brief lists them), and his advice may lead the decider to reopen a record —
+the decider's call. He asks the team to stop before a merge ("Blocking", with the case) in two
+cases only: **A**, what is his by the roles record (the method, the kit's version, spending on
+his keys and licences); **B**, a protection rule about to be broken without its decider's
+go-ahead (personal data before the data regime is decided, a secret in a file, a promotion to
+production, the client's budget, a new flow of personal data) — there he decides nothing, he
+asks to wait for the right decider, as any member may. Everything else — design, tickets,
+priorities, the quality of deliverables — is advice the project lead follows or not, without
+waiting.
 
 **Who provides what**: who provides the Claude Code licences and the API keys (access
 codes to paid AI models) for complementary models is a project decision (`PD`) written in

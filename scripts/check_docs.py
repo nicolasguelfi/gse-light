@@ -18,9 +18,9 @@ Checks:
   3. in a project's repository:
      - every register record has a status badge and a dashboard row, and every dashboard row a record;
      - the pending counts in project/BRIEFING.md §3 match the registers' dashboards:
-       FAIL when the register holds fewer 🔴 than §3 says (a record closed without the cockpit),
-       WARN only when it holds more (new 🔴 opened by the team; the Project Advisor's next session
-       refreshes the cockpit) — a developer's commit never turns CI red for that;
+       a WARN either way, never a FAIL: the decider's session closes a record and the team opens new
+       ones, the Project Advisor's next session refreshes the cockpit — the cockpit never blocks the
+       team (the method's owner, 2026-10-15); a missing count is still a FAIL;
      - .claude/skills, .claude/agents and .claude/roles against gse-light's kit at the installed version: in a
        project, a kit file changed or removed is a WARN, never a FAIL (the team may change any file, the
        Project Advisor reviews these differences and decides what enters the kit — NG, 2026-10-10);
@@ -176,11 +176,9 @@ def check_registers() -> None:
             m = re.search(rf"🔴 {prefix} (\d+)", briefing)
             if not m:
                 errors.append(f"{name}/BRIEFING.md: §3 has no pending count for {prefix}")
-            elif int(m.group(1)) > pending:
-                errors.append(f"{name}/BRIEFING.md: §3 says {m.group(1)} pending {prefix}, the register has {pending}")
-            elif int(m.group(1)) < pending:  # the team opened a 🔴 record; the cockpit follows at the Advisor's next session
+            elif int(m.group(1)) != pending:  # a record opened or closed by the team; the cockpit follows at the Advisor's next session
                 warnings.append(f"{name}/BRIEFING.md: §3 says {m.group(1)} pending {prefix}, the register has {pending} "
-                                "(new 🔴 opened by the team; the Project Advisor's next session refreshes the cockpit)")
+                                "(the Project Advisor's next session refreshes the cockpit)")
 
 
 def same_tree(src: Path, copy: Path, label: str, hint: str, only_common: bool,

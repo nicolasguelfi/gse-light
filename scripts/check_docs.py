@@ -20,7 +20,8 @@ Checks:
      - the pending counts in project/BRIEFING.md §3 match the registers' dashboards:
        a WARN either way, never a FAIL: the decider's session closes a record and the team opens new
        ones, the Project Advisor's next session refreshes the cockpit — the cockpit never blocks the
-       team (the method's owner, 2026-10-15); a missing count is still a FAIL;
+       team (the method's owner, 2026-10-15); a missing count is still a FAIL; the counts are read from
+       the one line of the exact form `🔴 PD n · 🟡 PD n · 🔴 DEC n · 🔴 DD n`, nowhere else;
      - .claude/skills, .claude/agents and .claude/roles against gse-light's kit at the installed version: in a
        project, a kit file changed or removed is a WARN, never a FAIL (the team may change any file, the
        Project Advisor reviews these differences and decides what enters the kit — NG, 2026-10-10);
@@ -166,6 +167,9 @@ def check_registers() -> None:
     for inst in ([PROJECT] if (PROJECT / "BRIEFING.md").exists() else []):
         name = inst.relative_to(ROOT)
         briefing = (inst / "BRIEFING.md").read_text(encoding="utf-8")
+        # read the counts only from the one line in the exact form of §3, never from a §2 bullet that cites an old count
+        counts = re.search(r"^.*🔴 PD \d+ · 🟡 PD \d+ · 🔴 DEC \d+ · 🔴 DD \d+.*$", briefing, re.M)
+        briefing = counts.group(0) if counts else ""
         for prefix, rel in REGISTERS.items():
             path = inst / rel
             if not path.exists():

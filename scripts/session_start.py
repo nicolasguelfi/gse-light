@@ -120,6 +120,8 @@ def main() -> int:
                 print(f"Next meeting with the Project Advisor: {s['next_meeting'] or 'date not fixed yet'} (project/meetings/).")
         except Exception as e:  # noqa: BLE001
             print(f"  (situation unavailable: {e})")
+        print("Your first message also runs the agent project-navigator: the project's profile, what is missing, "
+              "the risks and three to five proposals for you (CLAUDE.md rule; \"skip\" skips it).")
         if not advisor:
             print("New here? ../gse-light/QUICKSTART.md (the numbered path), then CLAUDE.md of this repository; type / to see the skills; /upskilling first.")
             return 0

@@ -54,10 +54,10 @@ for s in advisor meeting slides cockpit-update method-lesson genai-onboarding; d
 done
 [ $n = 0 ] && ok "Project Advisor's skills present (advisor, meeting, slides, cockpit-update, method-lesson, genai-onboarding)"
 n=0
-for a in change-reviewer adversarial-reviewer delivery-auditor minutes-verifier design-reviewer; do
+for a in project-navigator change-reviewer adversarial-reviewer delivery-auditor minutes-verifier design-reviewer; do
   [ -f ".claude/agents/$a.md" ] || { miss "agent $a" "kit missing or outdated"; n=1; }
 done
-[ $n = 0 ] && ok "agents present (change-reviewer, adversarial-reviewer, delivery-auditor, minutes-verifier, design-reviewer)"
+[ $n = 0 ] && ok "agents present (project-navigator, change-reviewer, adversarial-reviewer, delivery-auditor, minutes-verifier, design-reviewer)"
 
 if [ -f .claude/settings.json ]; then
   grep -q '"additionalDirectories"' .claude/settings.json \

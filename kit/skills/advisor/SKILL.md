@@ -22,6 +22,12 @@ entries and new 🔴 records reach `project/` through the kit's `session-close` 
 `python3 ../gse-light/scripts/situation.py --json` → `steps[0]` is the next step, the rest follow.
 If his message is a different request, serve it first, then come back here.
 
+At his first message, also run the agent `project-navigator` (in parallel with the step's
+own reading) and show its report in a few lines: the risks and gaps it found, and its
+proposals for the Advisor — which are advice for him to give, never tasks he takes from the
+project lead. Proposals for the team go to the project lead as advice; the Advisor's
+session opens no ticket.
+
 ## 1. Do the step — who does what
 
 Ask him only by **one short multiple-choice question (QCM)** at a time — or by a review board

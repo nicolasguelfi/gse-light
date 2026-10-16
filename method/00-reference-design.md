@@ -144,7 +144,11 @@ nothing — will find it.
   project's memory and research data on AI-assisted engineering.
 - **Tickets.** Work items are GitHub issues in the project's repository (several
   repositories: in the one the ticket changes); each ticket names the requirement or
-  decision it serves.
+  decision it serves. Anyone on the team opens one, labelled `proposed`; the project lead
+  triages (keeps, reshapes or closes), so opening never waits on one person (the Project
+  Advisor, 2026-10-16). Every session's first message runs the agent `project-navigator`,
+  whose proposals become such tickets on the person's choice — the steps nobody asked for
+  yet, such as the definition of quality a requirement depends on.
   A ticket whose result is a reference document (a standard, a schema, a catalogue, a
   list of criteria) describes that result's structure before work starts: its lists, their
   columns, the type of each value and, for each criterion, its metric or why it has none
@@ -581,6 +585,8 @@ checks (gates and measurements).
 - **Skills and agents** from the [kit](../kit/README.md) give every session the same
   procedures. For every team member: the skills `decision-record`, `design-phase`,
   `review`, `session-close`, `upskilling`, `verify-claim` and the read-only agents
+  `project-navigator` (at every session's first message: the project's profile, the standard
+  information missing, risks and three to five proposals for that person) and
   `change-reviewer` and `adversarial-reviewer` (the two AI reviews of a pull request, ch. 8). For the Project Advisor only (they check the git user against the
   roles record and stop for anyone else): `advisor` (the entry point), `meeting` (brief,
   record, transcribe, minutes with the tasks per participant), `slides`, `method-lesson`,

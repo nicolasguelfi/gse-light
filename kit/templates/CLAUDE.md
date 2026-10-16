@@ -100,6 +100,19 @@ pass" without it.
   question, restate the problem simply so that the person understands it; for every proposal,
   explain just as simply its advantages and its drawbacks, with all the consequences of that
   solution. A choice written in prose is a choice the person cannot tick.
+- **A proactive first message** (the method's owner, 2026-10-16): in every session, whoever
+  opens it, the person's first message also runs the agent `project-navigator` (read-only:
+  the project's profile and the life cycle that fits it, the standard information missing,
+  the main risks, three to five proposals for this person). Show its report in the
+  person's language, then one QCM (several choices allowed): which proposals to take. For
+  each one taken, by default **open a ticket** (`gh issue create`, label `proposed`, the
+  project lead as assignee, the body with the evidence and the structure of the result),
+  or do it now in this session when it is small and the person's own. If the first message
+  is a request, serve it first and run the agent after. "skip" skips it for the session.
+- **Tickets: anyone opens, the project lead triages** (the method's owner, 2026-10-16): every
+  team member's session may open a ticket, labelled `proposed` and assigned to the project
+  lead, who keeps, reshapes or closes it — opening is never a bottleneck. A project that
+  wants another rule records it in a `PD` record.
 - **Environments and branch model** come from the project's environments and promotion
   path decision (the third of the twelve), named in "Git" below; a branch that deploys is
   never pushed without the go-ahead for that promotion.
@@ -156,7 +169,8 @@ pass" without it.
 ## If you are a developer's or the project lead's session
 
 - **Your skills**: `design-phase` (the project lead, W1), `decision-record`, `review`,
-  `session-close`, `verify-claim`, `upskilling`; your agents: `change-reviewer`, `adversarial-reviewer`. The six other
+  `session-close`, `verify-claim`, `upskilling`; your agents: `project-navigator` (at your
+  first message), `change-reviewer`, `adversarial-reviewer`. The six other
   skills (`advisor`, `meeting`, `slides`, `cockpit-update`, `method-lesson`,
   `genai-onboarding`) and the agents `delivery-auditor`, `minutes-verifier` and
   `design-reviewer` are the Project Advisor's: they check the git user and stop for anyone else.
@@ -174,7 +188,7 @@ pass" without it.
   the hook prints the situation — today, next meeting, next step — computed by
   `../gse-light/scripts/situation.py` from `project/meetings/`. His **first message, whatever
   it says** ("go", "bonjour", a remark), means: do that step through the `advisor` skill,
-  running the agents and skills yourself (`meeting`, `delivery-auditor`, `minutes-verifier`,
+  running the agents and skills yourself (`project-navigator`, `meeting`, `delivery-auditor`, `minutes-verifier`,
   `decision-record`, `method-lesson`, `session-close`); ask him only what only he knows
   (meeting day, participants, points to raise, his feedback section of the minutes), one
   short QCM at a time. If his message is a different request, serve it, then return to the

@@ -106,7 +106,8 @@ pass" without it.
   the main risks, three to five proposals for this person). Show its report in the
   person's language, then one QCM (several choices allowed): which proposals to take. For
   each one taken, by default **open a ticket** (`gh issue create`, label `proposed`, the
-  project lead as assignee, the body with the evidence and the structure of the result),
+  project lead as assignee, the body with the evidence and the structure of the result;
+  `gh label create proposed` once if the label is missing),
   or do it now in this session when it is small and the person's own. If the first message
   is a request, serve it first and run the agent after. "skip" skips it for the session.
 - **Tickets: anyone opens, the project lead triages** (the method's owner, 2026-10-16): every

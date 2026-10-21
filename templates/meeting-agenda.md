@@ -6,7 +6,14 @@
 - **Prepared:** YYYY-MM-DD by Claude for the Project Advisor — read it the day before
 - **Support:** <document and slides, slides only, document only — links>
 
-## Agenda — topics in a proposed order; durations indicative; the project lead chairs and keeps time
+## The project lead's plan
+
+<link to `plan.md` (`../templates/meeting-plan.md`), sent YYYY-MM-DD — or "no plan received two days before">.
+The Project Advisor's comments, advice only (the project lead keeps, changes or drops them):
+
+- <a missing point, a duration, the order, a decision to prepare>
+
+## Agenda — the project lead's plan when there is one, otherwise topics in a proposed order; durations indicative; the project lead chairs and keeps time
 
 | Time (indicative) | Item | Who leads |
 |---|---|---|

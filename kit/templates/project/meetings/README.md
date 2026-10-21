@@ -2,13 +2,14 @@
 
 One folder per meeting with the Project Advisor, named `YYMMDD/` (`261009/` for 2026-10-09), produced by the `meeting`
 skill — a procedure Claude runs when asked (`/meeting`) or when the situation calls for it —
-in the Project Advisor's sessions. **Who writes here**: his sessions only. **Who reads**:
+in the Project Advisor's sessions. **Who writes here**: his sessions, and the project lead's for `plan.md` and the minutes' validation line. **Who reads**:
 everyone — the team takes its tasks for the next sprint from the minutes, the product owner
 reads the minutes on GitHub.
 
 | File | Written by | In git |
 |---|---|---|
-| `agenda.md` | `meeting brief`, the day before | yes |
+| `plan.md` | the project lead's session, **at least two days before**: the proposed run (points with a title, minutes, a short description; `../gse-light/templates/meeting-plan.md`), by pull request mentioning the Project Advisor | yes |
+| `agenda.md` | `meeting brief`, the day before (the plan, with the Project Advisor's comments, and the facts) | yes |
 | `audio.m4a` (or imported audio) | `meeting record` / `meeting import` | **no** (git-ignored; stays in the Advisor's private storage, outside git) |
 | `meta.json`, `imports.jsonl` | the recording script | yes |
 | `transcript.md` (+ `.srt`, `.json`) | `meeting transcribe` | yes |

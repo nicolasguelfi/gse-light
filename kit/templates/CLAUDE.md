@@ -126,7 +126,10 @@ pass" without it.
   is in front). Code reads them through the project's single model helper, never
   directly. These rules hold whatever coding agent you use.
 - **Roles** (`project/governance/10-roles-and-go-aheads.md`): the project lead decides sprints,
-  tickets and technical choices, chairs the meetings and keeps time, and validates and sends
+  tickets and technical choices, chairs the meetings and keeps time — **at least two days
+  before each meeting his session sends the proposed run** (`project/meetings/<YYMMDD>/plan.md`
+  from `../gse-light/templates/meeting-plan.md`: points with a title, minutes and a short
+  description, by pull request mentioning the Project Advisor, who comments) — and validates and sends
   the meeting minutes (his session writes the validation line in
   `project/meetings/<date>/minutes.md`); the Project Advisor gives feedback and advice, owns
   the method and this kit, and installs and refreshes the kit here. Do not wait for the
@@ -177,7 +180,8 @@ pass" without it.
   `design-reviewer` are the Project Advisor's: they check the git user and stop for anyone else.
 - **You write**: the code, by pull request on a feature branch with its tests; the person's
   own journal entries and new 🔴 records; the project lead's session also
-  `project/planning/sprints/`, the drivers page and the `DD` records of the design phase, and
+  `project/planning/sprints/`, the drivers page and the `DD` records of the design phase,
+  each meeting's proposed run `project/meetings/<YYMMDD>/plan.md` (two days before), and
   the validation line of the minutes.
 - **Never**: edit `project/BRIEFING.md` (the cockpit) or anything under `../gse-light`; turn a
   record 🟢 whose decider is not the person you work for; push to `main`, or to any branch

@@ -41,7 +41,7 @@ covers **one** action, not the next ones of the same kind.
 | Action | Go-ahead from |
 |---|---|
 | Validating and sending the meeting minutes (the validation line "validated by <name> on YYYY-MM-DD") | the project lead, with his Claude session; the Project Advisor's feedback section stays the Advisor's |
-| Chairing the meetings and keeping time (the kick-off included); the Project Advisor proposes the topics in the brief | project lead |
+| Chairing the meetings and keeping time (the kick-off included); at least two days before each meeting, the proposed run (`meetings/<YYMMDD>/plan.md`: points with a title, minutes, a short description), which the Project Advisor comments in the brief — advice only | project lead |
 | Installing and refreshing the kit in the project's repository (`../gse-light/kit/install.sh`, then a commit) | Project Advisor |
 | Promote to the rehearsal environment (environments and promotion path record) | project lead |
 | Promote to production | product owner, once the project lead confirms the gates are green |

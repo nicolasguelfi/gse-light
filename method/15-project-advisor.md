@@ -1,6 +1,6 @@
 # 15 — The Project Advisor: the method and where the Advisor steps in
 
-Status: draft · v0.9 · 2026-10-15 · when the Advisor blocks (§1; the method's owner, board r19); v0.8 2026-10-09: one repository per project, the Advisor installs the kit (§4; board r11); the project lead chairs the meetings and keeps time (§4, §5; NG, board r9) · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
+Status: draft · v0.10 · 2026-10-21 · the project lead's proposed run of each meeting, two days before (§4, §5; the method's owner); v0.9 2026-10-15: when the Advisor blocks (§1; the method's owner, board r19); v0.8 2026-10-09: one repository per project, the Advisor installs the kit (§4; board r11); the project lead chairs the meetings and keeps time (§4, §5; NG, board r9) · generic (the Advisor presents principles; the team chooses its technology in the design phase) · author: Nicolas Guelfi, with Claude
 
 > **Essentials** — How a project is run in a few weekly sprints with generative AI under
 > this method, who does each action (a person, a person asking Claude, or Claude and the CI
@@ -114,6 +114,7 @@ when the team is full time.
 | **W-1 · kick-off** | presents the method, its principles and the kit; leads the round table "where do we start" on the skills grid ([upskilling](20-upskilling.md)) | the project lead adopts the reference design's rules; plans the design phase of W1; asks the client for the examples | Ask Claude: kick-off slides (`slides`) |
 | **W-1 · between the kick-off and W1** | advises asynchronously through 🔴 records flagged "advice asked"; gives each member their seat and their access | each member does Day 0 in the project's repository: clones it and `gse-light` side by side, `.env`, `check.sh`, a session on a branch `day0-<firstname>`, `/upskilling`, a first journal entry; needs analysis; a personal sandbox repository only for experiments outside the project | Ask Claude: `upskilling`; journal entries and new 🔴 records written in `project/` by the skills |
 | **W1 · design phase** | advises on the drivers and the options; decides nothing | the team with the project lead collects the drivers (facts and constraints) and decides the twelve `DD` records, in order: repository layout, hosting, environments and promotion path, stack and language, data store, identity, infrastructure as code, continuous integration, test tools, secrets, dependency updates, monitoring; the first, repository layout, says whether the deployable units are components inside the project's repository or further repositories (which then receive the kit); the phase runs in the project's repository | Ask Claude: `design-phase` skill (opens the records with their options; never proposes a stack as default) |
+| **Each week · two days before the meeting** | comments the plan with possible improvements, in the brief or on its pull request (advice: nothing waits on it) | **the project lead sends his proposed run of the meeting**: points in order, each with a title, a duration in minutes and a short description ([template](../templates/meeting-plan.md); `project/meetings/<YYMMDD>/plan.md`, by pull request mentioning the Advisor) | Ask Claude (the project lead's session): drafts the plan from the sprint file, the demo and the decisions awaiting |
 | **Each week · day before the meeting** | reads a one-page brief | keeps sprint file, linked tickets, journal | Ask Claude (Advisor's session): measures and writes the brief |
 | **Each week · meeting (2 h)** | conceptual feedback on conduct and deliverables; may propose tickets and priorities (the project lead decides) | shows what was delivered; the project lead presents the next sprint; **the project lead chairs and keeps time** | — |
 | **Each week · same evening** | adds his feedback section to the draft minutes | **the project lead validates and sends the minutes** (with Claude: reads the draft, writes the validation line, pushes it); the team takes its tasks into the next sprint | Ask Claude: transcript, draft minutes checked against the recording (the Advisor's session); the validation line and the push (the project lead's session) |
@@ -131,8 +132,13 @@ own personal settings allow it).
 ## 5. The weekly meeting
 
 Two hours, the day fixed at each meeting for the next one; the rhythm is set per
-instance (§4). **The project lead chairs the meeting and keeps time** (the kick-off included);
-the Advisor proposes the topics in the brief. Topics in a proposed order, durations indicative,
+instance (§4). **The project lead chairs the meeting and keeps time** (the kick-off included).
+**At least two days before, he sends his proposed run of the meeting** — a list of points,
+each with a title, a duration in minutes and a short description
+([template](../templates/meeting-plan.md), `project/meetings/<YYMMDD>/plan.md`) — so that the
+Advisor can comment with possible improvements; the Advisor's brief adds the facts of the
+week and his comments on the plan, and the project lead keeps, changes or drops them (the
+method's owner, 2026-10-21). Without a plan, the brief proposes the topics. Default topics,
 adapted by the participants ([template](../templates/sprint-agenda.md); any other meeting: [generic template](../templates/meeting-agenda.md)): facts of the week (10 min);
 demo or deliverables (30 min); the Advisor's feedback (25 min); decisions awaiting someone
 in the room (20 min); next sprint, presented by the project lead (25 min); tasks per

@@ -37,12 +37,18 @@ never read `.env` yourself — the scripts do).
    the roadmap and the previous minutes, and says so.
 3. **Threads.** Read the previous `minutes.md`: tasks per participant (which are done,
    measured when possible), open questions, decisions promised.
+3b. **The project lead's plan.** Read `project/meetings/<date>/plan.md` (or its open pull
+   request): his proposed run of the meeting, sent at least two days before
+   (`../gse-light/templates/meeting-plan.md`). If it is missing two days before, say so in the
+   brief and in five lines to NG; never wait for it.
 4. **Decisions awaiting.** The 🔴 and 🟡 rows of the three registers whose decider is in
    the room, and `project/BRIEFING.md` §1b.
 5. **Write `agenda.md`** from `../gse-light/templates/sprint-agenda.md` (a sprint meeting; any other
    meeting: §1b): the topics in a proposed order with
-   indicative durations — the project lead chairs the meeting and keeps time, the Advisor proposes
-   the topics — (facts first, then the team's demo or deliverables, then the Project Advisor's feedback, then
+   indicative durations — the project lead chairs the meeting and keeps time; **his plan, when
+   there is one, is the agenda**, and the brief adds a section "The project lead's plan" with
+   NG's comments: possible improvements (a missing point, a duration, the order, a decision
+   to prepare), advice only. Without a plan, the brief proposes the topics — (facts first, then the team's demo or deliverables, then the Project Advisor's feedback, then
    decisions, then next sprint — which the project lead presents, not NG), the
    auditor's facts, the follow-up table, the points NG wants to raise (ask him once,
    QCM, if the auditor found something he must choose to raise or not).

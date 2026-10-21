@@ -227,6 +227,10 @@ Carried over from the method's sessions (rule — date — why), newest first; t
 this repository's own sessions join them. Keep each to two lines; move a rule up into
 "Standing rules" when it holds everywhere.
 
+- A pull request of the project that links a file new in `gse-light` stays red in CI until the kit
+  refresh that brings it is merged (CI reads `gse-light` at `.claude/KIT_VERSION` of `main`; a local
+  `check_docs` reads your newer copy): cite the file as a path, or merge the kit first — 2026-10-21 —
+  a roles record linking the new meeting-plan template failed CI while green locally.
 - Before every push to `gse-light`, run `python3 ../gse-light/scripts/check_docs.py` from the
   project's repository: only there does the leak guard read `project/private-terms.txt`, commit
   messages included — 2026-10-09 — a commit message naming a project ticket reached the public method.

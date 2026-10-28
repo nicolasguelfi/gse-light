@@ -17,7 +17,7 @@ Status: v0.9 · 2026-10-09 · generic · one repository per project (board r11) 
 | Word | Meaning |
 |---|---|
 | **Project's repository** `<project-repo>` | the one repository of the project: the code, and in `project/` the shared record — cockpit, registers, requirements, planning, meetings, journal, roles. Everyone reads it; each person writes their own part |
-| **Kit** | the files that make every Claude Code session in `<project-repo>` follow the method — `CLAUDE.md`, twelve skills, five agents, permissions and the start hook, a `gates.sh` stub, three CI workflows, a pull-request template — installed once by the Project Advisor, committed with the code; you get it by cloning |
+| **Kit** | the files that make every Claude Code session in `<project-repo>` follow the method — `CLAUDE.md`, thirteen skills, five agents, permissions and the start hook, a `gates.sh` stub, three CI workflows, a pull-request template — installed once by the Project Advisor, committed with the code; you get it by cloning |
 | **Day 0** | each person's first hour on the project — clone, `.env`, `check.sh`, first session |
 | **W1 … W6**, **W-1** | the project's weeks, one sprint each; W-1 is the framing week before W1 |
 | **Design phase** | the step of W1 where the project lead, with Claude, turns the project's facts and constraints into twelve technical decisions (`DD` records), in order: repository layout, hosting, environments and promotion path, stack and language, data store, identity, infrastructure as code, continuous integration, test tools, secrets, dependency updates, monitoring — recorded with the kit skill `design-phase` |
@@ -205,8 +205,8 @@ Prerequisites by platform, what is shared or personal and what `check.sh` says:
 - **Check**: `../gse-light/kit/check.sh` from inside `<project-repo>` — every line OK, or it
   tells you what to do.
 - **Open a session**: `claude`, accept the workspace trust dialog, type `/` and check that
-  `design-phase`, `decision-record`, `review`, `session-close`, `verify-claim` and `upskilling`
-  appear. Whenever Claude needs your answer, it asks by a short multiple-choice question or,
+  `design-phase`, `decision-record`, `review`, `merge-check`, `session-close`, `verify-claim` and
+  `upskilling` appear. Whenever Claude needs your answer, it asks by a short multiple-choice question or,
   for a complex choice, by a review board (skill `review`): the problem restated, every
   option's advantages, drawbacks and consequences, a comment under every point; you send back
   one line. Work locally: a Claude Code session started on claude.ai (web or cloud) sees one

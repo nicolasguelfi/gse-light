@@ -74,7 +74,7 @@ One section per attack you ran, each with:
 
 Then:
 - **Findings**, most severe first. Each one gives file and line, the scenario that breaks,
-  and the smallest fix.
+  and the smallest fix. Tag each finding **critical**, **major** or **minor**. **Critical**: it would break a user path, lose, corrupt or expose data, weaken security or the shared settings, or contradict a decided record; the person merging ticks only the critical ones (skill `merge-check`), so do not inflate.
 - **Claims checked**: a table, one row per sentence of the pull request's summary — the
   claim, the command, the result (held / broke / not checkable).
 - **Probes worth keeping**: tests to add, with their content.

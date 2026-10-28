@@ -20,7 +20,7 @@ Status: v0.7 · 2026-10-09 · one repository per project, one kit for every role
 
 | Word | Meaning |
 |---|---|
-| **Kit** | the files that make every Claude Code session in the project's repository follow the method — `CLAUDE.md`, twelve skills, five agents, permissions and the start hook, a `gates.sh` stub, three CI workflows, a pull-request template, the `project/` skeleton — installed with one command, committed with the code |
+| **Kit** | the files that make every Claude Code session in the project's repository follow the method — `CLAUDE.md`, thirteen skills, five agents, permissions and the start hook, a `gates.sh` stub, three CI workflows, a pull-request template, the `project/` skeleton — installed with one command, committed with the code |
 | **Project folder** `project/` | the shared record inside the project's repository; created by the kit from a skeleton, never touched again by the kit |
 | **Day 0** | each person's first hour on the project — clone, `.env`, `check.sh`, first session |
 | **Gates** | the project's automated checks (tests, lint, end-to-end) run by `gates.sh` and the CI before a merge; on Day 0 a stub that says "no gates yet" |
@@ -100,7 +100,7 @@ It writes:
 | `CLAUDE.md` | the rules every session loads, with the repository's name filled; the `<…>` fields (purpose, commands) are the project lead's after the design phase — **ask Claude**: *"fill CLAUDE.md with this project's purpose and commands"* |
 | `.claude/settings.json` | the floor every session shares: `../gse-light` as additional directory; reading `.env`, a forced push and the literal command `git push origin main` denied; the start hook (`scripts/session_start.py`). Conveniences for the session, not a security boundary |
 | `.claude/roles/` (`team.json`, `advisor.json`) | each role's personal rules, the kit's own files, refreshed on every run; each person copies theirs once to `.claude/settings.local.json` — `team.json`: Claude asks before any `git push`, the Edit tool denied under `../gse-light/**` and on `./project/BRIEFING.md`; `advisor.json`: both allowed. A personal file can add a rule, never lift a shared one (Claude Code checks deny, then ask, then allow) |
-| `.claude/skills/` (twelve: `design-phase`, `decision-record`, `review`, `session-close`, `verify-claim`, `upskilling`, and yours — `advisor`, `meeting`, `slides`, `cockpit-update`, `method-lesson`, `genai-onboarding`), `.claude/agents/` (`project-navigator`, `change-reviewer`, `adversarial-reviewer`, `delivery-auditor`, `minutes-verifier`, `design-reviewer`) | the kit's own files, refreshed on every run |
+| `.claude/skills/` (thirteen: `design-phase`, `decision-record`, `review`, `merge-check`, `session-close`, `verify-claim`, `upskilling`, and yours — `advisor`, `meeting`, `slides`, `cockpit-update`, `method-lesson`, `genai-onboarding`), `.claude/agents/` (`project-navigator`, `change-reviewer`, `adversarial-reviewer`, `delivery-auditor`, `minutes-verifier`, `design-reviewer`) | the kit's own files, refreshed on every run |
 | `gates.sh` | Day-0 stub: prints *no gates yet: design phase in progress* and exits 0; the design phase fills it |
 | `.github/workflows/gates.yml` | runs `bash ./gates.sh` on every pull request and on every push to `main` — green from Day 0 |
 | `.github/workflows/docs.yml` | runs `python3 ../gse-light/scripts/check_docs.py` on `project/`, with `gse-light` checked out at the installed `KIT_VERSION` |
@@ -157,7 +157,7 @@ clone of `gse-light`.
   claude                                                     # accept the workspace trust dialog
   ```
 
-  In the session: type `/` and check that `design-phase`, `decision-record`, `review`, `session-close`, `verify-claim` and `upskilling` appear (the six other skills are the Project Advisor's: they stop for anyone else); then run **`/upskilling`** (where you start, and a short personal plan). Day 0 happens on a personal branch `day0-<firstname>` of the project's repository; you never run `install.sh`. If you cloned before the kit was there: `git pull` once the Project Advisor has pushed.
+  In the session: type `/` and check that `design-phase`, `decision-record`, `review`, `merge-check`, `session-close`, `verify-claim` and `upskilling` appear (the six other skills are the Project Advisor's: they stop for anyone else); then run **`/upskilling`** (where you start, and a short personal plan). Day 0 happens on a personal branch `day0-<firstname>` of the project's repository; you never run `install.sh`. If you cloned before the kit was there: `git pull` once the Project Advisor has pushed.
 - **Project lead, in addition**: in W1, *"Run design-phase"* in your clone — the drivers page, then the twelve `DD` records; the first, repository layout, settles how the code is laid out in this repository; then `gates.sh`, the CI and the `<…>` fields of `CLAUDE.md` filled from those decisions, committed by you ([ONBOARDING.md §2](ONBOARDING.md#2-if-you-are-the-project-lead)).
 - **Write**, through the kit's skills: your journal entries and 🔴 records in `project/`; the project lead also the sprints and the validation line of the minutes.
 - **Never**: edit `project/BRIEFING.md` (the Project Advisor's cockpit) or anything under `../gse-light`; push to `main` without the go-ahead.

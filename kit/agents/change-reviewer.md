@@ -43,6 +43,8 @@ and a concrete fix:
     the environments `DD` record names it (for example the rehearsal environment), with the
     go-ahead it needs.
 
+Tag each finding **critical**, **major** or **minor**. **Critical**: it would break a user path, lose, corrupt or expose data, weaken security or the shared settings, or contradict a decided record; the person merging ticks only the critical ones (skill `merge-check`), so do not inflate.
+
 End with a verdict: **ready**, **ready after fixes** (list), or **not ready** (list).
 Never claim a check passed without its output.
 

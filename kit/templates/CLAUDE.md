@@ -71,7 +71,11 @@ pass" without it.
   to play the use case** — this is how the product is verified and validated, and it is a
   firm rule. The tool is the project's choice, in its test tools decision (the ninth of
   the twelve; for a web interface, Playwright is one example). Each test names the requirement
-  it proves. Coverage is measured on every change; do not lower it.
+  it proves. Coverage is measured on every change; do not lower it. **Two coverages**: of the
+  code (the gates) and of the requirements — every functional and non-functional requirement
+  has its test, every user path its end-to-end test (`check_docs` lists the gaps, from
+  `scripts/req_coverage.py`); a non-functional requirement (performance, security,
+  availability, accessibility…) is written in `project/requirements/30-non-functional.md`.
 - **Green gates to move forward**: `bash ./gates.sh` green locally and in CI; never propose
   a merge with a red gate.
 - **Measure before asserting** (skill `verify-claim`): never state the state of a system (a
@@ -165,15 +169,23 @@ pass" without it.
   `change-reviewer` agent, then the `adversarial-reviewer` with the pull request's number only
   (never your reasoning); fill `.github/pull_request_template.md`; check the size
   (`python3 ../gse-light/scripts/pr_size.py`): beyond the project lead's threshold, split.
+- **Before a merge** (the method's owner, 2026-10-28): the skill `merge-check` — the person
+  merging ticks the **critical** findings of the two AI reviews on a review board, and the line
+  goes on the pull request; on a critical pull request (label `critical`, or a file of
+  `project/governance/critical-paths.txt`), `scripts/evidence_check.py` warns when the reviews or
+  the tests are missing — a warning, never a block, bypassed by hand with the label
+  `evidence-bypass` or a line `Evidence bypass: <reason>`.
 - **Every session ends with `session-close`**: a journal entry in `project/journal/`
   (one `YYYY-MM-DD-<initials>-sNN.md` per session, never rewritten — research data on
   AI-assisted engineering) and one row in `project/journal/metrics.csv`; the skill commits
-  those paths only and pushes on the person's go-ahead.
+  those paths only and pushes on the person's go-ahead. A missed close is caught up: the start
+  hook lists the days with commits and no entry, and `session-close catch-up` writes one entry
+  per day, rebuilt from git and marked as reconstructed.
 
 ## If you are a developer's or the project lead's session
 
 - **Your skills**: `design-phase` (the project lead, W1), `decision-record`, `review`,
-  `session-close`, `verify-claim`, `upskilling`; your agents: `project-navigator` (at your
+  `merge-check`, `session-close`, `verify-claim`, `upskilling`; your agents: `project-navigator` (at your
   first message), `change-reviewer`, `adversarial-reviewer`. The six other
   skills (`advisor`, `meeting`, `slides`, `cockpit-update`, `method-lesson`,
   `genai-onboarding`) and the agents `delivery-auditor`, `minutes-verifier` and
@@ -226,6 +238,11 @@ pass" without it.
 Carried over from the method's sessions (rule — date — why), newest first; the lessons of
 this repository's own sessions join them. Keep each to two lines; move a rule up into
 "Standing rules" when it holds everywhere.
+
+- A missed session close is caught up at the next session start (the hook lists the days with commits
+  and no entry; `session-close catch-up` rebuilds one entry per day from git, marked as reconstructed),
+  never by editing an old entry — 2026-10-28 — after two weeks a developer had no entry on main and the
+  Project Advisor no view of the work.
 
 - A pull request of the project that links a file new in `gse-light` stays red in CI until the kit
   refresh that brings it is merged (CI reads `gse-light` at `.claude/KIT_VERSION` of `main`; a local

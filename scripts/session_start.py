@@ -7,7 +7,9 @@ Every session, whoever opens it:
   1. the repository, who is working (`git config user.name`) and their role — the Project Advisor
      when the name matches the "Project Advisor" row of project/governance/10-roles-and-go-aheads.md,
      a team member otherwise — and the number of uncommitted files (`git status --short`);
-  2. the next meeting (project/meetings/, scripts/situation.py).
+  2. the next meeting (project/meetings/, scripts/situation.py);
+  2b. the person's missed session closes: days with commits and no journal entry, and entries not
+      merged yet (scripts/journal_gaps.py), with the way to catch up.
 The Project Advisor's session also gets:
   3. project/BRIEFING.md §1 — what awaits him (task id and title);
   4. the latest journal entry's hand-over ("For the next session") and the next step of his week.
@@ -120,6 +122,12 @@ def main() -> int:
                 print(f"Next meeting with the Project Advisor: {s['next_meeting'] or 'date not fixed yet'} (project/meetings/).")
         except Exception as e:  # noqa: BLE001
             print(f"  (situation unavailable: {e})")
+        try:
+            from journal_gaps import report as journal_report  # noqa: E402
+            for line in journal_report(REPO):
+                print(line)
+        except Exception as e:  # noqa: BLE001
+            print(f"  (journal check unavailable: {e})")
         print("Your first message also runs the agent project-navigator: the project's profile, what is missing, "
               "the risks and three to five proposals for you (CLAUDE.md rule; \"skip\" skips it).")
         if not advisor:

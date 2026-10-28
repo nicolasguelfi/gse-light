@@ -33,6 +33,17 @@ whoever opened the session. Paths below are relative to its root; the method is 
    counted state. "Last acknowledgement" is re-stamped **only when the Project Advisor has
    read and acknowledged** the cockpit; otherwise its date stays and §2 keeps accumulating.
 5. **Never edit an earlier journal entry.** A correction is a new entry citing it.
+5b. **Catch-up of missed closes** ("session-close catch-up", or when the start hook printed
+   "Journal: N day(s) with commits and no session-close entry"). Run
+   `python3 ../gse-light/scripts/journal_gaps.py` for the list. For **each** missing day, one entry
+   dated that day (step 1's name, the next `sNN` in order), written from what git shows of that day
+   only — `git log --all --author="<name>" --since=<day> --until=<day+1> --stat`, the pull requests
+   and tickets touched (`gh pr list --author @me --search "updated:<day>"`). Its first line reads
+   **"Reconstructed on YYYY-MM-DD from git; not written at the time."**; it states what was done,
+   with the commits as measures, and writes "unknown" for what git cannot tell (decisions taken
+   orally, what was tried and dropped, the hand-over). Never invent; never merge two days into one
+   entry. Show the entries to the person, who corrects them, then one metrics row each (step 3) and
+   step 6. Entries listed as "not on main yet" need their pull request, not a new entry.
 6. **Check, commit, then the go-ahead.** `python3 ../gse-light/scripts/check_docs.py`.
    **Commit only those paths**: `git add project/journal/YYYY-MM-DD-sNN.md
    project/journal/metrics.csv` (plus a new 🔴 record opened in the session),

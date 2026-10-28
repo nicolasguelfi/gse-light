@@ -31,6 +31,9 @@ Checks:
      - deck freshness: for every slide of a deck in force (project/meetings/<date>/slides/project/slides/),
        WARN when a file named in its "Source:" footer was committed after the slide (or after the deck's last
        "Sources checked: YYYY-MM-DD HH:MM" line in slides/README.md), or when the footer is missing;
+     - requirements coverage (scripts/req_coverage.py): WARN for the functional and non-functional requirements
+       with no test, the functional ones with no end-to-end test, and when no non-functional requirement is
+       written — the coverage of the requirements, next to the gates' coverage of the code (NG, 2026-10-28);
      - leak guard: no file tracked in gse-light, and no commit message, matches a line of project/private-terms.txt
        (the terms stay in the private repository; gse-light is public). Limit: the guard knows only the
        terms the project lists — a built-in generic list of client names would itself name the clients.
@@ -372,6 +375,15 @@ def check_deck_freshness() -> None:
                                 "(read the slide; republish it, or confirm it still holds)")
 
 
+def check_requirements_coverage() -> None:
+    try:
+        sys.path.insert(0, str(METHOD / "scripts"))
+        from req_coverage import coverage, summary  # noqa: E402
+        warnings.extend(summary(coverage(ROOT)))
+    except Exception as e:  # noqa: BLE001 — a report, never a failure
+        warnings.append(f"requirements coverage unavailable ({e})")
+
+
 def check_leaks() -> None:
     """No private term of the project in the public method."""
     if not IS_PROJECT or ROOT == METHOD:
@@ -437,6 +449,7 @@ def main() -> int:
     if IS_PROJECT:
         check_registers()
         check_deck_freshness()
+        check_requirements_coverage()
     check_copies()
     check_template_pairs()
     check_leaks()

@@ -13,7 +13,10 @@ or by hand:
 | `pr_size.py` | the size of a pull request: lines of code, of tests and other, against the base branch; fails only beyond the project lead's threshold (`project/governance/pr-size.json`); run by the `review.yml` workflow | Python only |
 | `slides_pdf.py` | renders a deck's sources (`project/meetings/<date>/slides/project/`) to one PDF, a page per slide, notes left out | Playwright with Chromium |
 | `situation.py` | where the project stands this week, next meeting, next step (printed by the session-start hook; the Advisor's skills read it) | Python only |
-| `session_start.py` | the session-start hook of every session: the git user and their role, the next meeting; for the Project Advisor also his week's next step, his tasks and the last hand-over | Python only |
+| `session_start.py` | the session-start hook of every session: the git user and their role, the next meeting, the person's missed session closes; for the Project Advisor also his week's next step, his tasks and the last hand-over | Python only |
+| `journal_gaps.py` | missed session closes: days with commits and no journal entry, entries not yet merged (`--author` for another person) | Python only |
+| `evidence_check.py` | the evidence check of a critical pull request: a warning, never a block, a bypass by hand | `gh` |
+| `req_coverage.py` | the coverage of the requirements, functional and non-functional, and of the user paths by end-to-end tests (`check_docs.py` shows it as warnings) | Python only |
 | `llm_call.py` | one paid model call (Gemini, or a text model through OpenRouter), cost logged in `project/journal/llm-costs.csv` | the environment of §1 (`google-genai`) |
 | `meeting/meeting.sh` | records the meeting with ffmpeg (macOS), or imports a file recorded elsewhere | `ffmpeg` |
 | `meeting/transcribe.py` | transcribes a recording: locally (mlx-whisper or whisper.cpp), or with Gemini | the environment of §1 (`mlx-whisper`), or `whisper-cpp` |

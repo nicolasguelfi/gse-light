@@ -22,5 +22,7 @@ jobs:
         run: |
           for f in kit/install.sh kit/check.sh kit/templates/gates.sh scripts/meeting/meeting.sh; do bash -n "$f"; done
           python3 -m py_compile scripts/*.py scripts/meeting/*.py
+      - name: Tests of the kit's checks
+        run: python3 -m unittest discover -s tests
       - name: Documentation gates (same as local)
         run: python3 scripts/check_docs.py

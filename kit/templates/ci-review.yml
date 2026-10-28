@@ -4,13 +4,18 @@
 # ch. 8): on every pull request, the lines of code changed against the base branch. It fails only when
 # the project lead has set a threshold (project/governance/pr-size.json) and the code exceeds it;
 # tests and documentation never count. gse-light at the installed kit version, as in docs.yml.
+# Second job, evidence: on a critical pull request (label `critical`, or a file listed in
+# project/governance/critical-paths.txt), a warning when the two AI reviews or the tests are missing;
+# never a failure, and a bypass by hand (label `evidence-bypass`, or a line "Evidence bypass: <reason>").
 name: review
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited, labeled, unlabeled]
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   size:
@@ -45,3 +50,34 @@ jobs:
         env:
           BASE: ${{ github.base_ref }}
         run: python3 ../gse-light/scripts/pr_size.py --base "origin/$BASE"
+
+  evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: repo
+      - name: Read the installed kit version
+        id: kit
+        run: echo "ref=$(tr -d '[:space:]' < repo/.claude/KIT_VERSION 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v5
+        with:
+          repository: nicolasguelfi/gse-light
+          path: gse-light
+          fetch-depth: 0
+      - name: gse-light at the installed kit version
+        env:
+          REF: ${{ steps.kit.outputs.ref }}
+        run: |
+          if [ -n "$REF" ] && git -C gse-light cat-file -e "$REF^{commit}" 2>/dev/null; then
+            git -C gse-light checkout -q --detach "$REF"
+          fi
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Evidence of a critical pull request (a warning, never a failure)
+        working-directory: repo
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: python3 ../gse-light/scripts/evidence_check.py "$NUMBER"

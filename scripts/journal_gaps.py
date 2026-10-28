@@ -11,7 +11,7 @@ For the git user of the session (`git config user.name` and `user.email`, throug
 the project keeps one, so one person with several git identities is one author), over the last
 `--days` days (14 by default) and on every branch:
 
-  - active days: the dates of that person's commits;
+  - active days: the dates of that person's commits, merges left out (a merge on GitHub is not a session);
   - covered days: the dates of the journal entries that person added (`project/journal/YYYY-MM-DD-…-sNN.md`,
     the date in the name), on any branch;
   - missing days: active days with no entry, today excluded (the session in progress closes it);
@@ -101,7 +101,7 @@ def report(repo: Path, days: int = 14, today: dt.date | None = None, author: str
     if not any(who):
         return []
     since = (today - dt.timedelta(days=days)).isoformat()
-    log = git(repo, "log", "--all", "--use-mailmap", f"--since={since}", "--format=%aN%x09%aE%x09%ad", "--date=short")
+    log = git(repo, "log", "--all", "--no-merges", "--use-mailmap", f"--since={since}", "--format=%aN%x09%aE%x09%ad", "--date=short")
     added = git(repo, "log", "--all", "--use-mailmap", "--diff-filter=A", "--name-only", "--format=@@%aN%x09%aE", "--", journal)
     entries = own_entries(added, who, journal)
     missing = gaps(active_days(log, who), entries, today.isoformat())

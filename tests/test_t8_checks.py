@@ -49,6 +49,22 @@ class JournalGaps(unittest.TestCase):
             import datetime as dt
             lines = jg.report(repo, days=14, today=dt.date(2026, 10, 28))
             self.assertTrue(lines and "2026-10-22" in lines[0] and "2026-10-20" not in lines[0], lines)
+            # an entry on a side branch only is "not on main yet"
+            run("switch", "-q", "-c", "side")
+            (repo / "project/journal/2026-10-22-an-s02.md").write_text("x")
+            run("add", "."); run("commit", "-qm", "journal side", date="2026-10-22T18:00:00")
+            run("switch", "-q", "main")
+            lines = jg.report(repo, days=14, today=dt.date(2026, 10, 28))
+            self.assertTrue(any("not on main yet" in l and "2026-10-22-an-s02.md" in l for l in lines), lines)
+            # a second identity mapped by .mailmap is the same author
+            (repo / ".mailmap").write_text("Ana <ana@example.org> <ana.other@example.org>\n")
+            run("config", "user.email", "ana.other@example.org")
+            env_commit = ("-c", "user.name=Ana Other")
+            (repo / "a.txt").write_text("3"); run("add", "a.txt")
+            run(*env_commit, "commit", "-qm", "work 24", date="2026-10-24T10:00:00")
+            run("config", "user.email", "ana@example.org")
+            lines = jg.report(repo, days=14, today=dt.date(2026, 10, 28))
+            self.assertTrue(lines and "2026-10-24" in lines[0], lines)
 
 
 class EvidenceCheck(unittest.TestCase):
@@ -87,6 +103,30 @@ class EvidenceCheck(unittest.TestCase):
     def test_a_comment_without_a_verdict_is_not_a_review(self):
         _, _, missing = ev.check(self.pr(["x.md"], "", ["critical"], ["change-reviewer and adversarial-reviewer: no verdict yet"]), [])
         self.assertEqual(len(missing), 2)
+
+    def test_a_pull_request_changing_the_list_is_critical(self):
+        pr = self.pr([".claude/settings.json", "project/governance/critical-paths.txt"])
+        self.assertTrue(ev.check(pr, ["none/*"])[0])
+
+    def test_could_not_run_is_not_a_review(self):
+        pr = self.pr([".github/workflows/x.yml"], comments=["change-reviewer and adversarial-reviewer not run yet; verdict: could not run"])
+        self.assertEqual(len(ev.check(pr, ev.DEFAULT_CRITICAL)[2]), 2)
+
+    def test_one_comment_cannot_stand_for_both_reviewers(self):
+        pr = self.pr(["x.md"], labels=["critical"], comments=["change-reviewer and adversarial-reviewer\nVerdict: ready"])
+        self.assertEqual(len(ev.check(pr, [])[2]), 2)
+
+    def test_placeholder_or_fenced_bypass_is_no_bypass(self):
+        self.assertEqual(ev.check(self.pr(["x.md"], "Evidence bypass: <reason>", ["critical"]), [])[1], "")
+        self.assertEqual(ev.check(self.pr(["x.md"], "```\nEvidence bypass: example\n```", ["critical"]), [])[1], "")
+
+    def test_a_ticked_box_on_a_review_not_run_is_no_review(self):
+        pr = self.pr(["x.md"], "- [x] change-reviewer not run\n- [x] **`adversarial-reviewer`**: verdict <…>", ["critical"])
+        self.assertEqual(len(ev.check(pr, [])[2]), 2)
+
+    def test_root_files_and_gates_are_critical_by_default(self):
+        for f in ("Dockerfile", "gates.sh", ".claude/roles/team.json", "web/package.json"):
+            self.assertTrue(ev.matches(f, ev.DEFAULT_CRITICAL), f)
 
     def test_project_list_replaces_defaults(self):
         with tempfile.TemporaryDirectory() as d:

@@ -17,7 +17,9 @@ the project lead by default).
 2. **The two AI reviews.** Find them in the pull request (ticked lines, comments). One is missing:
    run it now — `change-reviewer` on the diff, then `adversarial-reviewer` with the number only —
    and post its report as a comment.
-3. **The evidence check**: `python3 ../gse-light/scripts/evidence_check.py <n>`. Quote its line.
+3. **The evidence check**: `python3 ../gse-light/scripts/evidence_check.py <n>`. Quote its line. The labels `critical` and
+   `evidence-bypass` exist once in the repository (`gh label create critical`, `gh label create evidence-bypass`
+   when missing).
 4. **Keep the critical findings only**: the findings the reviewers tagged **critical**, plus each
    warning of the evidence check. Major and minor findings are listed in one line ("n major, n
    minor: in the reviews"), not asked about.

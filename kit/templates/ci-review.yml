@@ -7,6 +7,7 @@
 # Second job, evidence: on a critical pull request (label `critical`, or a file listed in
 # project/governance/critical-paths.txt), a warning when the two AI reviews or the tests are missing;
 # never a failure, and a bypass by hand (label `evidence-bypass`, or a line "Evidence bypass: <reason>").
+# A review posted as a comment does not re-run it: the skill merge-check runs the check again before a merge.
 name: review
 
 on:
@@ -53,6 +54,7 @@ jobs:
 
   evidence:
     runs-on: ubuntu-latest
+    continue-on-error: true   # a warning, never a red check (a runner or network fault included)
     steps:
       - uses: actions/checkout@v5
         with:
@@ -71,6 +73,8 @@ jobs:
         run: |
           if [ -n "$REF" ] && git -C gse-light cat-file -e "$REF^{commit}" 2>/dev/null; then
             git -C gse-light checkout -q --detach "$REF"
+          else
+            echo "::warning::.claude/KIT_VERSION missing or unknown in gse-light ('$REF'): using its main branch"
           fi
       - uses: actions/setup-python@v6
         with:

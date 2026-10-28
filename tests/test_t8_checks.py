@@ -71,7 +71,7 @@ class EvidenceCheck(unittest.TestCase):
 
     def test_review_in_a_comment_counts(self):
         _, _, missing = ev.check(self.pr(["core/tests/test_x.py"], "", ["critical"],
-                                         ["change-reviewer: Verdict ready", "adversarial-reviewer — Verdict: held"]), [])
+                                         ["change-reviewer: Verdict: ready", "adversarial-reviewer — Verdict: no break found"]), [])
         self.assertEqual(missing, [])
 
     def test_bypass_by_line_or_label(self):
@@ -79,6 +79,14 @@ class EvidenceCheck(unittest.TestCase):
         self.assertEqual((bypass, missing), ("hotfix, reviews tomorrow", []))
         _, bypass, _ = ev.check(self.pr(["x.sql"], "", ["critical", "evidence-bypass"]), [])
         self.assertEqual(bypass, "label evidence-bypass")
+
+    def test_empty_bypass_line_does_not_borrow_the_next_line(self):
+        _, bypass, missing = ev.check(self.pr(["x.md"], "Evidence bypass:\n- [ ] change-reviewer", ["critical"]), [])
+        self.assertEqual(bypass, ""); self.assertEqual(len(missing), 2)
+
+    def test_a_comment_without_a_verdict_is_not_a_review(self):
+        _, _, missing = ev.check(self.pr(["x.md"], "", ["critical"], ["change-reviewer and adversarial-reviewer: no verdict yet"]), [])
+        self.assertEqual(len(missing), 2)
 
     def test_project_list_replaces_defaults(self):
         with tempfile.TemporaryDirectory() as d:

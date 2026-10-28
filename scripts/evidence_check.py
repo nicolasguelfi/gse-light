@@ -13,7 +13,7 @@ are checked — the others are too many to review this way (the method's owner, 
 
 **Evidence** looked for in the pull request's text and comments:
   1. the two AI reviews: `change-reviewer` and `adversarial-reviewer`, each on a ticked line (`- [x]`)
-     or in a comment that gives its verdict;
+     or in a comment that gives its verdict (`Verdict: ready`, `no break found`…);
   2. tests: when code changed, at least one test file changed too.
 
 **Bypass by hand**: the label `evidence-bypass`, or a line `Evidence bypass: <reason>` in the text or
@@ -38,7 +38,8 @@ DEFAULT_CRITICAL = [
 ]
 CODE = {".py", ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".sql", ".sh", ".go", ".java", ".kt", ".rb", ".rs", ".cs", ".php", ".vue", ".svelte"}
 TEST = re.compile(r"(^|/)(tests?|e2e|__tests__|spec)/|(^|/)test_[^/]*\.py$|_test\.(py|go)$|\.(test|spec)\.[jt]sx?$")
-BYPASS = re.compile(r"^\s*Evidence bypass:\s*(\S.*)$", re.M | re.I)
+BYPASS = re.compile(r"^[ \t]*Evidence bypass:[ \t]*(\S.*)$", re.M | re.I)
+VERDICT = re.compile(r"\bverdict\b\W{0,5}(ready|not ready|no break found|breaks found|held|broke|could not)", re.I)
 REVIEWERS = ("change-reviewer", "adversarial-reviewer")
 
 
@@ -55,7 +56,7 @@ def matches(path: str, globs: list[str]) -> bool:
 
 def reviewed(name: str, body: str, comments: list[str]) -> bool:
     ticked = any(name in line and re.match(r"^\s*[-*]\s*\[[xX]\]", line) for line in body.splitlines())
-    in_comment = any(name in c and re.search(r"\bverdict\b", c, re.I) for c in comments)
+    in_comment = any(name in c and VERDICT.search(c) for c in comments)
     return ticked or in_comment
 
 
@@ -91,7 +92,7 @@ def main() -> int:
                              cwd=repo, capture_output=True, text=True, timeout=60, check=True).stdout
         pr = json.loads(out)
     except Exception as e:  # noqa: BLE001 — a warning tool never fails the run
-        print(f"evidence_check: could not read pull request {sys.argv[1]} ({e})")
+        print(f"{'::warning::' if ci else 'WARN '}evidence_check: could not read pull request {sys.argv[1]} ({e}): the check did not run")
         return 0
     critical, bypass, missing = check(pr, patterns(repo))
     n = pr.get("number", sys.argv[1])

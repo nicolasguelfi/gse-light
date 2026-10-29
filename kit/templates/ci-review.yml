@@ -1,31 +1,41 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
-# The size check of the review on evidence (template for .github/workflows/review.yml; reference design
-# ch. 8): on every pull request, the lines of code changed against the base branch. It fails only when
-# the project lead has set a threshold (project/governance/pr-size.json) and the code exceeds it;
-# tests and documentation never count. gse-light at the installed kit version, as in docs.yml.
-# Second job, evidence: on a critical pull request (label `critical`, or a file listed in
-# project/governance/critical-paths.txt), a warning when the two AI reviews or the tests are missing;
-# never a failure, and a bypass by hand (label `evidence-bypass`, or a line "Evidence bypass: <reason>").
-# A review posted as a comment does not re-run it: the skill merge-check runs the check again before a merge.
+# The checks of the review on evidence, in ONE job on every pull request (template for
+# .github/workflows/review.yml; reference design ch. 8). One job, because GitHub bills each job rounded
+# up to the minute and these steps take seconds (the method's owner, 2026-10-29: about half of a
+# project's minutes was that rounding). Its steps, in order:
+#   1. the documentation checks of project/ (check_docs: registers, links, the kit copy, the leak guard),
+#      with gse-light at the installed kit version (.claude/KIT_VERSION) — on main, docs.yml runs them;
+#   2. the size of the change (pr_size.py): fails only beyond the project lead's threshold
+#      (project/governance/pr-size.json; tests and documentation never count);
+#   3. the evidence check (evidence_check.py): on a critical pull request, or one that changes an
+#      interface, a warning when the reviews, the tests or the screen sheet are missing — never a failure.
+# Not re-run when the pull request's text is edited or labelled (that cost a run each time): the skill
+# merge-check runs the evidence check again before a merge. Drafts are skipped until ready for review.
 name: review
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, edited, labeled, unlabeled]
+    types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
   contents: read
   pull-requests: read
 
+concurrency:   # a newer push to the same pull request cancels the run it makes obsolete
+  group: review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
-  size:
+  check:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
         with:
           path: repo
-          fetch-depth: 0
+          fetch-depth: 0   # the base branch (size, critical paths) and every commit message (leak guard)
       - name: Read the installed kit version
         id: kit
         run: echo "ref=$(tr -d '[:space:]' < repo/.claude/KIT_VERSION 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
@@ -38,49 +48,29 @@ jobs:
         env:
           REF: ${{ steps.kit.outputs.ref }}
         run: |
+          # actions/checkout takes a branch, a tag or a full 40-character SHA, not the short hash
+          # that install.sh records: resolve it here, after the full fetch
           if [ -n "$REF" ] && git -C gse-light cat-file -e "$REF^{commit}" 2>/dev/null; then
             git -C gse-light checkout -q --detach "$REF"
+            echo "gse-light at $REF (the version the kit was installed from)"
           else
-            echo "::warning::.claude/KIT_VERSION missing or unknown in gse-light ('$REF'): using its main branch"
+            echo "::warning::.claude/KIT_VERSION missing or unknown in gse-light ('$REF'): checking against its main branch — refresh the kit with ../gse-light/kit/install.sh"
           fi
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+      - name: Documentation checks (same as local)
+        working-directory: repo
+        run: python3 ../gse-light/scripts/check_docs.py
       - name: Size of the change (code only)
+        if: success() || failure()   # reported even when the documentation checks failed
         working-directory: repo
         env:
           BASE: ${{ github.base_ref }}
         run: python3 ../gse-light/scripts/pr_size.py --base "origin/$BASE"
-
-  evidence:
-    runs-on: ubuntu-latest
-    continue-on-error: true   # a warning, never a red check (a runner or network fault included)
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          path: repo
-          fetch-depth: 0   # the base branch, where the list of critical paths is read
-      - name: Read the installed kit version
-        id: kit
-        run: echo "ref=$(tr -d '[:space:]' < repo/.claude/KIT_VERSION 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v5
-        with:
-          repository: nicolasguelfi/gse-light
-          path: gse-light
-          fetch-depth: 0
-      - name: gse-light at the installed kit version
-        env:
-          REF: ${{ steps.kit.outputs.ref }}
-        run: |
-          if [ -n "$REF" ] && git -C gse-light cat-file -e "$REF^{commit}" 2>/dev/null; then
-            git -C gse-light checkout -q --detach "$REF"
-          else
-            echo "::warning::.claude/KIT_VERSION missing or unknown in gse-light ('$REF'): using its main branch"
-          fi
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-      - name: Evidence of a critical pull request (a warning, never a failure)
+      - name: Evidence (a warning, never a failure)
+        if: success() || failure()
+        continue-on-error: true
         working-directory: repo
         env:
           GH_TOKEN: ${{ github.token }}

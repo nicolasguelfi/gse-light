@@ -107,7 +107,7 @@ if [ ! -f .github/workflows/docs.yml ]; then
 fi
 if [ ! -f .github/workflows/review.yml ]; then
   cp "$kit/templates/ci-review.yml" .github/workflows/review.yml
-  echo "created .github/workflows/review.yml — the size of each pull request (scripts/pr_size.py); fails only beyond the project lead's threshold, project/governance/pr-size.json"
+  echo "created .github/workflows/review.yml — one job per pull request: documentation checks, size (scripts/pr_size.py; fails only beyond the project lead's threshold), evidence, project/governance/pr-size.json"
 fi
 if [ ! -f .github/pull_request_template.md ]; then
   cp "$kit/templates/pull_request_template.md" .github/pull_request_template.md

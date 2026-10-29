@@ -298,7 +298,8 @@ and after any change in `../gse-light`: links (including links to the method), t
 and the cockpit counts, the kit files changed here (a warning), the shared floor of
 `.claude/settings.json` (a failure if a `deny` rule or the start hook is gone), the deck's freshness, and the
 **leak guard** — no term of `project/private-terms.txt` in `gse-light`. CI runs the same
-script (`.github/workflows/docs.yml`) next to the gates (`.github/workflows/gates.yml`).
+script (`.github/workflows/review.yml` on pull requests, `docs.yml` on `main`) next to the gates
+(`.github/workflows/gates.yml`, which a change of documents only does not run).
 
 ## Git
 

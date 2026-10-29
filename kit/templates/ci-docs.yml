@@ -1,18 +1,20 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 right-on-skill (https://rightonskill.odoo.com/) - gse-light by Nicolas Guelfi (https://github.com/nicolasguelfi/gse-light)
 # SPDX-License-Identifier: LicenseRef-PolyForm-Noncommercial-1.0.0  (non-commercial; see LICENSE.md)
-# Documentation gates of the project's repository (template for .github/workflows/docs.yml): the
-# registers and links of project/, its copy of the kit, and the leak guard on gse-light
-# (project/private-terms.txt). gse-light is checked out at the commit recorded in
-# .claude/KIT_VERSION (written by kit/install.sh), so a newer kit on GitHub never turns this
-# repository's CI red by itself: the copies of the skills are compared with the version they
-# were installed from, and a copy the team changed is a warning, never a failure. Full history (fetch-depth 0): the short hash resolves, and the leak guard
-# reads every commit message.
+# Documentation gates of the project's repository on main (template for .github/workflows/docs.yml):
+# the registers and links of project/, its copy of the kit, and the leak guard on gse-light
+# (project/private-terms.txt), after every merge. On pull requests the same checks run as the first
+# step of review.yml's single job (one billed job instead of three; the method's owner, 2026-10-29).
+# gse-light is checked out at the commit recorded in .claude/KIT_VERSION (written by kit/install.sh),
+# so a newer kit on GitHub never turns this repository's CI red by itself: the copies of the skills are
+# compared with the version they were installed from, and a copy the team changed is a warning, never
+# a failure. Full history (fetch-depth 0): the short hash resolves, and the leak guard reads every
+# commit message.
 name: docs
 
 on:
-  pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,10 +22,12 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
         with:
           path: repo
+          fetch-depth: 0   # the base branch (size, critical paths) and every commit message (leak guard)
       - name: Read the installed kit version
         id: kit
         run: echo "ref=$(tr -d '[:space:]' < repo/.claude/KIT_VERSION 2>/dev/null || true)" >> "$GITHUB_OUTPUT"

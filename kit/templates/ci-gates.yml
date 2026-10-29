@@ -11,17 +11,29 @@
 # in the same commit as gates.sh.
 name: gates
 
+# Minutes (the method's owner, 2026-10-29): a change of documents only (project/, Markdown, .claude/)
+# runs no gates — nothing the gates test changed, and review.yml still checks the documents; a draft
+# pull request waits until it is ready for review; a newer push cancels the run it makes obsolete.
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore: ["project/**", "**/*.md", ".claude/**"]
   push:
     branches: [main]   # extra branches: fill after the design phase from the environments and promotion path decision
+    paths-ignore: ["project/**", "**/*.md", ".claude/**"]
 
 permissions:
   contents: read
 
+concurrency:
+  group: gates-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}   # never cancel a run of main
+
 jobs:
   gates:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     # services (database, queue…): fill after the design phase from the data store decision
     steps:
       - uses: actions/checkout@v5

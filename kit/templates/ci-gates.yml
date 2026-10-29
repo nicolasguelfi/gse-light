@@ -11,22 +11,25 @@
 # in the same commit as gates.sh.
 name: gates
 
-# Minutes (the method's owner, 2026-10-29): a change of documents only (project/, Markdown, .claude/)
-# runs no gates — nothing the gates test changed, and review.yml still checks the documents; a draft
-# pull request waits until it is ready for review; a newer push cancels the run it makes obsolete.
+# Minutes (the method's owner, 2026-10-29): a change of the project's record only — meetings, journal,
+# cockpit, governance, planning — or of the kit's .claude/ runs no gates: no gate reads them, and
+# review.yml still checks the documents. The requirements and the design are NOT left out: the
+# requirement-to-test map and the tests read them. A project whose code reads one of the paths below
+# removes it from both lists. A draft pull request waits until it is ready for review; a newer push
+# cancels the run it makes obsolete.
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
-    paths-ignore: ["project/**", "**/*.md", ".claude/**"]
+    paths-ignore: ["project/meetings/**", "project/journal/**", "project/BRIEFING.md", "project/governance/**", "project/planning/**", ".claude/**"]
   push:
     branches: [main]   # extra branches: fill after the design phase from the environments and promotion path decision
-    paths-ignore: ["project/**", "**/*.md", ".claude/**"]
+    paths-ignore: ["project/meetings/**", "project/journal/**", "project/BRIEFING.md", "project/governance/**", "project/planning/**", ".claude/**"]
 
 permissions:
   contents: read
 
 concurrency:
-  group: gates-${{ github.event.pull_request.number || github.ref }}
+  group: gates-${{ github.event.pull_request.number || github.sha }}   # main: one group per commit, never cancelled
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}   # never cancel a run of main
 
 jobs:

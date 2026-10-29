@@ -452,7 +452,7 @@ def missing_recommendations(spec):
     multi = spec.get("mode", "single") == "multi"
     bad = []
     for g in spec["groups"]:
-        n = sum(1 for it in g.get("items", []) if it.get("recommended") is True)
+        n = sum(1 for it in (g.get("items") or []) if it.get("recommended") is True)
         if not str(g.get("recommend") or "").strip() or (n < 1 if multi else n != 1):
             bad.append(g["key"])
     return bad

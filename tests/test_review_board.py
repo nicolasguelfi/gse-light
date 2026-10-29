@@ -29,6 +29,9 @@ class Recommendations(unittest.TestCase):
         spec = {"mode": "multi", "groups": [group("a", flags=(True, True)), group("b", flags=(False, False))]}
         self.assertEqual(rb.missing_recommendations(spec), ["b"])
 
+    def test_no_items_is_no_recommendation(self):
+        self.assertEqual(rb.missing_recommendations({"groups": [{"key": "a", "recommend": "p1", "items": None}]}), ["a"])
+
     def test_blank_sentence_or_string_flags_are_no_recommendation(self):
         spec = {"groups": [group("a", recommend="   "), group("b", flags=("false", False)), group("c", flags=("no", False))]}
         self.assertEqual(rb.missing_recommendations(spec), ["a", "b", "c"])

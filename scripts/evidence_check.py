@@ -56,7 +56,7 @@ TEST = re.compile(r"(^|/)(tests?|e2e|__tests__|spec)/|(^|/)test_[^/]*\.py$|_test
 BYPASS = re.compile(r"^[ \t]*Evidence bypass:[ \t]*(\S.*)$", re.M | re.I)
 # the verdicts the two reviewers give (kit/agents): "could not review" is not a review
 VERDICT = re.compile(r"\bverdict\b\W{0,5}(ready after fixes|ready|not ready|no break found|breaks found|usable after fixes|not usable|usable)\b", re.I)
-NOT_DONE = re.compile(r"\b(?:not run|not yet|to run|pending|could not|to do|not reviewed)\b|<[^>]*>", re.I)  # a box ticked on a review not done
+NOT_DONE = re.compile(r"\b(?:not run|not yet|to run|pending|could not|to do)\b|\bverdict\W{0,5}not reviewed\b|<[^>]*>", re.I)  # a box ticked on a review not done
 FENCE = re.compile(r"```.*?```", re.S)
 REVIEWERS = ("change-reviewer", "adversarial-reviewer")
 ALL_REVIEWERS = (*REVIEWERS, "ux-reviewer")

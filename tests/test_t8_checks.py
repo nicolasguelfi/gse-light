@@ -185,6 +185,9 @@ class InterfaceEvidence(unittest.TestCase):
     def test_a_line_naming_two_reviewers_counts_for_neither(self):
         self.assertFalse(ev.reviewed("change-reviewer", "- [x] change-reviewer and ux-reviewer: verdict ready", []))
 
+    def test_the_words_not_reviewed_in_a_description_do_not_cancel_a_review(self):
+        self.assertTrue(ev.reviewed("change-reviewer", '- [x] **`change-reviewer`**: verdict ready — fixed: "not reviewed" is no review', []))
+
     def test_a_change_reviewer_line_is_no_ux_review(self):
         pr = self.pr(["web/ui/src/App.tsx", "project/design/screens/x.md"], body="- [x] **`change-reviewer`**: ready")
         self.assertEqual(len(ev.ui_check(pr, ev.DEFAULT_UI)[1]), 1)

@@ -71,6 +71,7 @@ jobs:
       - name: Evidence (a warning, never a failure)
         if: success() || failure()
         continue-on-error: true
+        timeout-minutes: 3   # a hanging call never turns the review check red
         working-directory: repo
         env:
           GH_TOKEN: ${{ github.token }}

@@ -13,9 +13,13 @@ the project lead by default).
 ## Steps
 
 1. **The pull request's number**, and its state: `gh pr view <n> --json title,state,mergeable,statusCheckRollup,labels`.
-   A red gate stops here: never propose a merge with a red gate. A pull request that changes only
-   documents (`project/`, Markdown, `.claude/`) runs no `gates` job: nothing to wait for; its `review`
-   check (documentation, size, evidence) must be green.
+   A red gate stops here: never propose a merge with a red gate. A missing `gates` check is never read as
+   green: list the files (`gh pr view <n> --json files -q '.files[].path'`) and accept it only when
+   every path is in `gates.yml`'s `paths-ignore` (the project's record — meetings, journal, cockpit,
+   governance, planning — or `.claude/`); its `review` check (documentation, size, evidence) must then
+   be green. Any other change — the requirements included — needs its green `gates`; a `gates`
+   skipped on a pull request ready for review, or absent for another reason (a billing stop, more than
+   300 files changed), stops the merge.
 2. **The two AI reviews.** Find them in the pull request (ticked lines, comments). One is missing:
    run it now — `change-reviewer` on the diff, then `adversarial-reviewer` with the number only —
    and post its report as a comment. A pull request that changes a screen also carries the

@@ -252,7 +252,7 @@ this repository's own sessions join them. Keep each to two lines; move a rule up
 "Standing rules" when it holds everywhere.
 
 - A missed session close is caught up at the next session start (the hook lists the days with commits
-  and no entry; `session-close catch-up` rebuilds one entry per day from git, marked as reconstructed),
+  and no entry; `session-close catch-up` rebuilds one entry per missed session from git, marked as reconstructed),
   never by editing an old entry — 2026-10-28 — after two weeks a developer had no entry on main and the
   Project Advisor no view of the work.
 

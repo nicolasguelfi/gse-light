@@ -172,6 +172,19 @@ class InterfaceEvidence(unittest.TestCase):
         placeholder = self.pr(["web/ui/src/App.tsx"], body="Screen sheet: <path>\n- [x] **`ux-reviewer`**: usable")
         self.assertEqual(len(ev.ui_check(placeholder, ev.DEFAULT_UI)[1]), 1)
 
+    def test_not_reviewed_is_no_review_and_the_template_line_counts(self):
+        pr = self.pr(["web/ui/src/App.tsx"], body="- [x] **`ux-reviewer`**: verdict not reviewed\n\nScreen sheet: project/design/screens/x.md")
+        self.assertEqual(len(ev.ui_check(pr, ev.DEFAULT_UI)[1]), 1)
+        template = Path(__file__).resolve().parent.parent / "kit/templates/pull_request_template.md"
+        filled = template.read_text(encoding="utf-8").replace("<project/design/screens/….md, when a screen changes; delete otherwise>", "project/design/screens/x.md")
+        self.assertEqual(ev.ui_check(self.pr(["web/ui/src/App.tsx"], body=filled), ev.DEFAULT_UI)[1][0].startswith("no ux-reviewer"), True)
+
+    def test_test_files_alone_are_no_interface_change(self):
+        self.assertEqual(ev.ui_check(self.pr(["web/ui/src/App.test.tsx"]), ev.DEFAULT_UI), (False, []))
+
+    def test_a_line_naming_two_reviewers_counts_for_neither(self):
+        self.assertFalse(ev.reviewed("change-reviewer", "- [x] change-reviewer and ux-reviewer: verdict ready", []))
+
     def test_a_change_reviewer_line_is_no_ux_review(self):
         pr = self.pr(["web/ui/src/App.tsx", "project/design/screens/x.md"], body="- [x] **`change-reviewer`**: ready")
         self.assertEqual(len(ev.ui_check(pr, ev.DEFAULT_UI)[1]), 1)

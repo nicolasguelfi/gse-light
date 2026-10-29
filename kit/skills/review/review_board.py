@@ -446,6 +446,18 @@ def render_page(spec, groups, L, lang, page=None, pages=None, max_px=0, fragment
             f'{head}</head><body>\n{body}\n</body></html>\n')
 
 
+def missing_recommendations(spec):
+    """The keys of the subjects with no recommendation: a blank `recommend` sentence, or not exactly one
+    item with `"recommended": true` (at least one when the board's mode is "multi")."""
+    multi = spec.get("mode", "single") == "multi"
+    bad = []
+    for g in spec["groups"]:
+        n = sum(1 for it in g.get("items", []) if it.get("recommended") is True)
+        if not str(g.get("recommend") or "").strip() or (n < 1 if multi else n != 1):
+            bad.append(g["key"])
+    return bad
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -487,11 +499,11 @@ def main():
     dupes = sorted({k for k in keys if keys.count(k) > 1})
     if dupes:
         raise SystemExit(f"duplicate subject keys (the copied line would be ambiguous): {dupes}")
-    no_reco = [g["key"] for g in groups if not g.get("recommend")
-               or sum(1 for it in g.get("items", []) if it.get("recommended")) != 1]
+    no_reco = missing_recommendations(spec)
     if no_reco:
-        raise SystemExit(f"every subject needs its \"recommend\" sentence and exactly one item marked "
-                         f"\"recommended\": {no_reco} (the method's owner, 2026-10-29: a recommendation for "
+        raise SystemExit(f"every subject needs its \"recommend\" sentence and its recommended item(s) "
+                         f"(\"recommended\": true — exactly one in a single-choice board, at least one in a "
+                         f"\"multi\" one): {no_reco} (the method's owner, 2026-10-29: a recommendation for "
                          f"each question, never for the first one only)")
     lang = a.lang or spec.get("lang") or "en"
     custom = spec.get("labels") or {}

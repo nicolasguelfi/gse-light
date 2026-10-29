@@ -1,6 +1,6 @@
 ---
 name: merge-check
-description: Before merging a pull request of the project's repository - gather the critical findings of its two AI reviews (change-reviewer, adversarial-reviewer) and the evidence check, show them to the person merging as a review board (one tick per critical point, a comment on each), record the ticks on the pull request, then merge. Use whenever someone asks to merge, approve or "accept" a pull request.
+description: Before merging a pull request of the project's repository - gather the critical findings of its two AI reviews (change-reviewer, adversarial-reviewer), of ux-reviewer when a screen changed, and the evidence check, show them to the person merging as a review board (one tick per critical point, a comment on each), record the ticks on the pull request, then merge. Use whenever someone asks to merge, approve or "accept" a pull request.
 ---
 
 # Merge check — the person ticks the critical points, then merges
@@ -16,11 +16,12 @@ the project lead by default).
    A red gate stops here: never propose a merge with a red gate.
 2. **The two AI reviews.** Find them in the pull request (ticked lines, comments). One is missing:
    run it now — `change-reviewer` on the diff, then `adversarial-reviewer` with the number only —
-   and post its report as a comment.
+   and post its report as a comment. A pull request that changes a screen also carries the
+   `ux-reviewer` review (skill `ui-design`): missing, run it with the screen sheet's path.
 3. **The evidence check**: `python3 ../gse-light/scripts/evidence_check.py <n>`. Quote its line. The labels `critical` and
    `evidence-bypass` exist once in the repository (`gh label create critical`, `gh label create evidence-bypass`
    when missing).
-4. **Keep the critical findings only**: the findings the reviewers tagged **critical**, plus each
+4. **Keep the critical findings only**: the findings the reviewers tagged **critical** (`ux-reviewer` included), plus each
    warning of the evidence check. Major and minor findings are listed in one line ("n major, n
    minor: in the reviews"), not asked about.
 5. **None critical**: say so in one line and ask the merge go-ahead with one QCM (merge / wait).

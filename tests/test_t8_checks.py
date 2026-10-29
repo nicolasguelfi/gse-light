@@ -33,6 +33,16 @@ class JournalGaps(unittest.TestCase):
         self.assertEqual(jg.gaps({"2026-10-20", "2026-10-21", "2026-10-28"}, {"2026-10-20-an-s01.md"}, "2026-10-28"),
                          ["2026-10-21"])
 
+    def test_late_commits_after_the_days_entry(self):
+        times = {"2026-10-15-s17.md": "2026-10-15T13:01:00+02:00", "2026-10-16-s18.md": "2026-10-16T18:00:00+02:00"}
+        log = ("Ana\tana@example.org\t2026-10-15\t2026-10-15T12:00:00+02:00\n"
+               "Ana\tana@example.org\t2026-10-15\t2026-10-15T14:55:00+02:00\n"
+               "Ana\tana@example.org\t2026-10-15\t2026-10-15T17:03:00+02:00\n"
+               "Ana\tana@example.org\t2026-10-16\t2026-10-16T18:40:00+02:00\n"
+               "Ben\tben@example.org\t2026-10-16\t2026-10-16T23:00:00+02:00\n")
+        # 10-15: two commits after the entry, beyond the hour; 10-16: a fix within the hour, Ben not counted
+        self.assertEqual(jg.late_commits(log, times, ME), ["2026-10-15 (2 commit(s))"])
+
     def test_report_on_a_real_repository(self):
         with tempfile.TemporaryDirectory() as d:
             repo = Path(d)
@@ -65,6 +75,10 @@ class JournalGaps(unittest.TestCase):
             run("config", "user.email", "ana@example.org")
             lines = jg.report(repo, days=14, today=dt.date(2026, 10, 28))
             self.assertTrue(lines and "2026-10-24" in lines[0], lines)
+            # a commit three hours after the entry of 10-20: a possible second session
+            (repo / "a.txt").write_text("4"); run("add", "a.txt"); run("commit", "-qm", "evening", date="2026-10-20T21:00:00")
+            lines = jg.report(repo, days=14, today=dt.date(2026, 10, 28))
+            self.assertTrue(any("more than an hour" in l and "2026-10-20 (1 commit(s))" in l for l in lines), lines)
 
 
 class EvidenceCheck(unittest.TestCase):

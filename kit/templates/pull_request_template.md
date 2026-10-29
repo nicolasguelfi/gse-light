@@ -38,6 +38,7 @@ One pull request = one ticket and one use case.
 
 - [ ] **`change-reviewer`** (author's session): verdict <…> — findings fixed or answered: <…>
 - [ ] **`adversarial-reviewer`** (independent, given only this pull request's number): verdict <…> — what broke: <…>; not tested: <…>
+- [ ] **`ux-reviewer`** (only when a screen changes; skill `ui-design`): verdict <…> — on the screen sheet `project/design/screens/<…>.md`; findings fixed or answered: <…>
 
 ## Approval checklist (the project lead)
 

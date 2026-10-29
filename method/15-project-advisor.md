@@ -122,7 +122,7 @@ when the team is full time.
 | **Last week · hand-over** | final retrospective; lessons kept in the method | runbooks, hand-over document | Ask Claude: hand-over document, last journal entry |
 | **At any time** | decides changes to the method and the kit | proposes a lesson when something did not fit | Automatic: records the lesson, dated, once agreed |
 
-Everyone opens Claude Code in the project's repository. The kit's seven skills for the team
+Everyone opens Claude Code in the project's repository. The kit's eight skills for the team
 write each person's journal entries and new 🔴 records in `project/`; the Advisor's six
 skills (`advisor`, `meeting`, `slides`, `cockpit-update`, `method-lesson`,
 `genai-onboarding`) check the git user against the roles record and stop for anyone else;

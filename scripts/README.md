@@ -15,7 +15,7 @@ or by hand:
 | `situation.py` | where the project stands this week, next meeting, next step (printed by the session-start hook; the Advisor's skills read it) | Python only |
 | `session_start.py` | the session-start hook of every session: the git user and their role, the next meeting, the person's missed session closes; for the Project Advisor also his week's next step, his tasks and the last hand-over | Python only |
 | `journal_gaps.py` | missed session closes: days with commits and no journal entry, commits more than an hour after a day's entry, entries not yet merged (`--author` for another person) | Python only |
-| `evidence_check.py` | the evidence check of a critical pull request: a warning, never a block, a bypass by hand | `gh` |
+| `evidence_check.py` | the evidence check of a critical pull request, and of any pull request that changes an interface (screen sheet, `ux-reviewer`): a warning, never a block, a bypass by hand | `gh` |
 | `req_coverage.py` | the coverage of the requirements, functional and non-functional, and of the user paths by end-to-end tests (`check_docs.py` shows it as warnings) | Python only |
 | `llm_call.py` | one paid model call (Gemini, or a text model through OpenRouter), cost logged in `project/journal/llm-costs.csv` | the environment of §1 (`google-genai`) |
 | `meeting/meeting.sh` | records the meeting with ffmpeg (macOS), or imports a file recorded elsewhere | `ffmpeg` |

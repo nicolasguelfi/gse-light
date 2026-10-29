@@ -21,6 +21,12 @@ a comment (not in a code block; the placeholder itself is no reason). The check 
 The list of critical paths is read from the base branch: a pull request cannot change the list it is
 judged by, and a pull request that changes the list is critical.
 
+**Interfaces** (the method's owner, 2026-10-29; skill `ui-design`), on **every** pull request: one that
+changes an interface file (`project/governance/ui-paths.txt` on the base branch, else the defaults
+below; test files and `project/` left out) needs a screen sheet (a file of `project/design/screens/` in the pull
+request, or a line `Screen sheet: <path>`) and the agent `ux-reviewer`'s review (a ticked line, or a
+comment with its verdict: `usable`, `usable after fixes`, `not usable`).
+
 Prints one line per missing piece of evidence (as a GitHub Actions `::warning::` when it runs in CI).
 Exit code 0 always: the person merging decides.
 """
@@ -41,27 +47,32 @@ DEFAULT_CRITICAL = [
     "**/package-lock.json",
 ]
 LIST = "project/governance/critical-paths.txt"
+DEFAULT_UI = ["**/*.tsx", "**/*.jsx", "**/*.vue", "**/*.svelte", "**/*.css", "**/*.scss", "**/*.html"]
+UI_LIST = "project/governance/ui-paths.txt"
+SCREENS = "project/design/screens/"
+SHEET = re.compile(r"^[ \t]*Screen sheet:[ \t]*(\S.*)$", re.M | re.I)
 CODE = {".py", ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".sql", ".sh", ".go", ".java", ".kt", ".rb", ".rs", ".cs", ".php", ".vue", ".svelte"}
 TEST = re.compile(r"(^|/)(tests?|e2e|__tests__|spec)/|(^|/)test_[^/]*\.py$|_test\.(py|go)$|\.(test|spec)\.[jt]sx?$")
 BYPASS = re.compile(r"^[ \t]*Evidence bypass:[ \t]*(\S.*)$", re.M | re.I)
 # the verdicts the two reviewers give (kit/agents): "could not review" is not a review
-VERDICT = re.compile(r"\bverdict\b\W{0,5}(ready after fixes|ready|not ready|no break found|breaks found)\b", re.I)
+VERDICT = re.compile(r"\bverdict\b\W{0,5}(ready after fixes|ready|not ready|no break found|breaks found|usable after fixes|not usable|usable)\b", re.I)
 NOT_DONE = re.compile(r"\b(?:not run|not yet|to run|pending|could not|to do)\b|<[^>]*>", re.I)  # a box ticked on a review not done
 FENCE = re.compile(r"```.*?```", re.S)
 REVIEWERS = ("change-reviewer", "adversarial-reviewer")
+ALL_REVIEWERS = (*REVIEWERS, "ux-reviewer")
 
 
-def patterns(repo: Path, base: str = "") -> list[str]:
-    """The critical paths of the **base** branch when it is known (a pull request cannot change the list
-    it is judged by), else of the checkout; the kit's defaults without a list."""
+def patterns(repo: Path, base: str = "", path: str = LIST, default: list[str] | None = None) -> list[str]:
+    """The globs of `path` (the critical paths by default) on the **base** branch when it is known (a pull
+    request cannot change the list it is judged by), else of the checkout; the kit's defaults without a list."""
     text = ""
     if base:
-        r = subprocess.run(["git", "show", f"{base}:{LIST}"], cwd=repo, capture_output=True, text=True)
+        r = subprocess.run(["git", "show", f"{base}:{path}"], cwd=repo, capture_output=True, text=True)
         text = r.stdout if r.returncode == 0 else ""
-    elif (repo / LIST).exists():
-        text = (repo / LIST).read_text(encoding="utf-8")
+    elif (repo / path).exists():
+        text = (repo / path).read_text(encoding="utf-8")
     lines = [l.strip() for l in text.splitlines() if l.strip() and not l.lstrip().startswith("#")]
-    return lines or DEFAULT_CRITICAL
+    return lines or (DEFAULT_CRITICAL if default is None else default)
 
 
 def matches(path: str, globs: list[str]) -> bool:
@@ -71,7 +82,7 @@ def matches(path: str, globs: list[str]) -> bool:
 def reviewed(name: str, body: str, comments: list[str]) -> bool:
     """A ticked line of the pull request naming this reviewer (and not the other) that does not say the
     review is not done, or a comment whose first line names this reviewer and which gives a verdict."""
-    other = [r for r in REVIEWERS if r != name]
+    other = [r for r in ALL_REVIEWERS if r != name]
     def alone(line: str) -> bool:  # names this reviewer, not the other one
         return name in line and not any(o in line for o in other)
     ticked = any(alone(line) and not NOT_DONE.search(line) and re.match(r"^\s*[-*]\s*\[[xX]\]", line) for line in body.splitlines())
@@ -106,6 +117,25 @@ def check(pr: dict, globs: list[str]) -> tuple[bool, str, list[str]]:
     return True, "", missing
 
 
+def ui_check(pr: dict, globs: list[str]) -> tuple[bool, list[str]]:
+    """(changes an interface?, missing evidence): a screen sheet and the `ux-reviewer` review."""
+    files = [f["path"] for f in pr.get("files", [])]
+    ui = [f for f in files if matches(f, globs) and not TEST.search(f) and not f.startswith("project/")]  # project/: the record, not the product
+    if not ui:
+        return False, []
+    body = pr.get("body") or ""
+    comments = [c.get("body") or "" for c in pr.get("comments", [])]
+    text = FENCE.sub("", "\n".join([body, *comments]))
+    sheet = any(f.startswith(SCREENS) for f in files) or any(
+        not re.fullmatch(r"<[^>]*>", m.group(1).strip()) for m in SHEET.finditer(text))
+    missing = []
+    if not sheet:
+        missing.append(f"{len(ui)} interface file(s) changed and no screen sheet (a file of {SCREENS}, or a line `Screen sheet: <path>`; skill ui-design)")
+    if not reviewed("ux-reviewer", body, comments):
+        missing.append("no ux-reviewer review found (a ticked line in the pull request, or a comment with its verdict)")
+    return True, missing
+
+
 def main() -> int:
     if len(sys.argv) != 2 or sys.argv[1] in ("-h", "--help"):
         print(__doc__)
@@ -122,6 +152,11 @@ def main() -> int:
     base = f"origin/{pr['baseRefName']}" if pr.get("baseRefName") else ""
     critical, bypass, missing = check(pr, patterns(repo, base))
     n = pr.get("number", sys.argv[1])
+    is_ui, ui_missing = ui_check(pr, patterns(repo, base, UI_LIST, DEFAULT_UI))
+    for m in ui_missing:
+        print(f"::warning::interface #{n}: {m}" if ci else f"WARN interface #{n}: {m}")
+    if is_ui and not ui_missing:
+        print(f"evidence_check: #{n} changes an interface and carries its screen sheet and ux-reviewer review.")
     if not critical:
         print(f"evidence_check: #{n} is not critical (no label `critical`, no file in the critical paths): nothing to check.")
     elif bypass:

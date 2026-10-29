@@ -34,11 +34,11 @@ Specification
      "heading": "1. Where the tests run", "meta": "design",
      "notes":   [{"label":"Problem","text":"…","tone":"accent"},
                  {"label":"Measured","text":"…"}],
-     "recommend": "p1: …",                     # the recommended answer, one sentence, always
+     "recommend": "p1: …",                     # the recommended answer, one sentence, always (required)
      "details": [{"summary":"Specification","text":"…","open":true}],
      "items":   [{"label":"p1","title":"Proposal 1","meta":"~20 min",
                   "facts":"who does it · cost",
-                  "pros":["…"], "cons":["…"], "recommended":true,
+                  "pros":["…"], "cons":["…"], "recommended":true,   # exactly one per subject (required)
                   "media":"/path/a.png", "caption":"…"}]
   }]
 }
@@ -487,6 +487,12 @@ def main():
     dupes = sorted({k for k in keys if keys.count(k) > 1})
     if dupes:
         raise SystemExit(f"duplicate subject keys (the copied line would be ambiguous): {dupes}")
+    no_reco = [g["key"] for g in groups if not g.get("recommend")
+               or sum(1 for it in g.get("items", []) if it.get("recommended")) != 1]
+    if no_reco:
+        raise SystemExit(f"every subject needs its \"recommend\" sentence and exactly one item marked "
+                         f"\"recommended\": {no_reco} (the method's owner, 2026-10-29: a recommendation for "
+                         f"each question, never for the first one only)")
     lang = a.lang or spec.get("lang") or "en"
     custom = spec.get("labels") or {}
     unknown = sorted(set(custom) - set(LABELS["en"]))

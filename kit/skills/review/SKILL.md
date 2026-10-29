@@ -53,7 +53,9 @@ in the line), a `heading`, the `notes` — **"Problem"** restated in plain words
 **"Measured"**: the facts with their commands — a `recommend` sentence, and the `items`.
 **Per proposal** (`items[]`): `label` (`p1`, `p2`…), `title`, `facts` (who does it, in which
 mark — Person, Ask Claude, Automatic — and its cost), `pros`, `cons` (each a list: say every
-consequence, not only the obvious one), `recommended` on one of them.
+consequence, not only the obvious one), `recommended` on **exactly one of them, in every subject** —
+the generator refuses a subject without its `recommend` sentence and its one recommended proposal
+(the method's owner, 2026-10-29: a board recommended only its first question).
 
 The `intro` is the only field that accepts HTML. It is the **instructions frame** and it
 says, every time: what the person must do (one tick per subject? several?); what their

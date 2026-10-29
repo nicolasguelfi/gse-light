@@ -20,7 +20,7 @@ Status: v0.7 · 2026-10-09 · one repository per project, one kit for every role
 
 | Word | Meaning |
 |---|---|
-| **Kit** | the files that make every Claude Code session in the project's repository follow the method — `CLAUDE.md`, thirteen skills, five agents, permissions and the start hook, a `gates.sh` stub, three CI workflows, a pull-request template, the `project/` skeleton — installed with one command, committed with the code |
+| **Kit** | the files that make every Claude Code session in the project's repository follow the method — `CLAUDE.md`, fourteen skills, seven agents, permissions and the start hook, a `gates.sh` stub, three CI workflows, a pull-request template, the `project/` skeleton — installed with one command, committed with the code |
 | **Project folder** `project/` | the shared record inside the project's repository; created by the kit from a skeleton, never touched again by the kit |
 | **Day 0** | each person's first hour on the project — clone, `.env`, `check.sh`, first session |
 | **Gates** | the project's automated checks (tests, lint, end-to-end) run by `gates.sh` and the CI before a merge; on Day 0 a stub that says "no gates yet" |

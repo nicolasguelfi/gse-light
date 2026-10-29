@@ -175,18 +175,30 @@ pass" without it.
   `project/governance/critical-paths.txt`), `scripts/evidence_check.py` warns when the reviews or
   the tests are missing — a warning, never a block, bypassed by hand with the label
   `evidence-bypass` or a line `Evidence bypass: <reason>`.
+- **Interfaces start from the users' task** (the method's owner, 2026-10-29): before building or
+  changing a screen, the skill `ui-design` — a screen sheet from the users' real tasks
+  (`project/design/screens/`), two or three mock-ups the person compares on a review board, then the
+  agent `ux-reviewer` on screenshots before the pull request; `evidence_check.py` warns on a pull
+  request that changes an interface file without the sheet or that review. The project's own
+  interface choices (components, palette, density) are a `DD` record, never a default.
+- **Claude prepares, the person decides** (the method's owner, 2026-10-29): any task that needs a
+  person's choice or judgement — picking examples, a mock-up, a plan, a selection — starts with Claude
+  preparing a first proposal from the sources, shown on a review board (skill `review`) to the person
+  in charge, so that the human step is a choice and a correction, not a blank page. A ticket that
+  assigns such a task says so.
 - **Every session ends with `session-close`**: a journal entry in `project/journal/`
   (one `YYYY-MM-DD-<initials>-sNN.md` per session, never rewritten — research data on
   AI-assisted engineering) and one row in `project/journal/metrics.csv`; the skill commits
   those paths only and pushes on the person's go-ahead. A missed close is caught up: the start
   hook lists the days with commits and no entry, and `session-close catch-up` writes one entry
-  per day, rebuilt from git and marked as reconstructed.
+  per missed session (as the record of the time counts them), rebuilt from git and marked as
+  reconstructed.
 
 ## If you are a developer's or the project lead's session
 
 - **Your skills**: `design-phase` (the project lead, W1), `decision-record`, `review`,
-  `merge-check`, `session-close`, `verify-claim`, `upskilling`; your agents: `project-navigator` (at your
-  first message), `change-reviewer`, `adversarial-reviewer`. The six other
+  `merge-check`, `ui-design`, `session-close`, `verify-claim`, `upskilling`; your agents: `project-navigator` (at your
+  first message), `change-reviewer`, `adversarial-reviewer`, `ux-reviewer` (a pull request that changes a screen). The six other
   skills (`advisor`, `meeting`, `slides`, `cockpit-update`, `method-lesson`,
   `genai-onboarding`) and the agents `delivery-auditor`, `minutes-verifier` and
   `design-reviewer` are the Project Advisor's: they check the git user and stop for anyone else.

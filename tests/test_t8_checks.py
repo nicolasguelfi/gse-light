@@ -149,6 +149,34 @@ class EvidenceCheck(unittest.TestCase):
             self.assertEqual(ev.patterns(Path(d)), ["web/src/login/*"])
 
 
+class InterfaceEvidence(unittest.TestCase):
+    def pr(self, files, body="", comments=()):
+        return {"files": [{"path": f} for f in files], "body": body, "comments": [{"body": c} for c in comments], "labels": []}
+
+    def test_no_interface_file_nothing_to_check(self):
+        self.assertEqual(ev.ui_check(self.pr(["core/x.py", "project/meetings/a/board.html"]), ev.DEFAULT_UI), (False, []))
+
+    def test_interface_without_sheet_or_review_warns_twice(self):
+        is_ui, missing = ev.ui_check(self.pr(["web/ui/src/App.tsx", "web/ui/src/App.test.tsx"]), ev.DEFAULT_UI)
+        self.assertTrue(is_ui)
+        self.assertEqual(len(missing), 2, missing)
+
+    def test_sheet_file_and_review_comment_pass(self):
+        pr = self.pr(["web/ui/src/App.tsx", "project/design/screens/course.md"],
+                     comments=["ux-reviewer on the course screen\n\nVerdict: usable after fixes"])
+        self.assertEqual(ev.ui_check(pr, ev.DEFAULT_UI), (True, []))
+
+    def test_sheet_line_and_ticked_review_pass_but_not_the_placeholder(self):
+        ok = self.pr(["web/ui/src/App.tsx"], body="Screen sheet: project/design/screens/x.md\n- [x] **`ux-reviewer`**: usable")
+        self.assertEqual(ev.ui_check(ok, ev.DEFAULT_UI), (True, []))
+        placeholder = self.pr(["web/ui/src/App.tsx"], body="Screen sheet: <path>\n- [x] **`ux-reviewer`**: usable")
+        self.assertEqual(len(ev.ui_check(placeholder, ev.DEFAULT_UI)[1]), 1)
+
+    def test_a_change_reviewer_line_is_no_ux_review(self):
+        pr = self.pr(["web/ui/src/App.tsx", "project/design/screens/x.md"], body="- [x] **`change-reviewer`**: ready")
+        self.assertEqual(len(ev.ui_check(pr, ev.DEFAULT_UI)[1]), 1)
+
+
 class RequirementsCoverage(unittest.TestCase):
     def make(self, nfr: bool):
         d = tempfile.TemporaryDirectory()

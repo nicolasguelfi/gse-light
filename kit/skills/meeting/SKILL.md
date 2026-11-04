@@ -60,7 +60,8 @@ never read `.env` yourself — the scripts do).
    his feedback point with the client present (no figure per person), and the team only (confidential:
    the per-person table, findings, questions, advice). Speaker notes: the explanation in his language, then
    what to say. Each published as a private artifact, each deck also exported to PDF and PPTX; the previous
-   meeting's folder is the model to follow.
+   meeting's folder is the model to follow. Each document ends with a glossary of the terms it uses
+   (the sheet in his language, a last slide in each deck) (NG, 2026-11-04: he asked what a term meant).
 6. Tell NG in five lines what the brief says and what he should look at before the
    meeting. Do not refresh the cockpit for this (session-close does).
 

@@ -5,7 +5,7 @@
 # Part of the Project Advisor's `meeting` skill. macOS only (avfoundation).
 #
 #   ../gse-light/scripts/meeting/meeting.sh devices                 # list audio inputs with their index
-#   ../gse-light/scripts/meeting/meeting.sh start [DATE] [DEVICE]   # start recording, detached; DATE=YYMMDD, the meeting folder's name (default today)
+#   ../gse-light/scripts/meeting/meeting.sh start [DATE] [DEVICE]   # start recording, detached; DATE=YYMMDD, the meeting folder's name (YYYY-MM-DD is converted; default today)
 #   ../gse-light/scripts/meeting/meeting.sh status                  # is a recording running? for how long?
 #   ../gse-light/scripts/meeting/meeting.sh stop                    # stop cleanly (ffmpeg finalises the file)
 #   ../gse-light/scripts/meeting/meeting.sh import FILE [DATE]      # copy an audio/transcript file into the day folder
@@ -47,7 +47,14 @@ device="${MEETING_AUDIO_DEVICE:-0}"
 
 need() { command -v "$1" >/dev/null 2>&1 || { echo "missing: $1 (brew install $1)" >&2; exit 1; }; }
 
-day_dir() { echo "$base/${1:-$(date +%y%m%d)}"; }
+# The folder is YYMMDD; a date given as YYYY-MM-DD is converted (2026-11-04: an import
+# into "2026-11-04/" was missed by situation.py and had to be moved by hand).
+day_dir() {
+    local d="${1:-$(date +%y%m%d)}"
+    if [[ "$d" =~ ^[0-9]{2}([0-9]{2})-([0-9]{2})-([0-9]{2})$ ]]; then d="${BASH_REMATCH[1]}${BASH_REMATCH[2]}${BASH_REMATCH[3]}"; fi
+    [[ "$d" =~ ^[0-9]{6}$ ]] || { echo "meeting.sh: date must be YYMMDD or YYYY-MM-DD, got '$d'" >&2; exit 2; }
+    echo "$base/$d"
+}
 
 cmd="${1:-help}"; shift || true
 case "$cmd" in

@@ -17,7 +17,7 @@ raise it.
 
 | Step | When | Produces |
 |---|---|---|
-| `meeting brief [date]` | the day before | `agenda.md` (sprint: §1; any other meeting: §1b) |
+| `meeting brief [date]` | the day before | `agenda.md` (sprint: §1; any other meeting: §1b), then NG's own preparation (§1 step 5b) |
 | `meeting record start\|stop\|status` · `meeting import <file>` | on the day | `audio.m4a`, `meta.json` |
 | `meeting transcribe [--engine local\|gemini\|openrouter]` | after the meeting | `transcript.md` (+ `.srt`, `.json` locally) |
 | `meeting minutes` | the same evening | `minutes.md`, checked by `minutes-verifier` |
@@ -52,6 +52,15 @@ never read `.env` yourself — the scripts do).
    decisions, then next sprint — which the project lead presents, not NG), the
    auditor's facts, the follow-up table, the points NG wants to raise (ask him once,
    QCM, if the auditor found something he must choose to raise or not).
+5b. **NG's own preparation, every meeting, unasked** (NG, 2026-11-03 — a session forgot it): in his
+   private folder outside git (never in the repository), (a) a personal sheet **in his language** — the run
+   with times, the numbers to keep in mind, his feedback point slide by slide, what he tells the team alone
+   (messages on the past week, questions to the team, suggestions for the coming week), cautions, after the
+   meeting, a notes area — and (b) two decks in the working language, through the `slides` design rules:
+   his feedback point with the client present (no figure per person), and the team only (confidential:
+   the per-person table, findings, questions, advice). Speaker notes: the explanation in his language, then
+   what to say. Each published as a private artifact, each deck also exported to PDF and PPTX; the previous
+   meeting's folder is the model to follow.
 6. Tell NG in five lines what the brief says and what he should look at before the
    meeting. Do not refresh the cockpit for this (session-close does).
 

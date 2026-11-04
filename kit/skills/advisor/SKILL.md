@@ -36,7 +36,7 @@ Ask him only by **one short multiple-choice question (QCM)** at a time — or by
 | `kind` | You do | You ask him (only this) |
 |---|---|---|
 | `schedule` | — | the date of the next meeting — the day is variable, fixed at each meeting for the next one (one short question); write `project/meetings/schedule.json` `{"next": "YYYY-MM-DD", "time": "..."}` |
-| `brief` | `meeting` step 1: create the folder, run `delivery-auditor`, read the previous minutes, write `agenda.md` from the template, summarise in five lines; a kick-off or hand-over meeting follows `meeting` §1b instead | participants if unknown; which of the auditor's points he wants to raise (one QCM, at most four options) |
+| `brief` | `meeting` step 1: create the folder, run `delivery-auditor`, read the previous minutes, write `agenda.md` from the template, then NG's own preparation (his sheet and two decks, `meeting` step 5b), summarise in five lines; a kick-off or hand-over meeting follows `meeting` §1b instead | participants if unknown; which of the auditor's points he wants to raise (one QCM, at most four options) |
 | `read` | show the agenda's "Points the Project Advisor intends to raise" and "Material to look at"; refresh the facts only if something changed (`gh`, journal) | nothing, unless he wants to add a point |
 | `record` | ask the one question, then: in person → `../gse-light/scripts/meeting/meeting.sh start <date>`; Teams → wait for the file, then `meeting.sh import` | in person / Teams / no recording today |
 | `recording` | `../gse-light/scripts/meeting/meeting.sh status`; at his word, `stop` | "the meeting is over?" only if he says nothing |

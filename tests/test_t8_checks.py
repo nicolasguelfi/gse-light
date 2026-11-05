@@ -81,6 +81,36 @@ class JournalGaps(unittest.TestCase):
             self.assertTrue(any("more than an hour" in l and "2026-10-20 (1 commit(s))" in l for l in lines), lines)
 
 
+    def test_entry_renamed_before_main_is_not_listed(self):
+        # gse-light#2: an entry added then renamed on a branch merged into main is not "not on main"
+        with tempfile.TemporaryDirectory() as d:
+            repo = Path(d)
+            def run(*a, date="2026-10-20T10:00:00"):
+                env = {"GIT_AUTHOR_DATE": date, "GIT_COMMITTER_DATE": date, "PATH": "/usr/bin:/bin:/usr/local/bin:/opt/homebrew/bin"}
+                subprocess.run(["git", *a], cwd=repo, check=True, capture_output=True, env=env)
+            run("init", "-q", "-b", "main")
+            run("config", "user.name", "Ana"); run("config", "user.email", "ana@example.org")
+            (repo / "project/journal").mkdir(parents=True)
+            (repo / "a.txt").write_text("1"); run("add", "a.txt"); run("commit", "-qm", "init")
+            run("switch", "-q", "-c", "renamed")
+            (repo / "project/journal/2026-10-21-an-s01.md").write_text("x")
+            run("add", "."); run("commit", "-qm", "journal", date="2026-10-21T18:00:00")
+            run("mv", "project/journal/2026-10-21-an-s01.md", "project/journal/2026-10-21-an-s02.md")
+            run("commit", "-qm", "s01 taken", date="2026-10-21T18:10:00")
+            run("switch", "-q", "main"); run("merge", "-q", "--no-ff", "renamed", "-m", "merge", date="2026-10-21T19:00:00")
+            run("branch", "-q", "-D", "renamed")
+            import datetime as dt
+            lines = jg.report(repo, days=14, today=dt.date(2026, 10, 28))
+            self.assertFalse(any("not on main yet" in l for l in lines), lines)
+            # still on an unmerged branch: listed
+            run("switch", "-q", "-c", "side")
+            (repo / "project/journal/2026-10-22-an-s03.md").write_text("x")
+            run("add", "."); run("commit", "-qm", "journal side", date="2026-10-22T18:00:00")
+            run("switch", "-q", "main")
+            lines = jg.report(repo, days=14, today=dt.date(2026, 10, 28))
+            self.assertTrue(any("not on main yet" in l and "2026-10-22-an-s03.md" in l and "s01" not in l for l in lines), lines)
+
+
 class EvidenceCheck(unittest.TestCase):
     BODY = "- [x] **`change-reviewer`**: ready\n- [x] **`adversarial-reviewer`**: no break found\n"
 

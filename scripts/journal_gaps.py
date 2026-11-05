@@ -18,7 +18,8 @@ the project keeps one, so one person with several git identities is one author),
   - late commits: on a covered day, commits more than an hour after that day's last entry was added —
     possibly a second session of that day with no close (the hour leaves room for the fixes a review
     asks after the close);
-  - entries not merged: that person's entries absent from the default branch.
+  - entries not merged: that person's entries absent from the default branch but still present at the
+    tip of some branch — an entry renamed or deleted afterwards (an `sNN` already taken) is not listed.
 
 It prints one line per finding and the way to catch up: the `session-close` skill writes one entry
 per missed session, rebuilt from git, marked as reconstructed — a session is what the record of
@@ -125,6 +126,14 @@ def default_branch(repo: Path) -> str:
     return ""
 
 
+def live_entries(repo: Path, journal: str) -> set[str]:
+    """Journal file names present at the tip of any local or remote branch."""
+    names: set[str] = set()
+    for ref in git(repo, "for-each-ref", "--format=%(refname)", "refs/heads", "refs/remotes").split():
+        names |= {p.rsplit("/", 1)[-1] for p in git(repo, "ls-tree", "-r", "--name-only", ref, "--", journal).splitlines()}
+    return names
+
+
 def report(repo: Path, days: int = 14, today: dt.date | None = None, author: str = "") -> list[str]:
     today = today or dt.date.today()
     journal = "project/journal"
@@ -133,7 +142,7 @@ def report(repo: Path, days: int = 14, today: dt.date | None = None, author: str
         return []
     since = (today - dt.timedelta(days=days)).isoformat()
     log = git(repo, "log", "--all", "--no-merges", "--use-mailmap", f"--since={since}", "--format=%aN%x09%aE%x09%ad%x09%aI", "--date=short")
-    added = git(repo, "log", "--all", "--use-mailmap", "--diff-filter=A", "--name-only", "--format=@@%aN%x09%aE%x09%aI", "--", journal)
+    added = git(repo, "log", "--all", "--use-mailmap", "--diff-filter=A", "--no-renames", "--name-only", "--format=@@%aN%x09%aE%x09%aI", "--", journal)
     times = entry_times(added, who, journal)
     entries = set(times)
     missing = gaps(active_days(log, who), entries, today.isoformat())
@@ -150,7 +159,7 @@ def report(repo: Path, days: int = 14, today: dt.date | None = None, author: str
     branch = default_branch(repo)
     if branch and entries:
         on_main = {p.rsplit("/", 1)[-1] for p in git(repo, "ls-tree", "-r", "--name-only", branch, "--", journal).splitlines()}
-        unmerged = sorted(e for e in entries if e not in on_main)
+        unmerged = sorted(e for e in entries & live_entries(repo, journal) if e not in on_main)
         if unmerged:
             lines.append(f"Journal: {len(unmerged)} entry(ies) of yours not on {branch} yet: {', '.join(unmerged[:5])}"
                          + (" …" if len(unmerged) > 5 else "") + " — open or merge their pull request.")

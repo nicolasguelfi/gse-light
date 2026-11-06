@@ -109,6 +109,8 @@ class JournalGaps(unittest.TestCase):
             run("switch", "-q", "main")
             lines = jg.report(repo, days=14, today=dt.date(2026, 10, 28))
             self.assertTrue(any("not on main yet" in l and "2026-10-22-an-s03.md" in l and "s01" not in l for l in lines), lines)
+            # gse-light#4: a branch gone from the remote survives in the clone as a stale ref: the line names the way out
+            self.assertTrue(any("not on main yet" in l and "git fetch --prune" in l for l in lines), lines)
 
 
 class EvidenceCheck(unittest.TestCase):

@@ -19,7 +19,8 @@ the project keeps one, so one person with several git identities is one author),
     possibly a second session of that day with no close (the hour leaves room for the fixes a review
     asks after the close);
   - entries not merged: that person's entries absent from the default branch but still present at the
-    tip of some branch — an entry renamed or deleted afterwards (an `sNN` already taken) is not listed.
+    tip of some branch — an entry renamed or deleted afterwards (an `sNN` already taken) is not listed;
+    a branch deleted on the remote stays in the clone until `git fetch --prune`, and the line says so.
 
 It prints one line per finding and the way to catch up: the `session-close` skill writes one entry
 per missed session, rebuilt from git, marked as reconstructed — a session is what the record of
@@ -162,7 +163,7 @@ def report(repo: Path, days: int = 14, today: dt.date | None = None, author: str
         unmerged = sorted(e for e in entries & live_entries(repo, journal) if e not in on_main)
         if unmerged:
             lines.append(f"Journal: {len(unmerged)} entry(ies) of yours not on {branch} yet: {', '.join(unmerged[:5])}"
-                         + (" …" if len(unmerged) > 5 else "") + " — open or merge their pull request.")
+                         + (" …" if len(unmerged) > 5 else "") + " — open or merge their pull request; if it was renamed, or its branch is gone from the remote, `git fetch --prune` clears this line.")
     return lines
 
 

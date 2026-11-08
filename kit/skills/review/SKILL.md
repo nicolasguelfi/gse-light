@@ -75,8 +75,11 @@ one line with the ticks and every comment. Never disable a comment field.
   `--fragment` and publish the file; one artifact per page; the same file path republished
   keeps the URL (a correction before any answer), a new round is a new file and a new
   artifact, with a distinct `prefix`.
-- **Without it**: tell the person the path of the `.html` file (without `--fragment`, so it
-  is a complete page) and ask them to open it in a browser; the copy button works there too.
+- **Without it, or when it fails**: build without `--fragment` (a complete page) and **send
+  the file into the conversation** (SendUserFile, when the session offers it), so a person
+  working remotely (Remote Control, a phone) can open it; the copy button works there too.
+  Give a local path only to a person sitting at that machine (the method's owner,
+  2026-11-08: working remotely, he could not open a path while the artifact service was down).
 - **Keep the sources**: the board's `spec.json`, the generator call, the page and an
   `open.html` shortcut go to `project/meetings/<date>/boards/<round>/` of the project's
   repository, with a row in the meetings registry (`project/meetings/README.md`).

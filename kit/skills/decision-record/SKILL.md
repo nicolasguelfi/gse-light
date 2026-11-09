@@ -18,7 +18,9 @@ root; the method is `../gse-light`:
 ## Steps
 
 1. **Search first.** Grep the three registers for the topic. If a record exists, amend
-   it (add an "Amended YYYY-MM-DD" line) rather than creating a duplicate. If the
+   it (add an "Amended YYYY-MM-DD" line) rather than creating a duplicate. An amendment holds
+   **five lines at most**: who decided, what changes, why, the answer line, the pull request; the
+   detail and the discussion stay in the pull request (the method's owner, 2026-11-09). If the
    question is already decided, say so and cite the record — do not reopen it unless
    asked.
 2. **Pick the next number** in the chosen register.

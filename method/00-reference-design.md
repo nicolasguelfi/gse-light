@@ -386,7 +386,11 @@ that fails a gate cannot be merged or promoted.
   lines with a pointer; (6) the reports of two AI reviewers — the author's `change-reviewer`
   and an **independent adversarial reviewer** run in another session, which tries to break
   the change (edge cases, hostile input, the data regime, performance, what the tests do not
-  cover) and says what it tried, what broke, what it could not test. The code is read only
+  cover) and says what it tried, what broke, what it could not test — the second one on a
+  **critical** pull request only (a file of `critical-paths.txt`, or the label), and neither on a
+  pull request that touches only the project's record, which takes a short path (the method's
+  owner, 2026-11-09: the real critical findings of a measured week came from sensitive code, while
+  most pull requests held no code). The code is read only
   where a risk is flagged (data, secrets, migrations, security, declared uncertainty). **The
   project lead approves when the evidence is complete** (a checklist in the pull request); a
   change that touches personal data, security, a migration or production needs two people,

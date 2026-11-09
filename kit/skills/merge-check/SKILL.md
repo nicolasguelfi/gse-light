@@ -1,6 +1,6 @@
 ---
 name: merge-check
-description: Before merging a pull request of the project's repository - gather the critical findings of its two AI reviews (change-reviewer, adversarial-reviewer), of ux-reviewer when a screen changed, and the evidence check, show them to the person merging as a review board (one tick per critical point, a comment on each), record the ticks on the pull request, then merge. Use whenever someone asks to merge, approve or "accept" a pull request.
+description: Before merging a pull request of the project's repository - gather the critical findings of its AI reviews (change-reviewer; adversarial-reviewer on a critical pull request), of ux-reviewer when a screen changed, and the evidence check, show them to the person merging as a review board (one tick per critical point, a comment on each), record the ticks on the pull request, then merge. Use whenever someone asks to merge, approve or "accept" a pull request.
 ---
 
 # Merge check — the person ticks the critical points, then merges
@@ -9,6 +9,13 @@ The AI reviews produce more findings than a person can read before each merge. T
 the human in the loop **where it matters**: the critical findings only, each ticked by the person
 who merges (the method's owner, 2026-10-28). Who may merge is the project's rule (roles record;
 the project lead by default).
+
+**Short path** (the method's owner, 2026-11-09, after a week where 73 of 105 merged pull requests
+held no code, test or data): a pull request that touches **only the project's record** — journal,
+meetings and boards, cockpit, planning, governance pages other than the registers — needs no AI
+review, no board and no "Critical points ticked" line. Its author merges once `check_docs` (the CI
+`review` check) is green. Code, `project/requirements/` and the three registers (`05-*decisions.md`)
+never take the short path. Check it with step 1's file list; outside it, follow the steps below.
 
 ## Steps
 
@@ -20,9 +27,11 @@ the project lead by default).
    be green. Any other change — the requirements included — needs its green `gates`; a `gates`
    skipped on a pull request ready for review, or absent for another reason (a billing stop, more than
    300 files changed), stops the merge.
-2. **The two AI reviews.** Find them in the pull request (ticked lines, comments). One is missing:
-   run it now — `change-reviewer` on the diff, then `adversarial-reviewer` with the number only —
-   and post its report as a comment. A pull request that changes a screen also carries the
+2. **The AI reviews.** Every pull request outside the short path carries `change-reviewer`; a
+   **critical** one (label `critical`, or a file of `project/governance/critical-paths.txt`) also
+   carries `adversarial-reviewer`, given the number only (the method's owner, 2026-11-09: the real
+   critical findings of a week came from sensitive code). Find them in the pull request (ticked
+   lines, comments); one is missing: run it now and post its report as a comment. A pull request that changes a screen also carries the
    `ux-reviewer` review (skill `ui-design`): missing, run it with the screen sheet's path.
 3. **The evidence check**: `python3 ../gse-light/scripts/evidence_check.py <n>`. Quote its line. The labels `critical` and
    `evidence-bypass` exist once in the repository (`gh label create critical`, `gh label create evidence-bypass`

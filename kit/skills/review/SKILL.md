@@ -21,8 +21,8 @@ if a question has options, it is a QCM or a board, never a paragraph.
 
 | The person must… | Use | Example |
 |---|---|---|
-| answer one simple point with two to four options | the built-in **multiple-choice question** (one at a time) | the date of the next meeting; "continue, something else, or close?" |
-| choose on several subjects at once | a **board**, one subject per group | the twelve design decisions of the design phase |
+| answer one simple point with two to four options — **the default** | the built-in **multiple-choice question** (one at a time) | the date of the next meeting; "continue, something else, or close?" |
+| choose on **three subjects or more** at once (two: two QCMs) | a **board**, one subject per group | the twelve design decisions of the design phase |
 | judge something that needs data in front of them | a **board**, with the measured facts in the notes | which tests to keep, where the pipeline fails, a catalogue to triage |
 | validate a document or give a go-ahead with comments | a **board**, one group per point to validate | the minutes before they are sent; the hand-over plan |
 
@@ -80,9 +80,14 @@ one line with the ticks and every comment. Never disable a comment field.
   working remotely (Remote Control, a phone) can open it; the copy button works there too.
   Give a local path only to a person sitting at that machine (the method's owner,
   2026-11-08: working remotely, he could not open a path while the artifact service was down).
-- **Keep the sources**: the board's `spec.json`, the generator call, the page and an
-  `open.html` shortcut go to `project/meetings/<date>/boards/<round>/` of the project's
-  repository, with a row in the meetings registry (`project/meetings/README.md`).
+- **Keep the sources**: the board's `spec.json`, the generator call, the answer line
+  (`answer.txt`) and an `open.html` shortcut to the artifact go to
+  `project/meetings/<date>/boards/<round>/` of the project's repository, with a row in the
+  meetings registry (`project/meetings/README.md`). **Not the generated page**: the generator
+  rebuilds it from the spec (the method's owner, 2026-11-09: 28,859 lines of generated boards in one
+  week, more than the code and its tests together).
+- **Number with your initials**: `<initials>-r<n>` (`ng-r52`, `rt-r50`), the next number after your
+  own highest; two people never collide on one day (2026-11-09: two boards were both `r49`).
 
 ## 4. The line comes back
 

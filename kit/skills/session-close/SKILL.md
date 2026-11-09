@@ -10,6 +10,18 @@ whoever opened the session. Paths below are relative to its root; the method is 
 
 ## Steps
 
+0. **Nothing left at risk, before anything else.** When the project's `CLAUDE.md` names an
+   unsaved-work check (its Commands table), run it: it lists, in every working copy of the
+   repository on this machine (the main folder, its git worktrees, any clone in Claude's temporary
+   folders, which are deleted with their session), the files not committed, the commits on no remote
+   branch and the stashes. While it exits non-zero, **the close does not go on**: show the list and
+   ask, for each item, by QCM — commit it (push on the person's go-ahead), keep it on purpose (the
+   check's keep option, never committed), or delete it explicitly. A copy that may belong to another
+   session is never deleted from: ask whose it is first. Never write "not committed" in the journal as
+   a way to move on. Files outside any clone (a result saved straight in a temporary folder) are not
+   seen: list yours by hand and put them in the repository. (A project's lesson of 2026-11-09: a paid
+   run and its report, left untracked in a session's temporary folder, were lost although the close
+   had noted them.)
 1. **Number the session**: one counter per person. The Project Advisor's entries are
    `YYYY-MM-DD-sNN.md`; every other author's are `YYYY-MM-DD-<initials>-sNN.md` (two or
    three lowercase letters), `sNN` being the next number after that author's highest

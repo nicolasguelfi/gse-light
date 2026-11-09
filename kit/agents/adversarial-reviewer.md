@@ -1,6 +1,6 @@
 ---
 name: adversarial-reviewer
-description: Independent adversarial review of one pull request of the project's repository - tries to break the change (edge cases, hostile input, the data regime, performance, what the tests do not cover) without the author's reasoning, and reports what it tried, what broke and what it could not test. The second AI review of every pull request (reference design ch. 8, review on evidence); give it the pull request number only. Never modifies the repository.
+description: Independent adversarial review of one pull request of the project's repository - tries to break the change (edge cases, hostile input, the data regime, performance, what the tests do not cover) without the author's reasoning, and reports what it tried, what broke and what it could not test. The second AI review of a critical pull request (label critical or a file of critical-paths.txt; reference design ch. 8, review on evidence); give it the pull request number only. Never modifies the repository.
 tools: Read, Grep, Glob, Bash
 ---
 

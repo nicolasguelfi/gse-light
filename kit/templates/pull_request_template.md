@@ -1,6 +1,9 @@
 <!-- Template of the gse-light method (review on evidence, reference design ch. 8). The author's
      session fills every section; the reviewer judges the evidence, and reads the code only where a
-     risk is flagged. Kit-only and documentation pull requests: write "n/a" where a section does not apply. -->
+     risk is flagged. Kit-only and documentation pull requests: write "n/a" where a section does not apply.
+     Short path (skill merge-check): a pull request that touches only the project's record (journal,
+     meetings, boards, cockpit, planning) keeps "Ticket" and "Summary for humans" (Intent, What changed)
+     and deletes the rest. -->
 
 ## Ticket and use case
 
@@ -37,7 +40,7 @@ One pull request = one ticket and one use case.
 ## AI reviews
 
 - [ ] **`change-reviewer`** (author's session): verdict <…> — findings fixed or answered: <…>
-- [ ] **`adversarial-reviewer`** (independent, given only this pull request's number): verdict <…> — what broke: <…>; not tested: <…>
+- [ ] **`adversarial-reviewer`** (critical pull request only: label `critical` or a file of `critical-paths.txt`; independent, given only this pull request's number): verdict <…> — what broke: <…>; not tested: <…>
 - [ ] **`ux-reviewer`** (only when a screen changes; skill `ui-design`): verdict <…> — findings fixed or answered: <…>
 
 Screen sheet: <project/design/screens/….md, when a screen changes; delete otherwise>
@@ -45,6 +48,6 @@ Screen sheet: <project/design/screens/….md, when a screen changes; delete othe
 ## Approval checklist (the project lead)
 
 - [ ] The evidence above is complete and the use case was replayed
-- [ ] Every finding of the two AI reviews is fixed or answered
+- [ ] Every finding of the AI reviews is fixed or answered
 - [ ] The code was read where a risk is flagged: <where, or "none flagged">
 - [ ] **Sensitive change** (personal data, security, a migration, production)? <no / yes: second person — @<login>, who confirmed the evidence>

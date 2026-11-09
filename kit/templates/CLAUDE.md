@@ -103,7 +103,12 @@ pass" without it.
   for every point you ask about and a global comment field. In both forms, always and for every
   question, restate the problem simply so that the person understands it; for every proposal,
   explain just as simply its advantages and its drawbacks, with all the consequences of that
-  solution. A choice written in prose is a choice the person cannot tick.
+  solution. A choice written in prose is a choice the person cannot tick. A QCM comes first: a
+  board only for three subjects or more, or when data must be seen (the method's owner, 2026-11-09).
+- **Act by default on your own branch** (the method's owner, 2026-11-09): on your own feature
+  branch, do what is reversible — edit, test, commit, run the gates, open a draft pull request —
+  without asking; ask only for what is hard to undo or reaches others (push, merge, deploy, a paid
+  call, a message, a decision that belongs to someone else).
 - **A proactive first message** (the method's owner, 2026-10-16): in every session, whoever
   opens it, the person's first message also runs the agent `project-navigator` (read-only:
   the project's profile and the life cycle that fits it, the standard information missing,
@@ -165,12 +170,16 @@ pass" without it.
   in a slide's "Source:" footer was committed after the slide.
 - **Never "the repository" alone**: name it — this repository `<repository name>`, the
   method `gse-light`.
-- **Before a pull request** (review on evidence, reference design ch. 8): run the
-  `change-reviewer` agent, then the `adversarial-reviewer` with the pull request's number only
-  (never your reasoning); fill `.github/pull_request_template.md`; check the size
+- **Before a pull request** (review on evidence, reference design ch. 8; the method's owner,
+  2026-11-09): run the `change-reviewer` agent on any change of code or requirements, and the
+  `adversarial-reviewer` with the pull request's number only (never your reasoning) on a critical
+  pull request (label `critical`, or a file of `project/governance/critical-paths.txt`). A pull
+  request that touches only the project's record (journal, meetings and boards, cockpit, planning,
+  governance pages other than the registers) takes the **short path**: no AI review, no merge-check
+  line, a short description; `check_docs` in CI stays. Otherwise fill `.github/pull_request_template.md`; check the size
   (`python3 ../gse-light/scripts/pr_size.py`): beyond the project lead's threshold, split.
-- **Before a merge** (the method's owner, 2026-10-28): the skill `merge-check` — the person
-  merging ticks the **critical** findings of the two AI reviews on a review board, and the line
+- **Before a merge** (the method's owner, 2026-10-28): outside the short path, the skill `merge-check` — the person
+  merging ticks the **critical** findings of the AI reviews on a review board, and the line
   goes on the pull request; on a critical pull request (label `critical`, or a file of
   `project/governance/critical-paths.txt`), `scripts/evidence_check.py` warns when the reviews or
   the tests are missing — a warning, never a block, bypassed by hand with the label

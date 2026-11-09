@@ -106,7 +106,7 @@ And three habits:
   done with the command that measured it, decisions touched, what is left, a hand-over for
   a reader with no memory. These entries are also research data on AI-assisted
   engineering — never rewritten.
-- **Before a pull request, run the `change-reviewer` agent, then the `adversarial-reviewer`.**
+- **Before a pull request, run the `change-reviewer` agent; on a critical pull request, then the `adversarial-reviewer`.** A pull request of the project's record only (journal, meetings, boards) needs neither.
   The first checks gates, data regime, secrets, migrations, documentation, decisions,
   tests, and says "ready" or lists the fixes. The second gets the pull request's number
   only and tries to break the change. Fill the pull-request template: the project lead

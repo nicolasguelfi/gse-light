@@ -105,7 +105,7 @@ It writes:
 | `.github/workflows/gates.yml` | runs `bash ./gates.sh` on every pull request and on every push to `main`, except a change of the project's record only (meetings, journal, cockpit, governance, planning) or of `.claude/`, and draft pull requests; a newer push cancels the obsolete run — green from Day 0 |
 | `.github/workflows/docs.yml` | runs `python3 ../gse-light/scripts/check_docs.py` on `project/` after every push to `main`, with `gse-light` checked out at the installed `KIT_VERSION` |
 | `.github/workflows/review.yml` | on every pull request ready for review, **one job** (each job is billed rounded up to the minute): `check_docs.py`, then `pr_size.py` (the lines of code changed; fails only beyond the project lead's threshold, `project/governance/pr-size.json`, set in W1), then `evidence_check.py` (a warning) |
-| `.github/pull_request_template.md` | the pull request on evidence (reference design ch. 8): summary for humans, evidence, techniques used, the two AI reviews, the approval checklist |
+| `.github/pull_request_template.md` | the pull request on evidence (reference design ch. 8): summary for humans, evidence, techniques used, the AI reviews, the approval checklist |
 | `.gitattributes`, `.env.example`, `.gitignore` entries (`.env`, `CLAUDE.local.md`, the meeting recordings) | line endings, personal files and recordings out of git |
 | `.claude/KIT_LICENSE.md`, `.claude/KIT_VERSION` | the licence notice and the last `gse-light` commit that touched `kit/` |
 

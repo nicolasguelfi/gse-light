@@ -12,7 +12,8 @@ the project lead by default).
 
 **Short path** (the method's owner, 2026-11-09, after a week where 73 of 105 merged pull requests
 held no code, test or data): a pull request that touches **only the project's record** — journal,
-meetings and boards, cockpit, planning, governance pages other than the registers — needs no AI
+meetings and boards, cockpit, planning, governance pages other than the registers, the roles
+record and `critical-paths.txt` — needs no AI
 review, no board and no "Critical points ticked" line. Its author merges once `check_docs` (the CI
 `review` check) is green. Code, `project/requirements/` and the three registers (`05-*decisions.md`)
 never take the short path. Check it with step 1's file list; outside it, follow the steps below.
@@ -28,7 +29,8 @@ never take the short path. Check it with step 1's file list; outside it, follow 
    skipped on a pull request ready for review, or absent for another reason (a billing stop, more than
    300 files changed), stops the merge.
 2. **The AI reviews.** Every pull request outside the short path carries `change-reviewer`; a
-   **critical** one (label `critical`, or a file of `project/governance/critical-paths.txt`) also
+   **critical** one (label `critical`, or a file of `project/governance/critical-paths.txt`, the kit's
+   default list while it is missing) also
    carries `adversarial-reviewer`, given the number only (the method's owner, 2026-11-09: the real
    critical findings of a week came from sensitive code). Find them in the pull request (ticked
    lines, comments); one is missing: run it now and post its report as a comment. A pull request that changes a screen also carries the

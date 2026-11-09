@@ -106,7 +106,7 @@ pass" without it.
   solution. A choice written in prose is a choice the person cannot tick. A QCM comes first: a
   board only for three subjects or more, or when data must be seen (the method's owner, 2026-11-09).
 - **Act by default on your own branch** (the method's owner, 2026-11-09): on your own feature
-  branch, do what is reversible — edit, test, commit, run the gates, open a draft pull request —
+  branch, do what is reversible — edit, test, commit, run the gates, prepare a draft pull request —
   without asking; ask only for what is hard to undo or reaches others (push, merge, deploy, a paid
   call, a message, a decision that belongs to someone else).
 - **A proactive first message** (the method's owner, 2026-10-16): in every session, whoever
@@ -171,11 +171,12 @@ pass" without it.
 - **Never "the repository" alone**: name it — this repository `<repository name>`, the
   method `gse-light`.
 - **Before a pull request** (review on evidence, reference design ch. 8; the method's owner,
-  2026-11-09): run the `change-reviewer` agent on any change of code or requirements, and the
+  2026-11-09): run the `change-reviewer` agent on every pull request outside the short path, and the
   `adversarial-reviewer` with the pull request's number only (never your reasoning) on a critical
-  pull request (label `critical`, or a file of `project/governance/critical-paths.txt`). A pull
+  pull request (label `critical`, or a file of `project/governance/critical-paths.txt` — the kit's
+  default list while that file is missing, as `scripts/evidence_check.py` reads it). A pull
   request that touches only the project's record (journal, meetings and boards, cockpit, planning,
-  governance pages other than the registers) takes the **short path**: no AI review, no merge-check
+  governance pages other than the registers, the roles record and `critical-paths.txt`) takes the **short path**: no AI review, no merge-check
   line, a short description; `check_docs` in CI stays. Otherwise fill `.github/pull_request_template.md`; check the size
   (`python3 ../gse-light/scripts/pr_size.py`): beyond the project lead's threshold, split.
 - **Before a merge** (the method's owner, 2026-10-28): outside the short path, the skill `merge-check` — the person

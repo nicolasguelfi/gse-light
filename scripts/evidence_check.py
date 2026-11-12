@@ -58,6 +58,7 @@ BYPASS = re.compile(r"^[ \t]*Evidence bypass:[ \t]*(\S.*)$", re.M | re.I)
 VERDICT = re.compile(r"\bverdict\b\W{0,5}(ready after fixes|ready|not ready|no break found|breaks found|usable after fixes|not usable|usable)\b", re.I)
 NOT_DONE = re.compile(r"\b(?:not run|not yet|to run|pending|could not|to do)\b|\bverdict\W{0,5}not reviewed\b|<[^>]*>", re.I)  # a box ticked on a review not done
 FENCE = re.compile(r"```.*?```", re.S)
+INLINE_CODE = re.compile(r"`[^`\n]*`")  # `key(<length>)` quotes code: no placeholder, no "not done" word
 REVIEWERS = ("change-reviewer", "adversarial-reviewer")
 ALL_REVIEWERS = (*REVIEWERS, "ux-reviewer")
 
@@ -85,7 +86,7 @@ def reviewed(name: str, body: str, comments: list[str]) -> bool:
     other = [r for r in ALL_REVIEWERS if r != name]
     def alone(line: str) -> bool:  # names this reviewer, not the other one
         return name in line and not any(o in line for o in other)
-    ticked = any(alone(line) and not NOT_DONE.search(line) and re.match(r"^\s*[-*]\s*\[[xX]\]", line) for line in body.splitlines())
+    ticked = any(alone(line) and not NOT_DONE.search(INLINE_CODE.sub("", line)) and re.match(r"^\s*[-*]\s*\[[xX]\]", line) for line in body.splitlines())
     in_comment = False
     for c in comments:
         lines = [l for l in c.splitlines() if l.strip()]

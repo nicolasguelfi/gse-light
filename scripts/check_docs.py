@@ -112,11 +112,23 @@ def anchors(path: Path) -> set[str]:
     return result
 
 
+SKIP_DIRS = {".git", "node_modules", ".venv", "venv", "__pycache__", "dist", "build", ".next"}
+
+
+def markdown_files() -> list[Path]:
+    """The Markdown files of the repository being checked: tracked or not yet added, never what git ignores
+    (a team member's `web/node_modules` held ~300 package READMEs with links of their own, 2026-11-12);
+    outside git, every `.md` but the folders of SKIP_DIRS."""
+    r = subprocess.run(["git", "-C", str(ROOT), "ls-files", "-co", "--exclude-standard", "*.md"],
+                       capture_output=True, text=True)
+    if r.returncode == 0:
+        return sorted(p for p in (ROOT / rel for rel in r.stdout.splitlines()) if p.is_file())
+    return sorted(md for md in ROOT.rglob("*.md") if not SKIP_DIRS.intersection(md.relative_to(ROOT).parts))
+
+
 def check_links() -> None:
     cache: dict[Path, set[str]] = {}
-    for md in sorted(ROOT.rglob("*.md")):
-        if ".git" in md.parts:
-            continue
+    for md in markdown_files():
         for n, line in strip_code(md.read_text(encoding="utf-8")):
             for target in LINK.findall(line):
                 if target.startswith(METHOD_URL) and ROOT != METHOD:  # a link from a PM repository to the method

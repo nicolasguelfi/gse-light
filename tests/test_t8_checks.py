@@ -220,6 +220,11 @@ class InterfaceEvidence(unittest.TestCase):
     def test_the_words_not_reviewed_in_a_description_do_not_cancel_a_review(self):
         self.assertTrue(ev.reviewed("change-reviewer", '- [x] **`change-reviewer`**: verdict ready — fixed: "not reviewed" is no review', []))
 
+    def test_code_quoted_in_a_ticked_line_does_not_cancel_the_review(self):
+        # 12 Nov: "unasked keys are shown as `key(<length>)`" read as a placeholder, the review uncounted
+        self.assertTrue(ev.reviewed("change-reviewer", "- [x] **`change-reviewer`**: verdict ready — keys shown as `key(<length>)`; `to do` list", []))
+        self.assertFalse(ev.reviewed("change-reviewer", "- [x] **`change-reviewer`** (author's session): verdict <…> — findings fixed or answered: <…>", []))
+
     def test_a_change_reviewer_line_is_no_ux_review(self):
         pr = self.pr(["web/ui/src/App.tsx", "project/design/screens/x.md"], body="- [x] **`change-reviewer`**: ready")
         self.assertEqual(len(ev.ui_check(pr, ev.DEFAULT_UI)[1]), 1)

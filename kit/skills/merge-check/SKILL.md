@@ -11,7 +11,7 @@ who merges (the method's owner, 2026-10-28). Who may merge is the project's rule
 the project lead by default).
 
 **Short path** (the method's owner, 2026-11-09, after a week where 73 of 105 merged pull requests
-held no code, test or data): a pull request whose **every file** is under `project/journal/`, `project/meetings/` (minutes, boards, decks), `project/BRIEFING.md` and `project/planning/` — the project's record, the one list the
+held no code, test or data): a pull request whose **every file** is under `project/journal/`, `project/meetings/` (minutes, boards, decks), `project/BRIEFING.md` or `project/planning/` — the project's record, the one list the
 kit uses (`CLAUDE.md`, the pull-request template) — needs no AI review, no board and no "Critical
 points ticked" line. Its author merges once `check_docs` (the CI `review` check) is green. Any other
 file — code, `project/requirements/`, `project/governance/` (registers, roles record,

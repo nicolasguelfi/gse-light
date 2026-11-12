@@ -114,7 +114,10 @@ pass" without it.
   sessions): each session works in its own git worktree (`git worktree add ../<repo>-<topic> -b <initials>/<topic>`),
   never in a checkout another session uses; one session = one branch, one ticket, one pull request. Numbers
   shared between sessions (boards, rounds) carry the initials and are taken from `main` and the open pull
-  requests just before use. Each session runs the close's unsaved-work check on its own worktree.
+  requests just before use. A new worktree starts bare: copy your role file into its
+  `.claude/settings.local.json` and run the install there before working, or the role's rules and the gates are missing.
+  At the close, the unsaved-work check lists every copy: the items of a worktree another live session uses are left to
+  that session and do not stop your close (note them; `--keep` only for your own).
 - **A proactive first message** (the method's owner, 2026-10-16): in every session, whoever
   opens it, the person's first message also runs the agent `project-navigator` (read-only:
   the project's profile and the life cycle that fits it, the standard information missing,
@@ -181,7 +184,7 @@ pass" without it.
   `adversarial-reviewer` with the pull request's number only (never your reasoning) on a critical
   pull request (label `critical`, or a file of `project/governance/critical-paths.txt` — the kit's
   default list while that file is missing, as `scripts/evidence_check.py` reads it). A pull
-  request whose every file is under `project/journal/`, `project/meetings/` (minutes, boards, decks), `project/BRIEFING.md` and `project/planning/` — the
+  request whose every file is under `project/journal/`, `project/meetings/` (minutes, boards, decks), `project/BRIEFING.md` or `project/planning/` — the
   project's record, one list, the same in `merge-check` and the pull-request template — takes the **short path**: no AI
   review, no merge-check line, a short description; `check_docs` in CI stays. Every other file (code, requirements,
   governance pages, models, `.claude/`) never takes it. Otherwise fill `.github/pull_request_template.md`; check the size

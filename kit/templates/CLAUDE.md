@@ -115,9 +115,11 @@ pass" without it.
   never in a checkout another session uses; one session = one branch, one ticket, one pull request. Numbers
   shared between sessions (boards, rounds) carry the initials and are taken from `main` and the open pull
   requests just before use. A new worktree starts bare: copy your role file into its
-  `.claude/settings.local.json` and run the install there before working, or the role's rules and the gates are missing.
-  At the close, the unsaved-work check lists every copy: the items of a worktree another live session uses are left to
-  that session and do not stop your close (note them; `--keep` only for your own).
+  `.claude/settings.local.json` and run the Install command (Commands table) there before working, or the role's rules
+  and the gates are missing; `.env` too if you need it, never committed. At the close, the unsaved-work check lists every
+  copy: the items of a worktree another live session uses are left to that session and do not stop your close (note
+  them; `--keep` only for your own). Whose is a worktree: its branch carries the initials (`<initials>/<topic>`); if
+  unsure, ask the person.
 - **A proactive first message** (the method's owner, 2026-10-16): in every session, whoever
   opens it, the person's first message also runs the agent `project-navigator` (read-only:
   the project's profile and the life cycle that fits it, the standard information missing,

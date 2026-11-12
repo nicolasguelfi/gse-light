@@ -106,7 +106,7 @@ And three habits:
   done with the command that measured it, decisions touched, what is left, a hand-over for
   a reader with no memory. These entries are also research data on AI-assisted
   engineering — never rewritten.
-- **Before a pull request, run the `change-reviewer` agent; on a critical pull request, then the `adversarial-reviewer`.** A pull request of the project's record only (journal, meetings, boards) needs neither.
+- **Before a pull request, run the `change-reviewer` agent; on a critical pull request, then the `adversarial-reviewer`.** A pull request of the project's record only (journal, meetings and boards, cockpit, planning) needs neither.
   The first checks gates, data regime, secrets, migrations, documentation, decisions,
   tests, and says "ready" or lists the fixes. The second gets the pull request's number
   only and tries to break the change. Fill the pull-request template: the project lead
@@ -235,7 +235,7 @@ Open `claude` in the project's repository and work through this, in your own wor
 4. *"Do it on a feature branch, run the gates, replay the use case through the interface."*
    Claude's code is accepted on evidence: the gates, the replayed use case, the tests that
    prove the requirement. Read the code where a risk is flagged.
-5. *"Run the change-reviewer agent, then the adversarial-reviewer on the pull request."*
+5. *"Run the change-reviewer agent; on a critical pull request, then the adversarial-reviewer."*
    Fix what they list, fill the pull-request template, then open the pull request to
    the integration branch named in `CLAUDE.md` (from the environments-and-promotion-path
    `DD`). The pull request updates the document that describes the behaviour, in the same

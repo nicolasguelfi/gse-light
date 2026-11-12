@@ -107,8 +107,14 @@ pass" without it.
   board only for three subjects or more, or when data must be seen (the method's owner, 2026-11-09).
 - **Act by default on your own branch** (the method's owner, 2026-11-09): on your own feature
   branch, do what is reversible — edit, test, commit, run the gates, prepare a draft pull request —
-  without asking; ask only for what is hard to undo or reaches others (push, merge, deploy, a paid
-  call, a message, a decision that belongs to someone else).
+  without asking, unless you were asked only to evaluate or propose (then "Evaluate ≠ execute"); ask
+  only for what is hard to undo or reaches others (push, merge, deploy, a paid call, a message, a
+  decision that belongs to someone else).
+- **Parallel sessions** (the method's owner, 2026-11-12, after collisions between a project lead's
+  sessions): each session works in its own git worktree (`git worktree add ../<repo>-<topic> -b <initials>/<topic>`),
+  never in a checkout another session uses; one session = one branch, one ticket, one pull request. Numbers
+  shared between sessions (boards, rounds) carry the initials and are taken from `main` and the open pull
+  requests just before use. Each session runs the close's unsaved-work check on its own worktree.
 - **A proactive first message** (the method's owner, 2026-10-16): in every session, whoever
   opens it, the person's first message also runs the agent `project-navigator` (read-only:
   the project's profile and the life cycle that fits it, the standard information missing,
@@ -175,9 +181,10 @@ pass" without it.
   `adversarial-reviewer` with the pull request's number only (never your reasoning) on a critical
   pull request (label `critical`, or a file of `project/governance/critical-paths.txt` — the kit's
   default list while that file is missing, as `scripts/evidence_check.py` reads it). A pull
-  request that touches only the project's record (journal, meetings and boards, cockpit, planning,
-  governance pages other than the registers, the roles record and `critical-paths.txt`) takes the **short path**: no AI review, no merge-check
-  line, a short description; `check_docs` in CI stays. Otherwise fill `.github/pull_request_template.md`; check the size
+  request whose every file is under `project/journal/`, `project/meetings/` (minutes, boards, decks), `project/BRIEFING.md` and `project/planning/` — the
+  project's record, one list, the same in `merge-check` and the pull-request template — takes the **short path**: no AI
+  review, no merge-check line, a short description; `check_docs` in CI stays. Every other file (code, requirements,
+  governance pages, models, `.claude/`) never takes it. Otherwise fill `.github/pull_request_template.md`; check the size
   (`python3 ../gse-light/scripts/pr_size.py`): beyond the project lead's threshold, split.
 - **Before a merge** (the method's owner, 2026-10-28): outside the short path, the skill `merge-check` — the person
   merging ticks the **critical** findings of the AI reviews on a review board, and the line

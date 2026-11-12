@@ -1,8 +1,8 @@
 <!-- Template of the gse-light method (review on evidence, reference design ch. 8). The author's
      session fills every section; the reviewer judges the evidence, and reads the code only where a
      risk is flagged. Kit-only and documentation pull requests: write "n/a" where a section does not apply.
-     Short path (skill merge-check): a pull request that touches only the project's record (journal,
-     meetings, boards, cockpit, planning) keeps "Ticket" and "Summary for humans" (Intent, What changed)
+     Short path (skill merge-check): a pull request that touches only the project's record (every file under
+     project/journal/, project/meetings/, project/BRIEFING.md or project/planning/) keeps "Ticket" and "Summary for humans" (Intent, What changed)
      and deletes the rest. -->
 
 ## Ticket and use case

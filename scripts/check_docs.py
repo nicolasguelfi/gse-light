@@ -112,6 +112,14 @@ def anchors(path: Path) -> set[str]:
     return result
 
 
+def git_files(repo: Path, *pattern: str) -> list[str] | None:
+    """Tracked or not yet added files of `repo`, never what git ignores; None outside git. `-z`: a name with a
+    non-ASCII character comes back as it is, not quoted (a quoted name pointed nowhere and was skipped)."""
+    r = subprocess.run(["git", "-C", str(repo), "ls-files", "-z", "-co", "--exclude-standard", "--", *pattern],
+                       capture_output=True, text=True)
+    return [rel for rel in r.stdout.split("\0") if rel] if r.returncode == 0 else None
+
+
 SKIP_DIRS = {".git", "node_modules", ".venv", "venv", "__pycache__", "dist", "build", ".next"}
 
 
@@ -119,11 +127,14 @@ def markdown_files() -> list[Path]:
     """The Markdown files of the repository being checked: tracked or not yet added, never what git ignores
     (a team member's `web/node_modules` held ~300 package READMEs with links of their own, 2026-11-12);
     outside git, every `.md` but the folders of SKIP_DIRS."""
-    r = subprocess.run(["git", "-C", str(ROOT), "ls-files", "-co", "--exclude-standard", "*.md"],
-                       capture_output=True, text=True)
-    if r.returncode == 0:
-        return sorted(p for p in (ROOT / rel for rel in r.stdout.splitlines()) if p.is_file())
-    return sorted(md for md in ROOT.rglob("*.md") if not SKIP_DIRS.intersection(md.relative_to(ROOT).parts))
+    return markdown_files_of(ROOT)
+
+
+def markdown_files_of(root: Path) -> list[Path]:
+    rels = git_files(root, "*.md")
+    if rels is not None:
+        return sorted(p for p in (root / rel for rel in rels) if p.is_file())
+    return sorted(md for md in root.rglob("*.md") if not SKIP_DIRS.intersection(md.relative_to(root).parts))
 
 
 def check_links() -> None:
@@ -227,10 +238,8 @@ def check_who_is_who() -> None:
     """The "Who is who" block is one text, copied verbatim into every entry page of gse-light
     (NG, 2026-10-08, board r5): a page must read alone, so the block is repeated, and this check
     keeps the copies identical (whitespace folded)."""
-    r = subprocess.run(["git", "-C", str(METHOD), "ls-files", "-co", "--exclude-standard", "*.md"],
-                       capture_output=True, text=True)
     blocks: dict[str, list[str]] = {}
-    for rel in r.stdout.splitlines():
+    for rel in git_files(METHOD, "*.md") or []:
         path = METHOD / rel
         if not path.is_file():
             continue
@@ -407,8 +416,7 @@ def check_leaks() -> None:
                 terms.append(re.compile(line.strip()))
     if not terms:
         return
-    r = subprocess.run(["git", "-C", str(METHOD), "ls-files", "-co", "--exclude-standard"], capture_output=True, text=True)
-    for rel in r.stdout.splitlines():
+    for rel in git_files(METHOD) or []:
         path = METHOD / rel
         if not path.is_file() or rel.startswith("LICENSES/"):
             continue

@@ -11,6 +11,9 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+_argv, sys.argv = sys.argv, sys.argv[:1]  # check_docs reads its folder argument at import
+import check_docs as cd  # noqa: E402
+sys.argv = _argv
 import evidence_check as ev  # noqa: E402
 import journal_gaps as jg  # noqa: E402
 import req_coverage as rc  # noqa: E402
@@ -222,12 +225,43 @@ class InterfaceEvidence(unittest.TestCase):
 
     def test_code_quoted_in_a_ticked_line_does_not_cancel_the_review(self):
         # 12 Nov: "unasked keys are shown as `key(<length>)`" read as a placeholder, the review uncounted
-        self.assertTrue(ev.reviewed("change-reviewer", "- [x] **`change-reviewer`**: verdict ready — keys shown as `key(<length>)`; `to do` list", []))
+        self.assertTrue(ev.reviewed("change-reviewer", "- [x] **`change-reviewer`**: verdict ready — keys shown as `key(<length>)`", []))
         self.assertFalse(ev.reviewed("change-reviewer", "- [x] **`change-reviewer`** (author's session): verdict <…> — findings fixed or answered: <…>", []))
+        self.assertFalse(ev.reviewed("change-reviewer", "- [x] **`change-reviewer`**: `pending`", []))
+        self.assertFalse(ev.reviewed("change-reviewer", "- [x] **`change-reviewer`**: verdict `<…>`", []))
 
     def test_a_change_reviewer_line_is_no_ux_review(self):
         pr = self.pr(["web/ui/src/App.tsx", "project/design/screens/x.md"], body="- [x] **`change-reviewer`**: ready")
         self.assertEqual(len(ev.ui_check(pr, ev.DEFAULT_UI)[1]), 1)
+
+
+class MarkdownFiles(unittest.TestCase):
+    """check_docs reads what git tracks or will add, never what it ignores (2026-11-12: ~300 false broken links
+    from a worktree's node_modules); a non-ASCII name is kept."""
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        self.root = Path(self.d.name)
+        for rel in ("a.md", "é – b.md", "node_modules/x/README.md", "gone.md"):
+            (self.root / rel).parent.mkdir(parents=True, exist_ok=True)
+            (self.root / rel).write_text("[x](missing.md)\n", encoding="utf-8")
+
+    def tearDown(self):
+        self.d.cleanup()
+
+    def git(self, *args: str) -> None:
+        subprocess.run(["git", "-C", str(self.root), *args], check=True, capture_output=True)
+
+    def test_in_git_ignored_and_deleted_files_are_left_out_a_non_ascii_name_kept(self):
+        self.git("init", "-q")
+        (self.root / ".gitignore").write_text("node_modules/\n", encoding="utf-8")
+        self.git("add", "a.md", "gone.md")
+        (self.root / "gone.md").unlink()
+        names = sorted(p.name for p in cd.markdown_files_of(self.root))
+        self.assertEqual(names, ["a.md", "é – b.md"])
+
+    def test_outside_git_the_skipped_folders_are_left_out(self):
+        names = sorted(p.name for p in cd.markdown_files_of(self.root))
+        self.assertEqual(names, ["a.md", "gone.md", "é – b.md"])
 
 
 class RequirementsCoverage(unittest.TestCase):

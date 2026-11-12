@@ -86,7 +86,10 @@ def reviewed(name: str, body: str, comments: list[str]) -> bool:
     other = [r for r in ALL_REVIEWERS if r != name]
     def alone(line: str) -> bool:  # names this reviewer, not the other one
         return name in line and not any(o in line for o in other)
-    ticked = any(alone(line) and not NOT_DONE.search(INLINE_CODE.sub("", line)) and re.match(r"^\s*[-*]\s*\[[xX]\]", line) for line in body.splitlines())
+    def not_done(line: str) -> bool:  # outside code quotes, or a code quote that holds only such a word
+        quoted = [q.strip("`").strip() for q in INLINE_CODE.findall(line)]
+        return bool(NOT_DONE.search(INLINE_CODE.sub("", line))) or any(NOT_DONE.fullmatch(q) for q in quoted)
+    ticked = any(alone(line) and not not_done(line) and re.match(r"^\s*[-*]\s*\[[xX]\]", line) for line in body.splitlines())
     in_comment = False
     for c in comments:
         lines = [l for l in c.splitlines() if l.strip()]
